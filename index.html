@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Valheim Aktionszähler</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: eine Spalte wie das Spielmenü von Valheim – Logo oben, Holzrahmen-Panels, Runensteine, die in der Spielerfarbe glühen. Bewusst nur dunkles Design (Nebel über der Wiese bei Nacht). */
+:root {
+  --bg: #0c1012;            /* Nacht */
+  --fog: #24332f;           /* Nebel der Schwarzwald-Ebene */
+  --panel: #1b140e;         /* dunkles Holz */
+  --panel-2: #261c13;
+  --edge: #5c4329;          /* Holzrahmen */
+  --edge-hi: #8f6a3c;
+  --iron: #3a3632;          /* Eisenbeschläge */
+  --gold: #f2ad4b;          /* Menüschrift-Orange */
+  --gold-hi: #ffd08a;
+  --fg: #ebdfc6;            /* Pergament */
+  --muted: #a8977c;
+  --frost: #9ccfe0;         /* freie Aktionen */
+  --stone: #2c302f;         /* Runenstein */
+  --stone-2: #1a1d1c;
+  --font: "Averia Serif Libre", "Georgia", "Times New Roman", serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 120% 60% at 50% 0%, #3a4a3f66 0%, transparent 60%),
+    radial-gradient(ellipse 90% 40% at 20% 100%, #24332f99 0%, transparent 70%),
+    linear-gradient(180deg, #121a1a 0%, var(--bg) 55%);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
+}
+.wrap {
+  max-width: 680px; margin: 0 auto;
+  padding-block: 24px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 20px;
+}
+
+/* Logo */
+header { display: grid; justify-items: center; gap: 4px; text-align: center; }
+h1 { margin: 0; display: grid; justify-items: center; line-height: 1; }
+.logo {
+  font-weight: 700; font-size: clamp(2.6rem, 11vw, 4rem); letter-spacing: .14em; text-transform: uppercase;
+  padding-left: .14em;
+  background: linear-gradient(180deg, #f6f0e2 0%, #cfc2a6 45%, #8d826c 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 2px 0 #000) drop-shadow(0 0 18px #00000099);
+}
+.sub {
+  font-size: 1.05rem; letter-spacing: .32em; text-transform: uppercase; color: var(--gold);
+  padding-left: .32em; margin-top: 8px; text-shadow: 0 1px 0 #000;
+}
+.runeline { color: var(--edge-hi); letter-spacing: .6em; font-size: .9rem; opacity: .7; padding-left: .6em; }
+.round { font-size: 1rem; color: var(--muted); letter-spacing: .08em; }
+.round b { color: var(--gold); font-variant-numeric: tabular-nums; font-size: 1.15rem; }
+
+.label {
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .2em; color: var(--gold); font-weight: 700;
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px; text-shadow: 0 1px 0 #000;
+}
+.label::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--edge), transparent); }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* Holzrahmen-Panel wie im Inventar */
+.panel, .board {
+  background:
+    repeating-linear-gradient(92deg, #ffffff05 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 2px solid var(--edge);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px #000, inset 0 0 0 3px #00000055, inset 0 0 30px #000000aa, 0 6px 22px #000000aa;
+  padding: 16px;
+}
+
+/* Spieler */
+.players { display: flex; gap: 8px; flex-wrap: wrap; }
+.player {
+  background: #00000055; border: 1px solid var(--edge); border-radius: 3px;
+  padding: 7px 10px; display: flex; align-items: center; gap: 8px; min-width: 0;
+}
+.player.active {
+  border-color: var(--pc); background: #00000088;
+  box-shadow: 0 0 0 1px var(--pc), 0 0 14px color-mix(in srgb, var(--pc) 45%, transparent);
+}
+.player input {
+  background: transparent; border: none; color: var(--fg); font: inherit; font-weight: 700;
+  width: 9ch; min-width: 0; padding: 0;
+}
+.player .dot {
+  width: 16px; height: 16px; border-radius: 50%; flex: none; padding: 0;
+  background: radial-gradient(circle at 35% 35%, #ffffffaa, var(--pc) 45%, #000 120%);
+  border: 1px solid #000; box-shadow: 0 0 6px var(--pc);
+}
+.player .rm { background: none; border: none; color: var(--muted); padding: 0 2px; font-size: 1.1rem; line-height: 1; }
+.player .rm:hover { color: var(--gold); }
+.add { background: none; border: 1px dashed var(--edge); border-radius: 3px; color: var(--muted); padding: 7px 12px; }
+.add:hover { color: var(--gold); border-color: var(--gold); }
+
+/* Brett */
+.board {
+  display: grid; gap: 18px; justify-items: center; text-align: center; padding: 22px 18px 20px;
+  border-top-color: var(--pc, var(--edge));
+}
+.who {
+  font-size: 1.5rem; font-weight: 700; margin: 0; letter-spacing: .04em;
+  color: var(--pc, var(--gold)); text-shadow: 0 1px 0 #000, 0 0 16px color-mix(in srgb, var(--pc, var(--gold)) 50%, transparent);
+}
+.pips { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.pip {
+  width: 66px; height: 80px; display: grid; place-items: center; cursor: pointer;
+  clip-path: polygon(50% 0, 96% 14%, 100% 80%, 52% 100%, 4% 86%, 0 18%);
+  background:
+    radial-gradient(circle at 30% 25%, #ffffff14, transparent 50%),
+    linear-gradient(160deg, #4a4f4c, var(--stone) 45%, var(--stone-2));
+  color: var(--pc, var(--gold)); font-size: 2.1rem; font-weight: 700;
+  text-shadow: 0 0 6px var(--pc, var(--gold)), 0 0 16px var(--pc, var(--gold)), 0 0 28px var(--pc, var(--gold));
+  transition: color .3s, text-shadow .3s, transform .3s, filter .3s;
+}
+.pip.used { color: #1a1c1b; text-shadow: 0 1px 0 #5a5f5c; transform: scale(.9); filter: brightness(.7); }
+.left { font-size: 1.05rem; color: var(--fg); }
+.left b { font-size: 1.4rem; color: var(--pc, var(--gold)); font-variant-numeric: tabular-nums; }
+.left.zero b { color: var(--muted); }
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+/* Knöpfe wie im Valheim-Menü */
+.btn {
+  border-radius: 3px; padding: 10px 18px; font-weight: 700; letter-spacing: .04em;
+  border: 1px solid var(--edge); color: var(--gold);
+  background: linear-gradient(180deg, #3a2b1d, #20170f);
+  box-shadow: inset 0 1px 0 #ffffff12, 0 2px 6px #000000aa;
+  text-shadow: 0 1px 0 #000;
+}
+.btn:hover:not(:disabled) { color: var(--gold-hi); border-color: var(--edge-hi); box-shadow: inset 0 1px 0 #ffffff1c, 0 0 12px #f2ad4b44; }
+.btn.primary { border-color: var(--gold); background: linear-gradient(180deg, #5a3d1c, #2e1f10); }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+
+/* Aktionen wie Inventarplätze */
+.actions { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 6px; }
+.act {
+  text-align: left; background: #00000066; border: 1px solid #00000099; border-radius: 3px;
+  box-shadow: inset 0 0 0 1px #ffffff0d, inset 0 0 12px #000;
+  padding: 10px 12px; display: grid; gap: 2px;
+}
+.act:hover:not(:disabled) { border-color: var(--gold); box-shadow: inset 0 0 0 1px #f2ad4b55, 0 0 10px #f2ad4b33; }
+.act:disabled { opacity: .35; cursor: not-allowed; }
+.act .n { font-weight: 700; color: var(--gold); text-shadow: 0 1px 0 #000; }
+.act .s { font-size: .8rem; color: var(--muted); }
+.act.free { border-style: dashed; border-color: #9ccfe055; }
+.act.free:hover:not(:disabled) { border-color: var(--frost); box-shadow: 0 0 10px #9ccfe033; }
+.act.free .n { color: var(--frost); }
+
+.settings { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; color: var(--muted); font-size: .92rem; }
+.stepper { display: inline-flex; align-items: center; border: 1px solid var(--edge); border-radius: 3px; overflow: hidden; background: #00000066; }
+.stepper button { background: linear-gradient(180deg, #3a2b1d, #20170f); border: none; padding: 5px 11px; color: var(--gold); }
+.stepper span { padding: 0 12px; color: var(--fg); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Protokoll */
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-height: 260px; overflow-y: auto; }
+.log li { display: flex; gap: 10px; font-size: .92rem; padding: 5px 0; border-bottom: 1px solid #5c432955; }
+.log .t { color: var(--muted); font-variant-numeric: tabular-nums; flex: none; width: 3.5ch; }
+.log .f { color: var(--frost); }
+.log .e { color: var(--gold); font-weight: 700; }
+.log .pd { width: 8px; height: 8px; border-radius: 50%; background: var(--pc); box-shadow: 0 0 5px var(--pc); flex: none; align-self: center; }
+.empty { color: var(--muted); font-size: .92rem; }
+
+.confirm { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: .92rem; }
+.note { font-size: .84rem; color: var(--muted); font-style: italic; text-align: center; max-width: 60ch; margin: 0 auto; }
+
+@media (prefers-reduced-motion: reduce) { .pip { transition: none; } }
+
+/* Würfel-Legende */
+.legend summary { list-style: none; cursor: pointer; margin-bottom: 0; }
+.legend summary::-webkit-details-marker { display: none; }
+.legend summary .chev { color: var(--muted); font-size: .9rem; letter-spacing: 0; transition: transform .2s; }
+.legend[open] summary .chev { transform: rotate(90deg); }
+.legend[open] summary { margin-bottom: 12px; }
+.dice-types { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 14px; }
+.dt { display: flex; align-items: center; gap: 8px; font-size: .9rem; }
+.face {
+  width: 34px; height: 34px; border-radius: 5px; display: grid; place-items: center; flex: none;
+  color: #fff; background: var(--die);
+  box-shadow: inset 0 -2px 0 #00000055, inset 0 1px 0 #ffffff33, 0 1px 3px #000;
+}
+.face svg { width: 26px; height: 26px; }
+.face.blank svg { display: none; }
+.d-red { --die: #d4483f; } .d-yellow { --die: #d9c12a; } .d-blue { --die: #3f8fc9; }
+.d-black { --die: #151515; } .d-green { --die: #3f9440; }
+.d-black { box-shadow: inset 0 0 0 1px #ffffff22, 0 1px 3px #000; }
+.dice { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px 20px; }
+.die h3 { margin: 0 0 6px; font-size: .95rem; color: var(--fg); letter-spacing: .03em; }
+.faces { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.faces li { display: flex; align-items: center; gap: 10px; font-size: .9rem; }
+.faces .x { color: var(--muted); font-variant-numeric: tabular-nums; width: 2.4ch; text-align: right; flex: none; }
+.faces b { color: var(--gold); font-weight: 700; }
+.legend .hint { margin: 12px 0 0; font-size: .8rem; color: var(--muted); font-style: italic; }
+
+/* Aktions-Symbole */
+.act { grid-template-columns: 30px 1fr; column-gap: 10px; align-items: center; }
+.act .ic { grid-row: span 2; width: 30px; height: 30px; color: var(--fg); opacity: .9; filter: drop-shadow(0 1px 0 #000); }
+.act:hover:not(:disabled) .ic { color: var(--gold-hi); }
+.act.free .ic { color: var(--frost); }
+.act { align-content: center; min-width: 0; }
+.act .n, .act .s { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+.act .n { display: block; line-height: 1.25; }
+.act .n .hs { display: inline-block; vertical-align: -1px; margin-right: 5px; }
+.hs { width: 13px; height: 13px; flex: none; color: var(--fg); opacity: .85; }
+.grp { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.grp:first-child { margin-top: 0; }
+.grp-free { color: var(--frost); margin-top: 14px; }
+.act-hint { display: flex; align-items: center; gap: 6px; margin: 10px 0 0; font-size: .8rem; color: var(--muted); font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="wrap" lang="de">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="i-hand" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6.5 13.5 Q6 21 12.2 21 Q18 21 17.8 14 L17.2 12.5 L7 12.8 Z" stroke-width="1"/>
+        <path d="M8.3 13 V5.5 M11.3 12.5 V3.6 M14.3 12.5 V4.4 M17 13.2 V7" fill="none" stroke-width="2.4"/>
+        <path d="M7 15.5 L3.8 11.8" fill="none" stroke-width="2.4"/>
+      </g>
+      <g id="i-bang" fill="currentColor"><rect x="10.6" y="3" width="2.8" height="12" rx="1.2"/><circle cx="12" cy="19.2" r="1.8"/></g>
+      <g id="i-claw" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <path d="M9 3.5 Q4.5 12 9 20.5 M12 3 V21 M15 3.5 Q19.5 12 15 20.5 M2.5 12 H6 M18 12 H21.5"/>
+      </g>
+      <g id="i-axe" fill="currentColor">
+        <path d="M6 21 L15.5 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M11.5 4.5 Q16 1.5 21 5.5 Q18 9.5 19 13.5 Q14.5 11.5 12.2 9.2 Z"/>
+      </g>
+      <g id="i-shield" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/>
+        <path d="M5.8 7.5 L9.5 10 M14.5 14 L18.2 16.5"/>
+      </g>
+      <g id="i-move" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19 Q7 8 19 7" stroke-dasharray="2.5 3"/><path d="M15 3.5 L19.5 7 L15.5 11"/><circle cx="4" cy="19.5" r="1.6" fill="currentColor"/></g>
+      <g id="i-hammer" fill="currentColor"><path d="M4.5 20.5 L13 12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M10 6.5 L14.5 2 L22 9.5 L20 11.5 L16 8.5 L13.5 11 Z"/></g>
+      <g id="i-anvil" fill="currentColor"><path d="M2 6 H17 Q22 6 22 3 V9 Q17 10 15.5 13 H17.5 V15.5 H6.5 V13 H8.5 Q8 10 2 9.5 Z"/><path d="M5 21 H19 V18 Q12 16 5 18 Z"/></g>
+      <g id="i-swap" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 H19 M15 4 L19 8 L15 12 M20 16 H5 M9 12 L5 16 L9 20"/></g>
+      <g id="i-ship" fill="currentColor"><path d="M2 14 H22 L18.5 20 H5.5 Z"/><path d="M12 2.5 V14" stroke="currentColor" stroke-width="1.8"/><path d="M13 4 Q20 8 19 12.5 H13 Z"/><circle cx="8" cy="17" r="1" fill="var(--panel)"/><circle cx="12" cy="17" r="1" fill="var(--panel)"/><circle cx="16" cy="17" r="1" fill="var(--panel)"/></g>
+      <g id="i-sail"><use href="#i-ship" transform="translate(3 0) scale(.75)"/><path d="M2 20 Q5 17.5 8 20 T14 20 T20 20 M5 23 Q8 21 11 23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></g>
+      <g id="i-pot" fill="currentColor"><path d="M3.5 11 H20.5 V14 Q20.5 21 12 21 Q3.5 21 3.5 14 Z"/><path d="M1.5 12 H3.5 M20.5 12 H22.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8.5 3 Q7 5 8.5 7.5 M12 2.5 Q10.5 5 12 7.5 M15.5 3 Q14 5 15.5 7.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g>
+      <g id="i-meat" fill="currentColor"><ellipse cx="15" cy="9" rx="6.5" ry="5.2" transform="rotate(-45 15 9)"/><path d="M11 13 L5.5 18.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="3.8" cy="18.2" r="1.8"/><circle cx="5.8" cy="20.2" r="1.8"/></g>
+      <g id="i-fire" fill="currentColor"><path d="M12 1.5 C14.5 6 19 8 19 14 A7 7 0 0 1 5 14 C5 10 8 8.5 8.5 4.5 C10.5 6.5 10.8 9 11.5 10 C13 8 13.2 5 12 1.5 Z"/><path d="M12 13 C13.5 15 15 16 15 17.5 A3 3 0 0 1 9 17.5 C9 16 10.5 15 12 13 Z" fill="var(--panel)"/></g>
+      <g id="i-mead" fill="currentColor"><path d="M5 5 Q4 12 5 19 Q12 21.5 19 19 Q20 12 19 5 Q12 2.5 5 5 Z"/><path d="M4.6 9.5 Q12 11.5 19.4 9.5 M4.6 14.5 Q12 16.5 19.4 14.5" fill="none" stroke="var(--panel)" stroke-width="1.4"/></g>
+      <g id="i-bomb" fill="currentColor"><circle cx="10.5" cy="14" r="7"/><path d="M14.5 8.5 L16 7 L17.5 8.5 L16 10 Z"/><path d="M16.5 7 Q17.5 3.5 21 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M21 1 V2 M23 3.5 H22 M22.5 1.5 L21.8 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="11.5" r="1.6" fill="var(--panel)"/></g>
+      <g id="i-bees" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 3 L12 5.3 V9.9 L8 12.2 L4 9.9 V5.3 Z"/><path d="M16 3 L20 5.3 V9.9 L16 12.2 L12 9.9 V5.3 Z" fill="currentColor"/><path d="M12 10 L16 12.3 V16.9 L12 19.2 L8 16.9 V12.3 Z"/></g>
+      <g id="i-bag" fill="currentColor"><path d="M8.5 7 H15.5 L14 9.5 Q20.5 12.5 20.5 17 Q20.5 21.5 12 21.5 Q3.5 21.5 3.5 17 Q3.5 12.5 10 9.5 Z"/><path d="M7.5 3 L10 6.5 H14 L16.5 3 Q12 4.5 7.5 3 Z"/><circle cx="12" cy="16" r="2.6" fill="none" stroke="var(--panel)" stroke-width="1.4"/></g>
+      <g id="i-bow" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 Q4 20 15 21" stroke-width="2.4"/><path d="M3 9 L15 21" stroke-width="1"/><path d="M6 18 L21 3 M21 3 L15.5 4 M21 3 L20 8.5 M6 18 L4 16 M6 18 L8 20" stroke-width="2"/></g>
+      <g id="i-dots" fill="currentColor"><circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/></g>
+      <g id="i-plus" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9" stroke-dasharray="3 2.5"/><path d="M12 7.5 V16.5 M7.5 12 H16.5"/></g>
+      <g id="i-house" fill="currentColor"><path d="M1.5 11 L12 2 L22.5 11 H19 V21 H14.5 V15 H9.5 V21 H5 V11 Z"/></g>
+      <g id="i-drop" fill="currentColor"><path d="M12 2 C15 7 19 10.5 19 15 A7 7 0 0 1 5 15 C5 10.5 9 7 12 2 Z"/><path d="M9 15 A3 3 0 0 0 12 18" fill="none" stroke="var(--panel)" stroke-width="1.6" stroke-linecap="round"/></g>
+      <g id="i-token" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M3 21 L7 17" stroke-linecap="round"/></g>
+      <g id="i-dismantle" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 3.5 A5 5 0 0 0 9.5 10 L3.5 16 A2.1 2.1 0 0 0 6.5 19 L12.5 13 A5 5 0 0 0 19 8 L16 11 L13 10 L12.5 7 Z"/><path d="M17 15 L21 19 M21 15 L17 19"/></g>
+      <g id="i-odin" fill="currentColor"><path d="M1.5 13 Q12 3.5 22.5 13 Q12 22.5 1.5 13 Z"/><circle cx="12" cy="13" r="4.2" fill="var(--panel)"/><circle cx="12" cy="13" r="2.2"/><path d="M4 6.5 L7.5 9 M12 3 V6.5 M20 6.5 L16.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></g>
+      <g id="i-up" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L12 5 L19 12 M5 19 L12 12 L19 19"/></g>
+      <g id="i-spark" fill="currentColor"><path d="M12 1.5 L14 10 L22.5 12 L14 14 L12 22.5 L10 14 L1.5 12 L10 10 Z"/></g>
+      <g id="i-swords" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4 L17 17 M20 4 L7 17 M14.5 19.5 L19.5 14.5 M4.5 14.5 L9.5 19.5 M18 18 L21 21 M6 18 L3 21"/></g>
+      <g id="i-grave" fill="currentColor"><path d="M6 21 V9 A6 6 0 0 1 18 9 V21 Z"/><path d="M12 8 V15 M9.5 10.5 H14.5" stroke="var(--panel)" stroke-width="1.8" stroke-linecap="round"/><path d="M3 21.5 H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></g>
+      <g id="i-chest" fill="currentColor"><path d="M3 10 Q3 4 12 4 Q21 4 21 10 Z"/><rect x="3" y="11" width="18" height="9" rx="1"/><rect x="10" y="9" width="4" height="5" rx="1" fill="var(--panel)"/></g>
+    </defs>
+  </svg>
+  <header>
+    <h1><span class="logo">Valheim</span><span class="sub">Aktionszähler</span></h1>
+    <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
+    <div class="round">Runde <b id="round">1</b></div>
+  </header>
+
+  <section>
+    <div class="label">Wikinger am Tisch</div>
+    <div class="players" id="players"></div>
+  </section>
+
+  <section class="board" aria-live="polite">
+    <p class="who" id="who"></p>
+    <div class="pips" id="pips"></div>
+    <div class="left" id="left"></div>
+    <div class="row">
+      <button class="btn" id="undo">Rückgängig</button>
+      <button class="btn primary" id="end">Zug beenden →</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="label">Aktion ausführen</div>
+    <div class="actions" id="actions"></div>
+  </section>
+
+  <details class="panel legend" id="legend" open>
+    <summary class="label">Würfel-Legende <span class="chev" aria-hidden="true">▶</span></summary>
+    <div class="dice-types">
+      <span class="dt"><span class="face d-red"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span>Roter Angriffswürfel</span>
+      <span class="dt"><span class="face d-yellow"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span>Gelber Angriffswürfel</span>
+      <span class="dt"><span class="face d-blue"><svg viewBox="0 0 24 24"><use href="#i-shield"/></svg></span>Blauer Verteidigungswürfel</span>
+      <span class="dt"><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw"/></svg></span>Schwarzer Schadenswürfel</span>
+      <span class="dt"><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand"/></svg></span>Grüner Sammelwürfel</span>
+    </div>
+    <div class="dice">
+      <div class="die">
+        <h3>Sammelwürfel (grün)</h3>
+        <ul class="faces">
+          <li><span class="x">3×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand"/></svg></span><span><b>Sammeln</b></span></li>
+          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 1) scale(.82)"/><use href="#i-bang" transform="translate(13 4) scale(.5)"/></svg></span><span><b>Lautes Sammeln</b> (!)</span></li>
+          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 -1) scale(.55)"/><use href="#i-bang" transform="translate(8.5 7) scale(.45)"/><use href="#i-hand" transform="translate(11 11) scale(.55)"/></svg></span><span><b>Lautes kritisches Sammeln</b></span></li>
+          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 -1) scale(.6)"/><use href="#i-hand" transform="translate(10 10) scale(.6)"/></svg></span><span><b>Kritisches Sammeln</b></span></li>
+        </ul>
+      </div>
+      <div class="die">
+        <h3>Schadenswürfel (schwarz)</h3>
+        <ul class="faces">
+          <li><span class="x">2×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw"/></svg></span><span><b>Treffer</b></span></li>
+          <li><span class="x">1×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw" transform="translate(9 0) rotate(30 6 6) scale(.5)"/><use href="#i-claw" transform="translate(3 11) rotate(30 6 6) scale(.5)"/></svg></span><span><b>Kritischer Treffer</b></span></li>
+          <li><span class="x">1×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-bang"/></svg></span><span><b>Spezialeffekt</b> (!)</span></li>
+          <li><span class="x">2×</span><span class="face d-black blank"><svg viewBox="0 0 24 24"></svg></span><span><b>Leer</b> – kein Effekt</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="hint">Die Seiten des roten, gelben und blauen Würfels stehen im Regelheft (S. 24).</p>
+  </details>
+
+  <section class="settings">
+    <span>Aktionen pro Zug</span>
+    <span class="stepper">
+      <button id="perMinus" aria-label="Weniger Aktionen">−</button>
+      <span id="per">3</span>
+      <button id="perPlus" aria-label="Mehr Aktionen">+</button>
+    </span>
+    <span id="resetArea"><button class="btn" id="reset">Neues Spiel</button></span>
+  </section>
+
+  <section class="panel">
+    <div class="label">Protokoll</div>
+    <ul class="log" id="log"></ul>
+  </section>
+
+  <p class="note">Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt, unten) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
+</div>
+
+<script>
+const ACTIONS = [
+  { n: "Bewegen", s: "Bis zu 2 Felder, unerforschte Plättchen aufdecken", i: "move" },
+  { n: "Ressourcen sammeln", s: "Sammelwürfel werfen, vom derzeitigen Feld einsammeln", i: "hand" },
+  { n: "Ausrüstung tauschen", s: "Karten oder Verbrauchsgegenstände mit Charakteren auf deinem Feld", i: "swap" },
+  { n: "Schiff bauen", s: "Angrenzend zu Wasser: Ressourcen zahlen", i: "ship" },
+  { n: "Lossegeln", s: "Zu einem Feld am selben Gewässer", i: "sail" },
+  { n: "Mit Haldor handeln", s: "Münzen zahlen für Karten oder Ressourcen", i: "bag" },
+  { n: "Hinterhalt", s: "Fernkampfwaffe gegen angrenzende Kreatur", i: "bow" },
+  { n: "Sonstige", s: "Andere Aktion", i: "dots" },
+  { n: "Möbelstück herstellen", s: "Ressourcen zahlen, aufs Haustableau", i: "hammer", h: 1 },
+  { n: "Ausrüstung herstellen", s: "Ressourcen zahlen, aufs Charaktertableau", i: "anvil", h: 1 },
+  { n: "Nahrung kochen", s: "Oberste Nahrungskarte aufdecken", i: "pot", h: 1 },
+  { n: "Gekochte Nahrung essen", s: "Nahrungskarte abwerfen: Lebenspunkte, Ausdauer oder Neuwurfplättchen", i: "meat", h: 1 },
+  { n: "Werkzeug oder Waffe entzünden", s: "Feuertisch: 1 Harz, dauerhaft 1 Feuer", i: "fire", h: 1 },
+  { n: "Met brauen", s: "Fermentierer: 1 Met deiner Wahl aufs Charaktertableau", i: "mead", h: 1 },
+  { n: "Eine Bombe basteln", s: "Bombentisch: 1 Bombe deiner Wahl aufs Charaktertableau", i: "bomb", h: 1 },
+  { n: "Nach den Bienen sehen", s: "Bienenstock: 1 zufällige Honigwabe · 1× pro Zug", i: "bees", h: 1, once: 1 },
+  { n: "Verbrauchsgegenstand nutzen", s: "1 Met oder 1 Honigwabe abwerfen, Belohnung erhalten", i: "drop", free: true },
+  { n: "Mit Plättchen interagieren", s: "Jederzeit mit Plättchen auf deinem Feld", i: "token", free: true },
+  { n: "Eine Bombe werfen", s: "Im Kampf: Bombe abwerfen, angegebene Würfel werfen", i: "bomb", free: true },
+  { n: "Ausrüstung zerlegen", s: "Nur im Haus: Karte zurück, 1 Ressource der Kosten · 1× pro Zug", i: "dismantle", free: true, once: 1 },
+  { n: "Macht Odins nutzen", s: "Ausdauer abgeben, auch außerhalb deines Zuges", i: "odin", free: true },
+  { n: "Freigespielte Aufwertung nutzen", s: "Angegebene Kosten zahlen, falls vorhanden", i: "up", free: true },
+  { n: "Effekt einer Ausrüstung nutzen", s: "Manche Ausrüstung: 1× pro Zug eine freie Aktion", i: "spark", free: true },
+  { n: "Unterstützung im Kampf", s: "Im Zug eines anderen: 1 Ausdauer, zu einem Kampf in Bewegungsreichweite", i: "swords", free: true },
+  { n: "Mitsegeln", s: "Im Zug eines anderen: 1 Ausdauer, auf ein Schiff, das gleich lossegelt", i: "sail", free: true },
+  { n: "Gegenstand vom Grabstein aufsammeln", s: "Gegenstand nehmen, Grabstein dem Charakter zurückgeben", i: "grave", free: true },
+  { n: "Truhe erbeuten", s: "Truhe auf deinem Feld aufdecken und nehmen, Inhalt erhalten", i: "chest", free: true },
+];
+
+const COLORS = [
+  { name: "Glut", c: "#e48a3a" },
+  { name: "Fjord", c: "#6fa3e8" },
+  { name: "Moos", c: "#8cc56a" },
+  { name: "Heidekraut", c: "#c38be0" },
+  { name: "Bernstein", c: "#e6c35a" },
+  { name: "Blut", c: "#e0706a" },
+];
+const KEY = "valheim-aktionszaehler-v1";
+const fresh = () => ({
+  players: ["Ragnhild", "Torvald"],
+  colors: [0, 1],
+  current: 0, round: 1, per: 3, used: [], log: [],
+});
+let st;
+try { st = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch { st = fresh(); }
+if (!Array.isArray(st.colors)) st.colors = [];
+st.players.forEach((_, i) => { if (st.colors[i] === undefined) st.colors[i] = freeColor(i); });
+function freeColor(skip) {
+  const taken = st.colors.filter((_, i) => i !== skip);
+  const f = COLORS.findIndex((_, k) => !taken.includes(k));
+  return f < 0 ? 0 : f;
+}
+const pc = i => COLORS[st.colors[i] ?? 0].c;
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch {} };
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const RUNES = ["ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᚱ", "ᚲ", "ᚷ", "ᚹ"];
+const name = () => st.players[st.current] || "Spieler";
+const counted = () => st.used.filter(a => !a.free).length;
+
+function log(text, cls = "") {
+  st.log.unshift({ t: `R${st.round}`, text, cls, p: st.current });
+  st.log = st.log.slice(0, 120);
+}
+
+function doAction(i) {
+  const a = ACTIONS[i];
+  if (!a.free && counted() >= st.per) return;
+  if (a.once && st.used.some(u => u.n === a.n)) return;
+  st.used.push({ n: a.n, free: !!a.free });
+  log(`${name()}: ${a.n}${a.free ? " (frei)" : ` – ${counted()}/${st.per}`}`, a.free ? "f" : "");
+  render();
+}
+
+function undo() {
+  const a = st.used.pop();
+  if (!a) return;
+  st.log.shift();
+  render();
+}
+
+function endTurn() {
+  log(`${name()} beendet den Zug (${counted()}/${st.per} Aktionen)`, "e");
+  st.used = [];
+  st.current = (st.current + 1) % st.players.length;
+  if (st.current === 0) { st.round++; log(`Runde ${st.round} beginnt`, "e"); }
+  render();
+}
+
+function render() {
+  if (st.current >= st.players.length) st.current = 0;
+  $("round").textContent = st.round;
+  document.documentElement.style.setProperty("--pc", pc(st.current));
+  $("per").textContent = st.per;
+
+  $("players").innerHTML = st.players.map((p, i) => `
+    <div class="player ${i === st.current ? "active" : ""}" style="--pc:${pc(i)}">
+      <button class="dot" data-col="${i}" aria-label="Farbe von ${esc(p)} wechseln (${COLORS[st.colors[i]].name})" title="Farbe wechseln: ${COLORS[st.colors[i]].name}"></button>
+      <input id="pl${i}" value="${esc(p)}" aria-label="Name Spieler ${i + 1}" data-i="${i}">
+      ${st.players.length > 1 ? `<button class="rm" data-rm="${i}" aria-label="Spieler entfernen">×</button>` : ""}
+    </div>`).join("") + (st.players.length < 4 ? `<button class="add" id="addP">+ Spieler</button>` : "");
+
+  $("who").textContent = `${name()} ist am Zug`;
+  const c = counted();
+  $("pips").innerHTML = Array.from({ length: st.per }, (_, i) =>
+    `<div class="pip ${i < c ? "used" : ""}" role="button" tabindex="0" data-pip="${i}" aria-label="Aktion ${i + 1}">${RUNES[i % RUNES.length]}</div>`).join("");
+  const left = st.per - c;
+  $("left").className = "left" + (left === 0 ? " zero" : "");
+  $("left").innerHTML = left === 0
+    ? `<b>0</b> Aktionen übrig – Zug beenden`
+    : `<b>${left}</b> ${left === 1 ? "Aktion" : "Aktionen"} übrig`;
+  $("undo").disabled = st.used.length === 0;
+
+  $("actions").innerHTML = ACTIONS.map((a, i) =>
+    (i === 0 ? `<div class="grp">Überall möglich</div>` : "") +
+    (a.h && !a.free && !ACTIONS[i - 1].h ? `<div class="grp"><svg class="hs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg> Nur im eigenen Haus</div>` : "") +
+    (a.free && !ACTIONS[i - 1].free ? `<div class="grp grp-free">Freie Aktionen · zählen nicht zu den ${st.per} Aktionen</div>` : "") +
+    `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) ? "disabled" : ""} ${a.h ? 'title="Nur im Haus"' : ""}>
+       <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${a.i}"/></svg>
+       <span class="n">${a.n}</span><span class="s">${a.s}</span></button>`).join("");
+
+  $("log").innerHTML = st.log.length
+    ? st.log.map(l => `<li><span class="t">${l.t}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${l.cls}">${esc(l.text)}</span></li>`).join("")
+    : `<li class="empty">Noch keine Aktionen. Wähle oben eine Aktion aus.</li>`;
+  save();
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-a],[data-pip],[data-rm],[data-col],#addP,#undo,#end,#perMinus,#perPlus,#reset,#resetYes,#resetNo");
+  if (!t) return;
+  if (t.dataset.a) return doAction(+t.dataset.a);
+  if (t.dataset.pip) { if (+t.dataset.pip >= counted()) doAction(ACTIONS.findIndex(a => a.n === "Sonstige")); return; }
+  if (t.dataset.col) {
+    const i = +t.dataset.col, others = st.colors.filter((_, k) => k !== i);
+    let n = st.colors[i];
+    do { n = (n + 1) % COLORS.length; } while (others.includes(n));
+    st.colors[i] = n;
+    return render();
+  }
+  if (t.dataset.rm) {
+    const i = +t.dataset.rm;
+    st.players.splice(i, 1); st.colors.splice(i, 1);
+    if (st.current > i || st.current >= st.players.length) st.current = Math.max(0, st.current - 1);
+    return render();
+  }
+  switch (t.id) {
+    case "addP":
+      st.players.push(["Sigrun", "Bjarne", "Astrid", "Halvar"][st.players.length % 4]);
+      st.colors.push(freeColor(-1));
+      return render();
+    case "undo": return undo();
+    case "end": return endTurn();
+    case "perMinus": st.per = Math.max(1, st.per - 1); return render();
+    case "perPlus": st.per = Math.min(8, st.per + 1); return render();
+    case "reset":
+      $("resetArea").innerHTML = `<span class="confirm">Alles zurücksetzen? <button class="btn" id="resetYes">Ja, neues Spiel</button><button class="btn" id="resetNo">Abbrechen</button></span>`;
+      return;
+    case "resetYes": {
+      const keep = st.players, cols = st.colors, per = st.per;
+      st = fresh(); st.players = keep; st.colors = cols; st.per = per;
+      $("resetArea").innerHTML = `<button class="btn" id="reset">Neues Spiel</button>`;
+      return render();
+    }
+    case "resetNo":
+      $("resetArea").innerHTML = `<button class="btn" id="reset">Neues Spiel</button>`; return;
+  }
+});
+document.addEventListener("keydown", e => {
+  const p = e.target.closest?.("[data-pip]");
+  if (p && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); p.click(); }
+});
+document.addEventListener("change", e => {
+  if (e.target.dataset?.i !== undefined) {
+    st.players[+e.target.dataset.i] = e.target.value.trim() || `Spieler ${+e.target.dataset.i + 1}`;
+    render();
+  }
+});
+
+if (!st.log.length) { log("Ragnhild: Ressourcen sammeln – 1/3", ""); st.used = [{ n: "Ressourcen sammeln" }]; }
+render();
+</script>
+</body>
+</html>
