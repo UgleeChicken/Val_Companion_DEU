@@ -350,6 +350,14 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
     </div>
     <div class="dice">
       <div class="die">
+        <h3>Angriffswürfel (rot)</h3>
+        <ul class="faces">
+          <li><span class="x">4×</span><span class="face d-red"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span><span><b>1 Axt</b></span></li>
+          <li><span class="x">1×</span><span class="face d-red"><svg viewBox="0 0 24 24"><use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/></svg></span><span><b>2 Äxte</b></span></li>
+          <li><span class="x">1×</span><span class="face d-red blank"><svg viewBox="0 0 24 24"></svg></span><span><b>Leer</b> – kein Effekt</span></li>
+        </ul>
+      </div>
+      <div class="die">
         <h3>Sammelwürfel (grün)</h3>
         <ul class="faces">
           <li><span class="x">3×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand"/></svg></span><span><b>Sammeln</b></span></li>
@@ -368,7 +376,7 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
         </ul>
       </div>
     </div>
-    <p class="hint">Die Seiten des roten, gelben und blauen Würfels stehen im Regelheft (S. 24).</p>
+    <p class="hint">Die Seiten des gelben und blauen Würfels stehen im Regelheft (S. 24).</p>
   </details>
 
   <section class="settings">
@@ -575,7 +583,14 @@ document.addEventListener("change", e => {
 // ---------- Würfeln ----------
 const HAND = '<use href="#i-hand"/>';
 const DICE = {
-  red:    { name: "Roter Angriffswürfel", cls: "d-red", icon: '<use href="#i-axe"/>', faces: null },
+  red:    { name: "Roter Angriffswürfel", cls: "d-red", icon: '<use href="#i-axe"/>', faces: [
+    { n: "1 Axt", svg: '<use href="#i-axe"/>' },
+    { n: "1 Axt", svg: '<use href="#i-axe"/>' },
+    { n: "1 Axt", svg: '<use href="#i-axe"/>' },
+    { n: "1 Axt", svg: '<use href="#i-axe"/>' },
+    { n: "2 Äxte", svg: '<use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/>' },
+    { n: "Leer", svg: "" },
+  ] },
   yellow: { name: "Gelber Angriffswürfel", cls: "d-yellow", icon: '<use href="#i-axe"/>', faces: null },
   blue:   { name: "Blauer Verteidigungswürfel", cls: "d-blue", icon: '<use href="#i-shield"/>', faces: null },
   black:  { name: "Schadenswürfel", cls: "d-black", icon: '<use href="#i-claw"/>', faces: [
