@@ -555,23 +555,22 @@ const ACTIONS = [
 ];
 
 const COLORS = [
-  { name: "Glut", c: "#e48a3a" },
-  { name: "Fjord", c: "#6fa3e8" },
-  { name: "Moos", c: "#8cc56a" },
-  { name: "Heidekraut", c: "#c38be0" },
-  { name: "Bernstein", c: "#e6c35a" },
-  { name: "Blut", c: "#e0706a" },
+  { name: "Rot", c: "#e0564b" },
+  { name: "Blau", c: "#5b9be6" },
+  { name: "Grün", c: "#6fc152" },
+  { name: "Gelb", c: "#e8c53e" },
 ];
 const KEY = "valheim-aktionszaehler-v1";
 const fresh = () => ({
   players: ["Ragnhild", "Torvald"],
-  colors: [0, 1],
+  colors: [0, 1], colorsV: 2,
   current: 0, round: 1, per: 3, used: [], log: [],
 });
 let st;
 try { st = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch { st = fresh(); }
-if (!Array.isArray(st.colors)) st.colors = [];
-st.players.forEach((_, i) => { if (st.colors[i] === undefined) st.colors[i] = freeColor(i); });
+// Farben-Version 2: Rot, Blau, Grün, Gelb nach Sitzplatz (ältere Spielstände werden umgestellt)
+if (!Array.isArray(st.colors) || st.colorsV !== 2) { st.colors = st.players.map((_, i) => i % COLORS.length); st.colorsV = 2; }
+st.players.forEach((_, i) => { if (!(st.colors[i] >= 0 && st.colors[i] < COLORS.length)) st.colors[i] = freeColor(i); });
 function freeColor(skip) {
   const taken = st.colors.filter((_, i) => i !== skip);
   const f = COLORS.findIndex((_, k) => !taken.includes(k));

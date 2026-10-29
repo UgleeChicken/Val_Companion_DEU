@@ -1,6 +1,6 @@
 // Offline-Speicher: legt alle Dateien beim ersten Besuch ab.
 // Bei Änderungen an der App die Versionsnummer erhöhen.
-const CACHE = "valheim-zaehler-v6";
+const CACHE = "valheim-zaehler-v7";
 const FILES = [
   "./",
   "index.html",

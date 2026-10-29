@@ -16,7 +16,7 @@ Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich ein
 - Zählt die Aktionen pro Zug (Standard: 3, einstellbar von 1 bis 8) mit glühenden Runensteinen
 - Alle 15 Aktionen mit den offiziellen deutschen Bezeichnungen, Symbol und Kurzbeschreibung; Haus-Aktionen gruppiert, „Nach den Bienen sehen“ nur 1× pro Zug
 - Eigene Rubrik mit allen 11 freien Aktionen: werden protokolliert, zählen aber nicht mit
-- 1 bis 4 Spieler mit änderbaren Namen und eigener Farbe (Klick auf den Farbpunkt wechselt sie), Spielerwechsel und Rundenzähler
+- 1 bis 4 Spieler mit änderbaren Namen und den Spielerfarben Rot, Blau, Grün und Gelb (Klick auf den Farbpunkt wechselt sie), Spielerwechsel und Rundenzähler
 - Würfeln direkt in der App: Würfel auswählen, werfen, einzelne Würfel per Antippen neu werfen; Ergebnis im Protokoll (alle 5 Würfel)
 - Möbelstücke bauen: alle Möbelstücke und das Schiff mit Kosten; „Bauen“ verbraucht eine Aktion, gebaute Möbel werden abgehakt und schalten ihre Aktionen frei (z. B. Fermentierer → Met brauen)
 - Spielhilfe: Effekte (Tränke, Neuwurf, Feuer, Frost, Gift), alle Ressourcen und Haldors Preise
