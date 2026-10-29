@@ -17,8 +17,8 @@ Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich ein
 - Alle 15 Aktionen mit den offiziellen deutschen Bezeichnungen, Symbol und Kurzbeschreibung; Haus-Aktionen gruppiert, „Nach den Bienen sehen“ nur 1× pro Zug
 - Eigene Rubrik mit allen 11 freien Aktionen: werden protokolliert, zählen aber nicht mit
 - 1 bis 4 Spieler mit änderbaren Namen und eigener Farbe (Klick auf den Farbpunkt wechselt sie), Spielerwechsel und Rundenzähler
-- Würfeln direkt in der App: Würfel auswählen, werfen, einzelne Würfel per Antippen neu werfen; Ergebnis im Protokoll (roter Angriffs-, Schadens- und Sammelwürfel; gelber und blauer Würfel folgen)
-- Würfel-Legende: Würfelarten sowie alle Seiten des roten Angriffs-, Sammel- und Schadenswürfels
+- Würfeln direkt in der App: Würfel auswählen, werfen, einzelne Würfel per Antippen neu werfen; Ergebnis im Protokoll (alle 5 Würfel)
+- Würfel-Legende mit allen Seiten aller 5 Würfel
 - Rückgängig, Protokoll und „Neues Spiel“
 - Der Spielstand wird auf dem Gerät gespeichert; in der App bleibt der Bildschirm während des Spiels an
 

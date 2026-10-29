@@ -246,6 +246,8 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
 @keyframes tumble { 0% { transform: rotate(-200deg) scale(.4); opacity: 0; } 100% { transform: none; opacity: 1; } }
 .summary { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .95rem; }
 .summary:empty { display: none; }
+.summary li { display: flex; align-items: center; gap: 6px; }
+.summary .sd { width: 12px; height: 12px; border-radius: 3px; background: var(--die); box-shadow: 0 0 0 1px #ffffff33; flex: none; }
 .summary b { color: var(--gold); font-variant-numeric: tabular-nums; }
 .dice-hint { margin: 10px 0 0; font-size: .8rem; color: var(--muted); font-style: italic; }
 @media (prefers-reduced-motion: reduce) { .result .face.tumble { animation: none; } }
@@ -358,6 +360,22 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
         </ul>
       </div>
       <div class="die">
+        <h3>Angriffswürfel (gelb)</h3>
+        <ul class="faces">
+          <li><span class="x">3×</span><span class="face d-yellow"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span><span><b>1 Axt</b></span></li>
+          <li><span class="x">1×</span><span class="face d-yellow"><svg viewBox="0 0 24 24"><use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/></svg></span><span><b>2 Äxte</b></span></li>
+          <li><span class="x">2×</span><span class="face d-yellow blank"><svg viewBox="0 0 24 24"></svg></span><span><b>Leer</b> – kein Effekt</span></li>
+        </ul>
+      </div>
+      <div class="die">
+        <h3>Verteidigungswürfel (blau)</h3>
+        <ul class="faces">
+          <li><span class="x">3×</span><span class="face d-blue"><svg viewBox="0 0 24 24"><use href="#i-shield"/></svg></span><span><b>1 Schild</b></span></li>
+          <li><span class="x">1×</span><span class="face d-blue"><svg viewBox="0 0 24 24"><use href="#i-shield" transform="translate(-1 -1) scale(.6)"/><use href="#i-shield" transform="translate(10 10) scale(.6)"/></svg></span><span><b>2 Schilde</b></span></li>
+          <li><span class="x">2×</span><span class="face d-blue blank"><svg viewBox="0 0 24 24"></svg></span><span><b>Leer</b> – kein Effekt</span></li>
+        </ul>
+      </div>
+      <div class="die">
         <h3>Sammelwürfel (grün)</h3>
         <ul class="faces">
           <li><span class="x">3×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand"/></svg></span><span><b>Sammeln</b></span></li>
@@ -376,7 +394,6 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
         </ul>
       </div>
     </div>
-    <p class="hint">Die Seiten des gelben und blauen Würfels stehen im Regelheft (S. 24).</p>
   </details>
 
   <section class="settings">
@@ -583,7 +600,7 @@ document.addEventListener("change", e => {
 // ---------- Würfeln ----------
 const HAND = '<use href="#i-hand"/>';
 const DICE = {
-  red:    { name: "Roter Angriffswürfel", cls: "d-red", icon: '<use href="#i-axe"/>', faces: [
+  red:    { name: "Roter Angriffswürfel", short: "rot", cls: "d-red", icon: '<use href="#i-axe"/>', faces: [
     { n: "1 Axt", svg: '<use href="#i-axe"/>' },
     { n: "1 Axt", svg: '<use href="#i-axe"/>' },
     { n: "1 Axt", svg: '<use href="#i-axe"/>' },
@@ -591,9 +608,23 @@ const DICE = {
     { n: "2 Äxte", svg: '<use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/>' },
     { n: "Leer", svg: "" },
   ] },
-  yellow: { name: "Gelber Angriffswürfel", cls: "d-yellow", icon: '<use href="#i-axe"/>', faces: null },
-  blue:   { name: "Blauer Verteidigungswürfel", cls: "d-blue", icon: '<use href="#i-shield"/>', faces: null },
-  black:  { name: "Schadenswürfel", cls: "d-black", icon: '<use href="#i-claw"/>', faces: [
+  yellow: { name: "Gelber Angriffswürfel", short: "gelb", cls: "d-yellow", icon: '<use href="#i-axe"/>', faces: [
+    { n: "1 Axt", svg: '<use href="#i-axe"/>' },
+    { n: "1 Axt", svg: '<use href="#i-axe"/>' },
+    { n: "1 Axt", svg: '<use href="#i-axe"/>' },
+    { n: "2 Äxte", svg: '<use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/>' },
+    { n: "Leer", svg: "" },
+    { n: "Leer", svg: "" },
+  ] },
+  blue:   { name: "Blauer Verteidigungswürfel", short: "blau", cls: "d-blue", icon: '<use href="#i-shield"/>', faces: [
+    { n: "1 Schild", svg: '<use href="#i-shield"/>' },
+    { n: "1 Schild", svg: '<use href="#i-shield"/>' },
+    { n: "1 Schild", svg: '<use href="#i-shield"/>' },
+    { n: "2 Schilde", svg: '<use href="#i-shield" transform="translate(-1 -1) scale(.6)"/><use href="#i-shield" transform="translate(10 10) scale(.6)"/>' },
+    { n: "Leer", svg: "" },
+    { n: "Leer", svg: "" },
+  ] },
+  black:  { name: "Schadenswürfel", short: "schwarz", cls: "d-black", icon: '<use href="#i-claw"/>', faces: [
     { n: "Treffer", svg: '<use href="#i-claw"/>' },
     { n: "Treffer", svg: '<use href="#i-claw"/>' },
     { n: "Kritischer Treffer", svg: '<use href="#i-claw" transform="translate(9 0) rotate(30 6 6) scale(.5)"/><use href="#i-claw" transform="translate(3 11) rotate(30 6 6) scale(.5)"/>' },
@@ -601,7 +632,7 @@ const DICE = {
     { n: "Leer", svg: "" },
     { n: "Leer", svg: "" },
   ] },
-  green:  { name: "Sammelwürfel", cls: "d-green", icon: HAND, faces: [
+  green:  { name: "Sammelwürfel", short: "grün", cls: "d-green", icon: HAND, faces: [
     { n: "Sammeln", svg: HAND },
     { n: "Sammeln", svg: HAND },
     { n: "Sammeln", svg: HAND },
@@ -657,7 +688,7 @@ function renderDice() {
     return `<button class="face ${DICE[r.d].cls}${f.svg ? "" : " blank"}${tumble.has(i) ? " tumble" : ""}" data-rr="${i}" aria-label="${DICE[r.d].name}: ${f.n} – neu werfen" title="${f.n} · antippen zum Neuwurf"><svg viewBox="0 0 24 24" aria-hidden="true">${f.svg}</svg></button>`;
   }).join("");
   tumble = new Set();
-  $("summary").innerHTML = rollSummary(st.roll).map(s => `<li><b>${s.c}×</b> ${s.n}</li>`).join("");
+  $("summary").innerHTML = rollSummary(st.roll).map(s => `<li><span class="sd ${DICE[s.d].cls}" title="${DICE[s.d].name}"></span><b>${s.c}×</b> ${s.n}</li>`).join("");
   $("diceHint").textContent = st.roll.length
     ? "Einzelnen Würfel antippen, um ihn neu zu werfen (z. B. mit einem Neuwurfplättchen)."
     : "Würfel auswählen und werfen. Das Ergebnis erscheint auch im Protokoll.";
@@ -668,7 +699,7 @@ function rollAll() {
   st.roll = [];
   for (const k in DICE) for (let i = 0; i < st.pool[k]; i++) st.roll.push({ d: k, f: rnd(DICE[k].faces.length) });
   tumble = new Set(st.roll.map((_, i) => i));
-  log(`${name()} würfelt: ${rollSummary(st.roll).map(s => `${s.c}× ${s.n}`).join(", ")}`, "f");
+  log(`${name()} würfelt: ${rollSummary(st.roll).map(s => `${s.c}× ${s.n} (${DICE[s.d].short})`).join(", ")}`, "f");
   render();
 }
 
