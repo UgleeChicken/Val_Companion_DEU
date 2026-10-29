@@ -45,4 +45,4 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 
 Die APK ist mit einem öffentlichen Test-Schlüssel signiert (`android/app/debug.keystore`). Für eine Veröffentlichung im Play Store bräuchte es einen eigenen, geheimen Schlüssel.
 
-Schrift: Averia Serif Libre (SIL Open Font License, siehe `docs/fonts/OFL.txt`).
+Schriften: Averia Serif Libre und Germania One (SIL Open Font License, siehe `docs/fonts/`). Holztextur selbst erzeugt.

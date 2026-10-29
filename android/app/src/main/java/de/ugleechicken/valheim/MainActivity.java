@@ -14,7 +14,7 @@ import android.webkit.WebViewClient;
 /** Zeigt den Aktionszähler (docs/index.html) offline in einer WebView an. */
 public class MainActivity extends Activity {
 
-    private static final int BACKGROUND = 0xFF0C1012;
+    private static final int BACKGROUND = 0xFF2A1709;
     private static final String START_URL = "file:///android_asset/index.html";
 
     private WebView web;

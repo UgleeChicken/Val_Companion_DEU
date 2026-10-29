@@ -1,6 +1,6 @@
 // Offline-Speicher: legt alle Dateien beim ersten Besuch ab.
 // Bei Änderungen an der App die Versionsnummer erhöhen.
-const CACHE = "valheim-zaehler-v9";
+const CACHE = "valheim-zaehler-v10";
 const FILES = [
   "./",
   "index.html",
@@ -10,6 +10,9 @@ const FILES = [
   "fonts/averia-serif-libre-latin-400-normal.woff2",
   "fonts/averia-serif-libre-latin-700-normal.woff2",
   "fonts/averia-serif-libre-latin-400-italic.woff2",
+  "fonts/germania-one-latin-400-normal.woff2",
+  "img/wood.jpg",
+  "img/panel.png",
 ];
 
 self.addEventListener("install", e => {
