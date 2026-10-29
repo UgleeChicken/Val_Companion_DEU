@@ -57,7 +57,7 @@ body {
 header { display: grid; justify-items: center; gap: 4px; text-align: center; }
 h1 { margin: 0; display: grid; justify-items: center; line-height: 1; }
 .logo {
-  font-weight: 700; font-size: clamp(2.6rem, 11vw, 4rem); letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; font-size: clamp(2.1rem, 8.5vw, 3rem); letter-spacing: .14em; text-transform: uppercase;
   padding-left: .14em;
   background: linear-gradient(180deg, #f6f0e2 0%, #cfc2a6 45%, #8d826c 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -299,6 +299,41 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
 .trade .or { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .trade .or span { display: inline-flex; align-items: center; gap: 4px; }
 .guide .note-h { margin: 0 0 8px; font-size: .85rem; color: var(--muted); font-style: italic; }
+
+/* Reiter */
+[hidden] { display: none !important; }
+.wrap { padding-block: 24px calc(88px + env(safe-area-inset-bottom, 0px)); }
+.status {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 2px solid var(--edge); border-top-color: var(--pc, var(--edge)); border-radius: 4px;
+  box-shadow: 0 6px 16px #000000aa; padding: 8px 12px; cursor: pointer; text-align: left; width: 100%;
+  font: inherit; color: var(--fg);
+}
+.status .sn { font-weight: 700; color: var(--pc, var(--gold)); }
+.status .mini { display: inline-flex; gap: 4px; }
+.status .mini i { width: 12px; height: 14px; clip-path: polygon(50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%, 0 20%); background: var(--pc, var(--gold)); box-shadow: 0 0 6px var(--pc); }
+.status .mini i.used { background: #3a3d3c; box-shadow: none; }
+.status .sl { color: var(--muted); font-size: .9rem; }
+.status .sr { margin-left: auto; color: var(--muted); font-size: .9rem; }
+.status .sr b { color: var(--gold); }
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  background: linear-gradient(180deg, #2a1f15, #160f0a);
+  border-top: 2px solid var(--edge); box-shadow: 0 -6px 18px #000000aa;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);
+}
+.tabbar button {
+  display: grid; justify-items: center; gap: 3px; padding: 9px 2px 8px; background: none; border: none;
+  color: var(--muted); font-size: .74rem; letter-spacing: .05em; position: relative;
+}
+.tabbar button svg { width: 24px; height: 24px; }
+.tabbar button[aria-selected="true"] { color: var(--gold); text-shadow: 0 0 10px #f2ad4b55; }
+.tabbar button[aria-selected="true"]::before { content: ""; position: absolute; top: -2px; left: 22%; right: 22%; height: 3px; background: var(--gold); border-radius: 0 0 3px 3px; box-shadow: 0 0 8px var(--gold); }
+.tabbar button:focus-visible { outline-offset: -3px; }
 </style>
 </head>
 <body>
@@ -370,20 +405,26 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
       <g id="r-muenze"><circle cx="12" cy="12" r="9.5" fill="#d2a93a" stroke="#f3e6cf" stroke-width="1.2"/><circle cx="12" cy="12" r="6.8" fill="none" stroke="#8a6a1c" stroke-width="1"/><path d="M12 17 V9 M12 11 L9 8.5 M12 11 L15 8.5 M12 14 L9.5 12.5 M12 14 L14.5 12.5" fill="none" stroke="#8a6a1c" stroke-width="1.3" stroke-linecap="round"/></g>
       <g id="r-silber"><path d="M2.5 16.5 L4.5 9 H19.5 L21.5 16.5 Z" fill="#a9c3dc" stroke="#f3e6cf" stroke-width="1.2" stroke-linejoin="round"/><path d="M5 10.5 H19" stroke="#e3eef8" stroke-width="1.2"/></g>
       <g id="r-karte"><rect x="5" y="2.5" width="14" height="19" rx="2" fill="#5b3a8a" stroke="#f3e6cf" stroke-width="1.2"/><circle cx="12" cy="12" r="4" fill="#e0566b"/><circle cx="12" cy="12" r="2" fill="#ffd08a"/></g>
+      <g id="t-zug" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2 L20 5.5 L21 18 L12.5 22 L3.5 19 L3 6 Z"/><path d="M10 7 V17 M10 9.5 L14.5 7.5 M10 13 L14.5 11"/></g>
+      <g id="t-wuerfel" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"/></g>
+      <g id="t-hilfe" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 6 Q8 3.5 3 4.5 V19 Q8 18 12 20.5 Q16 18 21 19 V4.5 Q16 3.5 12 6 Z"/><path d="M12 6 V20.5"/></g>
+      <g id="t-spiel" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20 Q3.5 13.5 9 13.5 Q14.5 13.5 15 20"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 13.6 Q20.5 13.8 21 19"/></g>
     </defs>
   </svg>
-  <header>
+  <button class="status" id="status" data-tab-not="zug" aria-label="Zum Reiter Zug"></button>
+
+  <header data-tab="zug">
     <h1><span class="logo">Valheim</span><span class="sub">Aktionszähler</span></h1>
     <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
     <div class="round">Runde <b id="round">1</b></div>
   </header>
 
-  <section>
+  <section data-tab="spiel">
     <div class="label">Wikinger am Tisch</div>
     <div class="players" id="players"></div>
   </section>
 
-  <section class="board" aria-live="polite">
+  <section class="board" aria-live="polite" data-tab="zug">
     <p class="who" id="who"></p>
     <div class="pips" id="pips"></div>
     <div class="left" id="left"></div>
@@ -393,7 +434,7 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
     </div>
   </section>
 
-  <section class="panel" id="diceRoller">
+  <section class="panel" id="diceRoller" data-tab="wuerfeln">
     <div class="label">Würfeln</div>
     <div class="pool" id="pool"></div>
     <div class="roll-row">
@@ -405,19 +446,19 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
     <p class="dice-hint" id="diceHint"></p>
   </section>
 
-  <section class="panel">
+  <section class="panel" data-tab="zug">
     <div class="label">Aktion ausführen</div>
     <div class="actions" id="actions"></div>
   </section>
 
-  <details class="panel legend" id="furniture" open>
+  <details class="panel legend" id="furniture" open data-tab="bauen">
     <summary class="label">Möbelstücke bauen <span class="chev" aria-hidden="true">▶</span></summary>
     <div class="res-key" id="resKey"></div>
     <div class="furn" id="furn"></div>
     <p class="furn-hint">„Bauen“ verbraucht eine Aktion. Möbelstücke gehören zum gemeinsamen Haus; Fermentierer, Feuertisch, Bombentisch und Bienenstock schalten ihre Aktionen frei.</p>
   </details>
 
-  <details class="panel legend guide" id="guide" open>
+  <details class="panel legend guide" id="guide" open data-tab="hilfe">
     <summary class="label">Spielhilfe <span class="chev" aria-hidden="true">▶</span></summary>
     <section>
       <h3>Effekte</h3>
@@ -450,15 +491,8 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
     </section>
   </details>
 
-  <details class="panel legend" id="legend" open>
+  <details class="panel legend" id="legend" open data-tab="wuerfeln">
     <summary class="label">Würfel-Legende <span class="chev" aria-hidden="true">▶</span></summary>
-    <div class="dice-types">
-      <span class="dt"><span class="face d-red"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span>Roter Angriffswürfel</span>
-      <span class="dt"><span class="face d-yellow"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span>Gelber Angriffswürfel</span>
-      <span class="dt"><span class="face d-blue"><svg viewBox="0 0 24 24"><use href="#i-shield"/></svg></span>Blauer Verteidigungswürfel</span>
-      <span class="dt"><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw"/></svg></span>Schwarzer Kreaturenschaden-Würfel</span>
-      <span class="dt"><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand"/></svg></span>Grüner Sammelwürfel</span>
-    </div>
     <div class="dice">
       <div class="die">
         <h3>Angriffswürfel (rot)</h3>
@@ -505,7 +539,7 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
     </div>
   </details>
 
-  <section class="settings">
+  <section class="settings" data-tab="spiel">
     <span>Aktionen pro Zug</span>
     <span class="stepper">
       <button id="perMinus" aria-label="Weniger Aktionen">−</button>
@@ -515,12 +549,19 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
     <span id="resetArea"><button class="btn" id="reset">Neues Spiel</button></span>
   </section>
 
-  <section class="panel">
+  <section class="panel" data-tab="spiel">
     <div class="label">Protokoll</div>
     <ul class="log" id="log"></ul>
   </section>
 
-  <p class="note">Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt, unten) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
+  <p class="note" data-tab="spiel">Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
+  <nav class="tabbar" id="tabbar" aria-label="Reiter">
+    <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg>Zug</button>
+    <button data-go="wuerfeln" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-wuerfel"/></svg>Würfeln</button>
+    <button data-go="bauen" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-hammer"/></svg>Bauen</button>
+    <button data-go="hilfe" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-hilfe"/></svg>Hilfe</button>
+    <button data-go="spiel" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-spiel"/></svg>Spiel</button>
+  </nav>
 </div>
 
 <script>
@@ -528,12 +569,12 @@ const ACTIONS = [
   { n: "Bewegen", s: "Bis zu 2 Felder, unerforschte Plättchen aufdecken", i: "move" },
   { n: "Ressourcen sammeln", s: "Sammelwürfel werfen, vom derzeitigen Feld einsammeln", i: "hand" },
   { n: "Ausrüstung tauschen", s: "Karten oder Verbrauchsgegenstände mit Charakteren auf deinem Feld", i: "swap" },
-  { n: "Schiff bauen", s: "Angrenzend zu Wasser: Ressourcen zahlen", i: "ship" },
+  { n: "Schiff bauen", s: "Angrenzend zu Wasser · öffnet den Reiter Bauen", i: "ship" },
   { n: "Lossegeln", s: "Zu einem Feld am selben Gewässer", i: "sail" },
   { n: "Mit Haldor handeln", s: "Münzen zahlen für Karten oder Ressourcen · vom Haus aus +1 Münze", i: "bag" },
   { n: "Hinterhalt", s: "Fernkampfwaffe gegen angrenzende Kreatur", i: "bow" },
   { n: "Sonstige", s: "Andere Aktion", i: "dots" },
-  { n: "Möbelstück herstellen", s: "Ressourcen zahlen, aufs Haustableau", i: "hammer", h: 1 },
+  { n: "Möbelstück herstellen", s: "Möbelstück wählen · öffnet den Reiter Bauen", i: "hammer", h: 1 },
   { n: "Ausrüstung herstellen", s: "Ressourcen zahlen, aufs Charaktertableau", i: "anvil", h: 1 },
   { n: "Nahrung kochen", s: "Oberste Nahrungskarte aufdecken", i: "pot", h: 1 },
   { n: "Gekochte Nahrung essen", s: "Nahrungskarte abwerfen: Lebenspunkte, Ausdauer oder Neuwurfplättchen", i: "meat", h: 1 },
@@ -655,13 +696,14 @@ function render() {
     : `<li class="empty">Noch keine Aktionen. Wähle oben eine Aktion aus.</li>`;
   renderDice();
   renderFurniture();
+  renderTabs();
   save();
 }
 
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-a],[data-pip],[data-rm],[data-col],#addP,#undo,#end,#perMinus,#perPlus,#reset,#resetYes,#resetNo");
   if (!t) return;
-  if (t.dataset.a) return doAction(+t.dataset.a);
+  if (t.dataset.a) { const a = ACTIONS[+t.dataset.a]; if (GOES_TO_BUILD.includes(a.n)) return goTab("bauen"); return doAction(+t.dataset.a); }
   if (t.dataset.pip) { if (+t.dataset.pip >= counted()) doAction(ACTIONS.findIndex(a => a.n === "Sonstige")); return; }
   if (t.dataset.col) {
     const i = +t.dataset.col, others = st.colors.filter((_, k) => k !== i);
@@ -893,6 +935,31 @@ document.addEventListener("click", e => {
   if (t.dataset.build) return build(t.dataset.build);
   st.built = st.built.filter(k => k !== t.dataset.unbuild);
   render();
+});
+
+
+// ---------- Reiter ----------
+const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
+const GOES_TO_BUILD = ["Möbelstück herstellen", "Schiff bauen"];
+function renderTabs() {
+  if (!TABS.includes(st.tab)) st.tab = "zug";
+  document.querySelectorAll("[data-tab]").forEach(el => { el.hidden = el.dataset.tab !== st.tab; });
+  document.querySelectorAll("[data-tab-not]").forEach(el => { el.hidden = el.dataset.tabNot === st.tab; });
+  document.querySelectorAll("#tabbar [data-go]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.go === st.tab)));
+  const c = counted(), left = st.per - c;
+  $("status").innerHTML = `<span class="sn">${esc(name())}</span>
+    <span class="mini">${Array.from({ length: st.per }, (_, i) => `<i class="${i < c ? "used" : ""}"></i>`).join("")}</span>
+    <span class="sl">${left} ${left === 1 ? "Aktion" : "Aktionen"} übrig</span>
+    <span class="sr">Runde <b>${st.round}</b></span>`;
+}
+function goTab(t) {
+  st.tab = t; render();
+  try { window.scrollTo({ top: 0 }); } catch { window.scrollTo(0, 0); }
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-go],#status");
+  if (!t) return;
+  goTab(t.id === "status" ? "zug" : t.dataset.go);
 });
 
 if (!st.log.length) { log("Ragnhild: Ressourcen sammeln – 1/3", ""); st.used = [{ n: "Ressourcen sammeln" }]; }

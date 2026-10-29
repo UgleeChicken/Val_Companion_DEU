@@ -13,6 +13,17 @@ Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich ein
 
 ## Funktionen
 
+Die App ist in fünf Reiter aufgeteilt (Leiste unten):
+
+| Reiter | Inhalt |
+| --- | --- |
+| **Zug** | Runensteine, Zug beenden, Aktionen und freie Aktionen |
+| **Würfeln** | Digitale Würfel und Würfel-Legende |
+| **Bauen** | Möbelstücke und Schiff |
+| **Hilfe** | Effekte, Ressourcen, Haldor |
+| **Spiel** | Spieler, Aktionen pro Zug, Neues Spiel, Protokoll |
+
+
 - Zählt die Aktionen pro Zug (Standard: 3, einstellbar von 1 bis 8) mit glühenden Runensteinen
 - Alle 15 Aktionen mit den offiziellen deutschen Bezeichnungen, Symbol und Kurzbeschreibung; Haus-Aktionen gruppiert, „Nach den Bienen sehen“ nur 1× pro Zug
 - Eigene Rubrik mit allen 11 freien Aktionen: werden protokolliert, zählen aber nicht mit
