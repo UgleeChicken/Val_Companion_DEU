@@ -227,6 +227,28 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
 .grp:first-child { margin-top: 0; }
 .grp-free { color: var(--frost); margin-top: 14px; }
 .act-hint { display: flex; align-items: center; gap: 6px; margin: 10px 0 0; font-size: .8rem; color: var(--muted); font-style: italic; }
+
+/* Würfeln */
+.pool { display: grid; gap: 8px; }
+.dp { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.dp .nm { flex: 1; min-width: 0; font-size: .95rem; }
+.dp .nm small { display: block; font-size: .75rem; color: var(--muted); font-style: italic; }
+.dp.off { opacity: .45; }
+.dp .stepper span { min-width: 2.6ch; text-align: center; }
+.stepper button:disabled { opacity: .35; cursor: not-allowed; }
+.roll-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 14px; }
+.roll-row .btn.primary { font-size: 1.05rem; padding: 12px 22px; }
+.result { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.result:empty { display: none; }
+.result .face { width: 52px; height: 52px; border: none; padding: 0; cursor: pointer; border-radius: 8px; }
+.result .face svg { width: 40px; height: 40px; }
+.result .face.tumble { animation: tumble .5s cubic-bezier(.2,.8,.3,1.2); }
+@keyframes tumble { 0% { transform: rotate(-200deg) scale(.4); opacity: 0; } 100% { transform: none; opacity: 1; } }
+.summary { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .95rem; }
+.summary:empty { display: none; }
+.summary b { color: var(--gold); font-variant-numeric: tabular-nums; }
+.dice-hint { margin: 10px 0 0; font-size: .8rem; color: var(--muted); font-style: italic; }
+@media (prefers-reduced-motion: reduce) { .result .face.tumble { animation: none; } }
 </style>
 </head>
 <body>
@@ -298,6 +320,18 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
       <button class="btn" id="undo">Rückgängig</button>
       <button class="btn primary" id="end">Zug beenden →</button>
     </div>
+  </section>
+
+  <section class="panel" id="diceRoller">
+    <div class="label">Würfeln</div>
+    <div class="pool" id="pool"></div>
+    <div class="roll-row">
+      <button class="btn primary" id="rollBtn">Würfeln</button>
+      <button class="btn" id="poolClear">Leeren</button>
+    </div>
+    <div class="result" id="result" aria-live="polite"></div>
+    <ul class="summary" id="summary"></ul>
+    <p class="dice-hint" id="diceHint"></p>
   </section>
 
   <section class="panel">
@@ -482,6 +516,7 @@ function render() {
   $("log").innerHTML = st.log.length
     ? st.log.map(l => `<li><span class="t">${l.t}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${l.cls}">${esc(l.text)}</span></li>`).join("")
     : `<li class="empty">Noch keine Aktionen. Wähle oben eine Aktion aus.</li>`;
+  renderDice();
   save();
 }
 
@@ -534,6 +569,112 @@ document.addEventListener("change", e => {
     st.players[+e.target.dataset.i] = e.target.value.trim() || `Spieler ${+e.target.dataset.i + 1}`;
     render();
   }
+});
+
+
+// ---------- Würfeln ----------
+const HAND = '<use href="#i-hand"/>';
+const DICE = {
+  red:    { name: "Roter Angriffswürfel", cls: "d-red", icon: '<use href="#i-axe"/>', faces: null },
+  yellow: { name: "Gelber Angriffswürfel", cls: "d-yellow", icon: '<use href="#i-axe"/>', faces: null },
+  blue:   { name: "Blauer Verteidigungswürfel", cls: "d-blue", icon: '<use href="#i-shield"/>', faces: null },
+  black:  { name: "Schadenswürfel", cls: "d-black", icon: '<use href="#i-claw"/>', faces: [
+    { n: "Treffer", svg: '<use href="#i-claw"/>' },
+    { n: "Treffer", svg: '<use href="#i-claw"/>' },
+    { n: "Kritischer Treffer", svg: '<use href="#i-claw" transform="translate(9 0) rotate(30 6 6) scale(.5)"/><use href="#i-claw" transform="translate(3 11) rotate(30 6 6) scale(.5)"/>' },
+    { n: "Spezialeffekt", svg: '<use href="#i-bang"/>' },
+    { n: "Leer", svg: "" },
+    { n: "Leer", svg: "" },
+  ] },
+  green:  { name: "Sammelwürfel", cls: "d-green", icon: HAND, faces: [
+    { n: "Sammeln", svg: HAND },
+    { n: "Sammeln", svg: HAND },
+    { n: "Sammeln", svg: HAND },
+    { n: "Lautes Sammeln", svg: '<use href="#i-hand" transform="translate(-1 1) scale(.82)"/><use href="#i-bang" transform="translate(13 4) scale(.5)"/>' },
+    { n: "Lautes kritisches Sammeln", svg: '<use href="#i-hand" transform="translate(-1 -1) scale(.55)"/><use href="#i-bang" transform="translate(8.5 7) scale(.45)"/><use href="#i-hand" transform="translate(11 11) scale(.55)"/>' },
+    { n: "Kritisches Sammeln", svg: '<use href="#i-hand" transform="translate(-1 -1) scale(.6)"/><use href="#i-hand" transform="translate(10 10) scale(.6)"/>' },
+  ] },
+};
+const MAX_DICE = 6;
+let tumble = new Set();
+
+function diceState() {
+  if (!st.pool || typeof st.pool !== "object") st.pool = {};
+  for (const k in DICE) if (!DICE[k].faces || typeof st.pool[k] !== "number") st.pool[k] = DICE[k].faces ? (st.pool[k] | 0) : 0;
+  if (!Array.isArray(st.roll)) st.roll = [];
+  st.roll = st.roll.filter(r => DICE[r.d]?.faces?.[r.f]);
+}
+function rnd(n) {
+  try { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; }
+  catch { return Math.floor(Math.random() * n); }
+}
+const faceHtml = (d, inner, extra = "") =>
+  `<span class="face ${DICE[d].cls}${inner ? "" : " blank"}${extra}"><svg viewBox="0 0 24 24" aria-hidden="true">${inner}</svg></span>`;
+
+function rollSummary(rolls) {
+  const out = [];
+  for (const k in DICE) {
+    const counts = {};
+    rolls.filter(r => r.d === k).forEach(r => { const n = DICE[k].faces[r.f].n; counts[n] = (counts[n] || 0) + 1; });
+    for (const n in counts) out.push({ n, c: counts[n], d: k });
+  }
+  return out;
+}
+
+function renderDice() {
+  diceState();
+  $("pool").innerHTML = Object.entries(DICE).map(([k, d]) => `
+    <div class="dp ${d.faces ? "" : "off"}">
+      ${faceHtml(k, d.icon)}
+      <span class="nm">${d.name}${d.faces ? "" : "<small>Würfelseiten fehlen noch</small>"}</span>
+      <span class="stepper">
+        <button data-dm="${k}" aria-label="${d.name} weniger" ${!d.faces || !st.pool[k] ? "disabled" : ""}>−</button>
+        <span>${st.pool[k]}</span>
+        <button data-dp="${k}" aria-label="${d.name} mehr" ${!d.faces || st.pool[k] >= MAX_DICE ? "disabled" : ""}>+</button>
+      </span>
+    </div>`).join("");
+  const total = Object.values(st.pool).reduce((a, b) => a + b, 0);
+  $("rollBtn").disabled = total === 0;
+  $("rollBtn").textContent = total ? `${total} Würfel werfen` : "Würfel wählen";
+  $("poolClear").disabled = total === 0 && st.roll.length === 0;
+  $("result").innerHTML = st.roll.map((r, i) => {
+    const f = DICE[r.d].faces[r.f];
+    return `<button class="face ${DICE[r.d].cls}${f.svg ? "" : " blank"}${tumble.has(i) ? " tumble" : ""}" data-rr="${i}" aria-label="${DICE[r.d].name}: ${f.n} – neu werfen" title="${f.n} · antippen zum Neuwurf"><svg viewBox="0 0 24 24" aria-hidden="true">${f.svg}</svg></button>`;
+  }).join("");
+  tumble = new Set();
+  $("summary").innerHTML = rollSummary(st.roll).map(s => `<li><b>${s.c}×</b> ${s.n}</li>`).join("");
+  $("diceHint").textContent = st.roll.length
+    ? "Einzelnen Würfel antippen, um ihn neu zu werfen (z. B. mit einem Neuwurfplättchen)."
+    : "Würfel auswählen und werfen. Das Ergebnis erscheint auch im Protokoll.";
+}
+
+function rollAll() {
+  diceState();
+  st.roll = [];
+  for (const k in DICE) for (let i = 0; i < st.pool[k]; i++) st.roll.push({ d: k, f: rnd(DICE[k].faces.length) });
+  tumble = new Set(st.roll.map((_, i) => i));
+  log(`${name()} würfelt: ${rollSummary(st.roll).map(s => `${s.c}× ${s.n}`).join(", ")}`, "f");
+  render();
+}
+
+function reroll(i) {
+  const r = st.roll[i]; if (!r) return;
+  const before = DICE[r.d].faces[r.f].n;
+  r.f = rnd(DICE[r.d].faces.length);
+  tumble = new Set([i]);
+  log(`${name()} wirft neu (${DICE[r.d].name}): ${before} → ${DICE[r.d].faces[r.f].n}`, "f");
+  render();
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-dp],[data-dm],[data-rr],#rollBtn,#poolClear");
+  if (!t) return;
+  diceState();
+  if (t.dataset.dp) { st.pool[t.dataset.dp] = Math.min(MAX_DICE, st.pool[t.dataset.dp] + 1); return render(); }
+  if (t.dataset.dm) { st.pool[t.dataset.dm] = Math.max(0, st.pool[t.dataset.dm] - 1); return render(); }
+  if (t.dataset.rr) return reroll(+t.dataset.rr);
+  if (t.id === "rollBtn") return rollAll();
+  if (t.id === "poolClear") { for (const k in st.pool) st.pool[k] = 0; st.roll = []; return render(); }
 });
 
 if (!st.log.length) { log("Ragnhild: Ressourcen sammeln – 1/3", ""); st.used = [{ n: "Ressourcen sammeln" }]; }
