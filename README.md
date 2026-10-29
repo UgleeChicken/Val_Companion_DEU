@@ -18,6 +18,7 @@ Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich ein
 - Eigene Rubrik mit allen 11 freien Aktionen: werden protokolliert, zählen aber nicht mit
 - 1 bis 4 Spieler mit änderbaren Namen und eigener Farbe (Klick auf den Farbpunkt wechselt sie), Spielerwechsel und Rundenzähler
 - Würfeln direkt in der App: Würfel auswählen, werfen, einzelne Würfel per Antippen neu werfen; Ergebnis im Protokoll (alle 5 Würfel)
+- Möbelstücke bauen: alle Möbelstücke und das Schiff mit Kosten; „Bauen“ verbraucht eine Aktion, gebaute Möbel werden abgehakt und schalten ihre Aktionen frei (z. B. Fermentierer → Met brauen)
 - Würfel-Legende mit allen Seiten aller 5 Würfel
 - Rückgängig, Protokoll und „Neues Spiel“
 - Der Spielstand wird auf dem Gerät gespeichert; in der App bleibt der Bildschirm während des Spiels an
