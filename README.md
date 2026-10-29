@@ -1,17 +1,34 @@
 # Valheim Boardgame Companion (DEU)
 
-Ein kleiner Zähler für die Aktionen im **Valheim-Brettspiel**: eine einzelne HTML-Datei, die ohne Installation läuft.
+Ein Aktionszähler für **Valheim: Das Brettspiel**: als Android-App oder direkt im Browser, funktioniert auch offline.
+
+## Android-App installieren
+
+1. Auf dem Handy die neueste APK herunterladen:
+   **https://github.com/UgleeChicken/Valheim_Boardgame_Companion_DEU/releases/latest/download/Valheim-Aktionszaehler.apk**
+2. Die Datei öffnen. Android fragt beim ersten Mal, ob der Browser Apps installieren darf: erlauben.
+3. „Installieren“ tippen. Die App heißt **Valheim Zähler**.
+
+Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich einfach über die alte App installieren. Der Spielstand bleibt dabei erhalten.
 
 ## Funktionen
 
-- Zählt die Aktionen pro Zug (Standard: 3, einstellbar von 1 bis 8)
+- Zählt die Aktionen pro Zug (Standard: 3, einstellbar von 1 bis 8) mit glühenden Runensteinen
 - Alle 15 Aktionen mit den offiziellen deutschen Bezeichnungen, Symbol und Kurzbeschreibung; Haus-Aktionen gruppiert, „Nach den Bienen sehen“ nur 1× pro Zug
-- Eigene Rubrik mit allen 11 freien Aktionen aus dem Regelheft: werden protokolliert, zählen aber nicht mit
+- Eigene Rubrik mit allen 11 freien Aktionen: werden protokolliert, zählen aber nicht mit
 - 1 bis 4 Spieler mit änderbaren Namen und eigener Farbe (Klick auf den Farbpunkt wechselt sie), Spielerwechsel und Rundenzähler
-- Rückgängig, Protokoll und „Neues Spiel“
 - Würfel-Legende: Würfelarten sowie alle Seiten des Sammel- und Schadenswürfels
-- Der Spielstand wird im Browser gespeichert (localStorage)
+- Rückgängig, Protokoll und „Neues Spiel“
+- Der Spielstand wird auf dem Gerät gespeichert; in der App bleibt der Bildschirm während des Spiels an
 
-## Benutzung
+## Aufbau
 
-`index.html` im Browser öffnen. Das ist alles.
+| Ordner | Inhalt |
+| --- | --- |
+| `docs/` | Die App selbst (HTML, Schrift, Symbole). Läuft auch direkt im Browser und als installierbare Web-App. |
+| `android/` | Android-Projekt, das `docs/` als App verpackt. |
+| `.github/workflows/android.yml` | Baut bei jedem Push auf `main` die APK und veröffentlicht sie als Release. |
+
+Die APK ist mit einem öffentlichen Test-Schlüssel signiert (`android/app/debug.keystore`). Für eine Veröffentlichung im Play Store bräuchte es einen eigenen, geheimen Schlüssel.
+
+Schrift: Averia Serif Libre (SIL Open Font License, siehe `docs/fonts/OFL.txt`).
