@@ -1,11 +1,13 @@
 # Val Companion
 
-Aktionszähler, digitale Würfel und Spielhilfe für deine Brettspielrunde: als Android-App oder direkt im Browser, funktioniert auch offline.
+Inoffizielle Begleit-App für **Valheim – Das Brettspiel**: Aktionszähler, digitale Würfel und Spielhilfe, als Android-App oder direkt im Browser, funktioniert auch offline.
+
+> Inoffizielle Fan-App. Nicht verbunden mit Iron Gate, Coffee Stain oder MOOD Publishing. Alle Marken gehören ihren jeweiligen Inhabern.
 
 ## Android-App installieren
 
 1. Auf dem Handy die neueste APK herunterladen:
-   **https://github.com/UgleeChicken/Valheim_Boardgame_Companion_DEU/releases/latest/download/Val-Companion.apk**
+   **https://github.com/UgleeChicken/Val_Companion_DEU/releases/latest/download/Val-Companion.apk**
 2. Die Datei öffnen. Android fragt beim ersten Mal, ob der Browser Apps installieren darf: erlauben.
 3. „Installieren“ tippen. Die App heißt **Val Companion**.
 

@@ -432,6 +432,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 }
 .tabbar button { font-family: var(--head); font-size: .85rem; letter-spacing: .06em; color: #c9b08c; }
 .tabbar button[aria-selected="true"] { color: var(--gold); text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink), 0 2px 0 var(--ink); }
+
+/* Untertitel und Hinweis */
+.tagline {
+  margin: 8px 0 0; font-size: .82rem; font-style: italic; color: var(--fg); letter-spacing: .02em;
+  background: #2a201bcc; border: 1px solid #120a06; border-radius: 999px; padding: 3px 12px;
+}
+.disclaimer { margin: 0; text-align: center; font-size: .75rem; color: #f0e4cdcc; text-shadow: 0 1px 2px #000; }
 </style>
 </head>
 <body>
@@ -513,6 +520,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
   <header data-tab="zug">
     <h1><span class="logo">Val</span><span class="sub">Companion</span></h1>
+    <p class="tagline">Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
     <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
     <div class="round">Runde <b id="round">1</b></div>
   </header>
@@ -653,6 +661,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </section>
 
   <p class="note" data-tab="spiel">Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
+  <p class="disclaimer" data-tab="spiel">Inoffizielle Fan-App. Nicht verbunden mit Iron Gate, Coffee Stain oder MOOD Publishing. Alle Marken gehören ihren jeweiligen Inhabern.</p>
   <nav class="tabbar" id="tabbar" aria-label="Reiter">
     <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg>Zug</button>
     <button data-go="wuerfeln" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-wuerfel"/></svg>Würfeln</button>

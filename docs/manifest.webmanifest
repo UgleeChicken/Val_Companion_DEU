@@ -1,7 +1,7 @@
 {
   "name": "Val Companion",
   "short_name": "Val Companion",
-  "description": "Aktionszähler, Würfel und Spielhilfe für deine Brettspielrunde",
+  "description": "Inoffizielle Begleit-App für Valheim – Das Brettspiel",
   "lang": "de",
   "start_url": "./",
   "scope": "./",
