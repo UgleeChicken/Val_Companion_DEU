@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "rooms": {
+      "$code": {
+        ".read": "auth != null && $code.length === 6 && $code.matches(/^[A-HJ-NP-Z2-9]+$/)",
+        ".write": "auth != null && $code.length === 6 && $code.matches(/^[A-HJ-NP-Z2-9]+$/)",
+        ".validate": "newData.hasChildren(['state', 'updatedAt'])",
+        "state": { ".validate": "newData.isString() && newData.val().length <= 100000" },
+        "createdAt": { ".validate": "newData.isNumber() && newData.val() <= now" },
+        "updatedAt": { ".validate": "newData.isNumber() && newData.val() <= now" },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

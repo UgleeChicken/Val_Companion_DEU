@@ -450,6 +450,27 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .about .contact { font-size: .92rem; }
 .about .contact .k { display: inline-block; min-width: 8.5em; color: var(--muted); font-size: .82rem; }
 .about .contact a { color: var(--gold); user-select: all; -webkit-user-select: all; }
+
+/* Online-Partie */
+.online .on-p { margin: 0 0 12px; line-height: 1.5; }
+.online .on-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+.online .code-in {
+  flex: 1; min-width: 0; max-width: 14em; font: inherit; font-size: 1.1rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--fg); background: #00000066; border: 2px solid #120a06; border-radius: 6px; padding: 8px 10px;
+}
+.online .code-in::placeholder { letter-spacing: .02em; text-transform: none; color: #b9a78c99; font-size: .9rem; }
+.online .on-small { margin: 0; font-size: .8rem; color: var(--muted); font-style: italic; }
+.online .on-status { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; }
+.online .dot, .on-pill .dot { width: 10px; height: 10px; border-radius: 50%; background: #8a8a8a; flex: none; }
+.dot.ok { background: #6fc152; box-shadow: 0 0 8px #6fc152; }
+.dot.wait { background: #e8c53e; box-shadow: 0 0 8px #e8c53e; }
+.dot.bad { background: #e0564b; box-shadow: 0 0 8px #e0564b; }
+.online .code-box { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+.online .code-l { color: var(--muted); font-size: .85rem; }
+.online .code { font-family: var(--head); font-size: 2rem; letter-spacing: .14em; color: var(--gold); text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink); user-select: all; -webkit-user-select: all; }
+.online .on-err { margin: 10px 0 0; padding: 8px 10px; border-radius: 6px; background: #e0564b22; border: 1px solid #e0564b; color: #ffd6d0; font-size: .88rem; }
+.on-pill { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--fg); background: #2a201bcc; border: 1px solid #120a06; border-radius: 999px; padding: 2px 10px; margin-top: 6px; cursor: pointer; }
+.status .on-mini { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -534,7 +555,28 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <p class="tagline">Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
     <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
     <div class="round">Runde <b id="round">1</b></div>
+    <button class="on-pill" id="onPill" hidden aria-label="Online-Partie anzeigen"></button>
   </header>
+
+  <section class="panel online" data-tab="spiel" id="online">
+    <div class="label">Online-Partie</div>
+    <div id="onOff">
+      <p class="on-p">Spielt gemeinsam auf mehreren Handys: Alle sehen live denselben Spielstand. Einer erstellt die Partie, die anderen treten mit dem Code bei.</p>
+      <div class="on-row"><button class="btn primary" id="onCreate">Partie erstellen</button></div>
+      <div class="on-row">
+        <input id="joinCode" class="code-in" maxlength="8" placeholder="Code, z. B. K7M-Q2X" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Partie-Code">
+        <button class="btn" id="onJoin">Beitreten</button>
+      </div>
+      <p class="on-small">Beim Beitreten wird der Spielstand auf diesem Handy durch den der Partie ersetzt.</p>
+    </div>
+    <div id="onOn" hidden>
+      <p class="on-status"><span class="dot" id="onDot"></span><span id="onStatusText">Verbinde …</span></p>
+      <div class="code-box"><span class="code-l">Partie-Code</span><span class="code" id="onCode"></span></div>
+      <div class="on-row"><button class="btn" id="onCopy">Code kopieren</button><button class="btn" id="onLeave">Partie verlassen</button></div>
+      <p class="on-small">Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.</p>
+    </div>
+    <p class="on-err" id="onErr" role="alert" hidden></p>
+  </section>
 
   <section class="panel" data-tab="spiel">
     <div class="label">Wikinger am Tisch</div>
@@ -677,7 +719,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <p><b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.</p>
     <p class="disc" role="note"><b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.</p>
     <p class="contact"><span class="k">Entwickelt von</span> UgleeChicken<br><span class="k">Kontakt</span> <a href="https://wonderl.ink/@ugleechicken" target="_blank" rel="noopener">wonderl.ink/@ugleechicken</a></p>
-    <p class="small">Der Spielstand wird nur auf diesem Gerät gespeichert. Die App sammelt keine persönlichen Daten.</p>
+    <p class="small">Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.</p>
     <p class="small">Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.</p>
   </section>
   <nav class="tabbar" id="tabbar" aria-label="Reiter">
@@ -745,7 +787,7 @@ function freeColor(skip) {
   return f < 0 ? 0 : f;
 }
 const pc = i => COLORS[st.colors[i] ?? 0].c;
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch {} };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch {} if (typeof schedulePush === "function") schedulePush(); };
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -824,6 +866,7 @@ function render() {
   renderDice();
   renderFurniture();
   renderTabs();
+  if (typeof renderOnline === "function") renderOnline();
   save();
 }
 
@@ -1065,6 +1108,211 @@ document.addEventListener("click", e => {
 });
 
 
+
+// ---------- Online-Partie (Firebase über REST, ohne SDK) ----------
+const FB = Object.assign({
+  key: "AIzaSyDmEx4-RTrGNi1kwonQozk9u2u1HF9Li_4",
+  db: "https://val-companion-default-rtdb.europe-west1.firebasedatabase.app",
+  idt: "https://identitytoolkit.googleapis.com",
+  secure: "https://securetoken.googleapis.com",
+}, window.VAL_FB || {});
+const ONLINE_KEY = "valcompanion-online";
+const AUTH_KEY = "valcompanion-auth";
+const LOCAL_ONLY = ["tab", "pool"];           // bleibt auf jedem Handy für sich
+const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
+const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
+
+const fmtCode = c => c ? `${c.slice(0, 3)}-${c.slice(3)}` : "";
+const normCode = s => String(s || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+function genCode() { let c = ""; for (let i = 0; i < 6; i++) c += CODE_CHARS[rnd(CODE_CHARS.length)]; return c; }
+function sharedJson() { const o = {}; for (const k in st) if (!LOCAL_ONLY.includes(k)) o[k] = st[k]; return JSON.stringify(o); }
+
+function setAuth(token, refresh, uid, expiresIn) {
+  net.token = token; net.tokenExp = Date.now() + (Number(expiresIn) || 3600) * 1000;
+  try { localStorage.setItem(AUTH_KEY, JSON.stringify({ refresh, uid })); } catch {}
+}
+async function authToken() {
+  if (net.token && Date.now() < net.tokenExp - 120000) return net.token;
+  let saved = null; try { saved = JSON.parse(localStorage.getItem(AUTH_KEY)); } catch {}
+  if (saved && saved.refresh) {
+    const r = await fetch(`${FB.secure}/v1/token?key=${FB.key}`, {
+      method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(saved.refresh)}`,
+    });
+    if (r.ok) { const d = await r.json(); setAuth(d.id_token, d.refresh_token, d.user_id, d.expires_in); return net.token; }
+  }
+  const r = await fetch(`${FB.idt}/v1/accounts:signUp?key=${FB.key}`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ returnSecureToken: true }),
+  });
+  if (!r.ok) throw new Error("Anmeldung beim Server fehlgeschlagen.");
+  const d = await r.json(); setAuth(d.idToken, d.refreshToken, d.localId, d.expiresIn); return net.token;
+}
+const roomUrl = (code, token) => `${FB.db}/rooms/${code}.json?auth=${encodeURIComponent(token)}`;
+async function dbReq(method, code, body) {
+  const t = await authToken();
+  let r;
+  try {
+    r = await fetch(roomUrl(code, t), { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
+  } catch { throw new Error("Keine Verbindung zum Server. Ist das Handy online?"); }
+  if (r.status === 401 || r.status === 403) throw new Error("Der Server verweigert den Zugriff. Sind die Datenbank-Regeln eingetragen?");
+  if (!r.ok) throw new Error(`Der Server meldet einen Fehler (${r.status}).`);
+  return r.json();
+}
+
+function setNet(status, err = "") { net.status = status; net.err = err; renderOnline(); }
+function remember(code) { try { code ? localStorage.setItem(ONLINE_KEY, code) : localStorage.removeItem(ONLINE_KEY); } catch {} }
+
+async function createRoom() {
+  setNet("verbinde");
+  try {
+    for (let i = 0; i < 5; i++) {
+      const code = genCode();
+      if (await dbReq("GET", code)) continue;            // Code schon vergeben
+      const s = sharedJson();
+      await dbReq("PUT", code, { state: s, createdAt: { ".sv": "timestamp" }, updatedAt: { ".sv": "timestamp" } });
+      net.lastShared = s;
+      return startSync(code);
+    }
+    throw new Error("Es konnte kein freier Code gefunden werden. Bitte nochmal versuchen.");
+  } catch (e) { setNet("aus", e.message); }
+}
+
+async function joinRoom(raw) {
+  const code = normCode(raw);
+  if (code.length !== 6 || [...code].some(ch => !CODE_CHARS.includes(ch))) return setNet("aus", "Der Code hat 6 Zeichen, z. B. K7M-Q2X.");
+  setNet("verbinde");
+  try {
+    const room = await dbReq("GET", code);
+    if (!room || typeof room.state !== "string") throw new Error(`Keine Partie mit dem Code ${fmtCode(code)} gefunden.`);
+    applyRemote(room.state);
+    startSync(code);
+  } catch (e) { setNet("aus", e.message); }
+}
+
+function startSync(code) {
+  net.code = code; remember(code);
+  const inp = $("joinCode"); if (inp) inp.value = "";
+  setNet("verbinde");
+  openStream();
+  render();
+}
+
+function closeStream() {
+  if (net.es) { net.es.close(); net.es = null; }
+  clearTimeout(net.renew); clearTimeout(net.reconnect);
+}
+function reconnectSoon(ms) {
+  clearTimeout(net.reconnect);
+  net.reconnect = setTimeout(() => { if (net.code) openStream(); }, ms);
+}
+async function openStream() {
+  closeStream();
+  const code = net.code; if (!code) return;
+  let t;
+  try { t = await authToken(); } catch (e) { setNet("verbinde", "Keine Verbindung zum Server. Neuer Versuch läuft …"); return reconnectSoon(5000); }
+  if (net.code !== code) return;
+  const es = new EventSource(roomUrl(code, t));
+  net.es = es;
+  const onData = e => { try { onStream(JSON.parse(e.data)); } catch {} };
+  es.addEventListener("put", onData);
+  es.addEventListener("patch", onData);
+  es.addEventListener("auth_revoked", () => { net.token = null; reconnectSoon(0); });
+  es.addEventListener("cancel", () => { closeStream(); setNet("fehler", "Der Server verweigert den Zugriff auf diese Partie."); });
+  es.onopen = () => { if (net.status !== "verbunden") setNet("verbunden"); if (net.lastShared === null) pushNow(); };
+  es.onerror = () => { if (net.es !== es) return; setNet("verbinde", ""); es.close(); reconnectSoon(4000); };
+  // Das Anmelde-Token läuft nach einer Stunde ab: rechtzeitig neu verbinden.
+  net.renew = setTimeout(() => { net.token = null; openStream(); }, Math.max(60000, net.tokenExp - Date.now() - 180000));
+}
+
+function onStream(msg) {
+  const { path, data } = msg || {};
+  let s;
+  if (path === "/") {
+    if (data === null) { closeStream(); net.code = null; remember(null); return setNet("aus", "Die Partie wurde gelöscht."); }
+    s = data && data.state;
+  } else if (path === "/state") s = data;
+  if (typeof s === "string") applyRemote(s);
+}
+
+function applyRemote(s) {
+  if (s === net.lastShared) return;
+  let o; try { o = JSON.parse(s); } catch { return; }
+  if (!o || !Array.isArray(o.players)) return;
+  const keep = {}; LOCAL_ONLY.forEach(k => { if (k in st) keep[k] = st[k]; });
+  const rolled = JSON.stringify(o.roll || []) !== JSON.stringify(st.roll || []);
+  st = Object.assign(o, keep);
+  net.lastShared = s;
+  if (rolled && typeof tumble !== "undefined") tumble = new Set((st.roll || []).map((_, i) => i));
+  render();
+}
+
+function schedulePush() {
+  if (!net.code) return;
+  clearTimeout(net.pushTimer);
+  net.pushTimer = setTimeout(pushNow, 120);
+}
+async function pushNow() {
+  if (!net.code) return;
+  clearTimeout(net.retry);
+  const s = sharedJson();
+  if (s === net.lastShared) return;
+  const code = net.code;
+  net.lastShared = s;
+  try {
+    await dbReq("PATCH", code, { state: s, updatedAt: { ".sv": "timestamp" } });
+    if (net.status !== "verbunden") setNet("verbunden");
+  } catch (e) {
+    if (net.code !== code) return;
+    net.lastShared = null;                              // beim nächsten Versuch erneut senden
+    setNet("verbinde", e.message + " Neuer Versuch läuft …");
+    net.retry = setTimeout(pushNow, 5000);
+  }
+}
+
+function leaveRoom() {
+  closeStream(); clearTimeout(net.pushTimer); clearTimeout(net.retry);
+  net.code = null; net.lastShared = null; remember(null);
+  setNet("aus");
+}
+
+function renderOnline() {
+  const box = $("online"); if (!box) return;
+  const on = !!net.code;
+  $("onOff").hidden = on; $("onOn").hidden = !on;
+  const dotCls = net.status === "verbunden" ? "ok" : net.status === "fehler" ? "bad" : "wait";
+  const label = net.status === "verbunden" ? "Verbunden – alle sehen denselben Spielstand" : net.status === "fehler" ? "Getrennt" : "Verbinde …";
+  $("onDot").className = `dot ${dotCls}`;
+  $("onStatusText").textContent = label;
+  $("onCode").textContent = fmtCode(net.code);
+  $("onCreate").disabled = net.status === "verbinde" && !on;
+  $("onJoin").disabled = net.status === "verbinde" && !on;
+  $("onErr").hidden = !net.err; $("onErr").textContent = net.err;
+  const pill = $("onPill");
+  if (pill) {
+    pill.hidden = !on;
+    pill.innerHTML = on ? `<span class="dot ${dotCls}"></span>Online · ${fmtCode(net.code)}` : "";
+  }
+  const mini = document.querySelector("#status .on-mini");
+  if (mini) mini.innerHTML = on ? `<span class="dot ${dotCls}" title="Online-Partie ${fmtCode(net.code)}" style="width:8px;height:8px;border-radius:50%;display:inline-block"></span>` : "";
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("#onCreate,#onJoin,#onLeave,#onCopy,#onPill");
+  if (!t) return;
+  if (t.id === "onCreate") return createRoom();
+  if (t.id === "onJoin") return joinRoom($("joinCode").value);
+  if (t.id === "onLeave") return leaveRoom();
+  if (t.id === "onPill") return goTab("spiel");
+  if (t.id === "onCopy") {
+    const txt = fmtCode(net.code);
+    const done = () => { t.textContent = "Kopiert"; setTimeout(() => { t.textContent = "Code kopieren"; }, 1500); };
+    try { navigator.clipboard.writeText(txt).then(done, () => selectCode()); } catch { selectCode(); }
+  }
+});
+function selectCode() { const r = document.createRange(); r.selectNodeContents($("onCode")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+document.addEventListener("keydown", e => { if (e.target && e.target.id === "joinCode" && e.key === "Enter") joinRoom(e.target.value); });
+window.addEventListener("online", () => { if (net.code) { reconnectSoon(0); if (net.lastShared === null) pushNow(); } });
+
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
 const GOES_TO_BUILD = ["Möbelstück herstellen", "Schiff bauen"];
@@ -1077,6 +1325,7 @@ function renderTabs() {
   $("status").innerHTML = `<span class="sn">${esc(name())}</span>
     <span class="mini">${Array.from({ length: st.per }, (_, i) => `<i class="${i < c ? "used" : ""}"></i>`).join("")}</span>
     <span class="sl">${left} ${left === 1 ? "Aktion" : "Aktionen"} übrig</span>
+    <span class="on-mini"></span>
     <span class="sr">Runde <b>${st.round}</b></span>`;
 }
 function goTab(t) {
@@ -1091,7 +1340,13 @@ document.addEventListener("click", e => {
 
 if (!st.log.length) { log("Ragnhild: Ressourcen sammeln – 1/3", ""); st.used = [{ n: "Ressourcen sammeln" }]; }
 render();
-if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+
+// Gespeicherte Online-Partie wieder aufnehmen
+try { const c = localStorage.getItem(ONLINE_KEY); if (c && !window.VAL_NO_ONLINE) startSync(c); } catch {}
+if (window.VAL_NO_ONLINE) {
+  $("onOff").innerHTML = '<p class="on-p">Online-Partien funktionieren in der Android-App und unter ugleechicken.github.io/Val_Companion_DEU, nicht in dieser Vorschau.</p>';
+}
+if ("serviceWorker" in navigator && location.protocol.startsWith("http") && !/ValCompanionApp/.test(navigator.userAgent)) {
   navigator.serviceWorker.register("sw.js").catch(() => {});
 }
 </script>

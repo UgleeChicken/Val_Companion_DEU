@@ -50,3 +50,8 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 }
+
+dependencies {
+    // Lädt die App-Dateien über eine sichere https-Adresse (nötig für Online-Partien)
+    implementation "androidx.webkit:webkit:1.11.0"
+}

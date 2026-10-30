@@ -14,7 +14,7 @@ Val Companion
 Inoffizielle Begleit-App: Aktionen zählen, würfeln und bauen für deine Runde
 ```
 
-## Vollständige Beschreibung (1088/4000 Zeichen)
+## Vollständige Beschreibung (1458/4000 Zeichen)
 
 ```
 Val Companion ist eine inoffizielle Begleit-App für Valheim – Das Brettspiel. Sie nimmt deiner Spielrunde das Mitzählen ab und hat die wichtigsten Regeln immer griffbereit.
@@ -26,7 +26,11 @@ FUNKTIONEN
 • Möbelstücke bauen: Kosten auf einen Blick, gebaute Möbel schalten ihre Aktionen frei
 • Spielhilfe: Effekte, Ressourcen und Handel mit Haldor
 • 1 bis 4 Spieler mit eigenen Farben und Protokoll aller Züge
-• Funktioniert komplett offline, der Bildschirm bleibt während des Spiels an
+• Online-Partien: Mit einem Code spielt ihr auf mehreren Handys gemeinsam und seht live denselben Spielstand
+• Funktioniert ohne Online-Partie komplett offline, der Bildschirm bleibt während des Spiels an
+
+DATENSCHUTZ
+Ohne Online-Partie bleibt alles auf deinem Gerät. Bei Online-Partien werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Es wird kein Konto benötigt.
 
 HINWEIS
 Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.

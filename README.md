@@ -13,6 +13,12 @@ Inoffizielle Begleit-App für **Valheim – Das Brettspiel**: Aktionszähler, di
 
 Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich einfach über die alte App installieren. Der Spielstand bleibt dabei erhalten.
 
+## Online-Partien
+
+Mehrere Handys können eine gemeinsame Partie spielen: Im Reiter **Spiel → Online-Partie** erstellt einer die Partie und bekommt einen Code (z. B. `K7M-Q2X`), die anderen treten mit diesem Code bei. Alle sehen dann live denselben Spielstand. Ohne Online-Partie funktioniert die App wie gewohnt offline.
+
+Technik: Firebase (anonyme Anmeldung + Realtime Database in `europe-west1`), angesprochen über die REST-Schnittstelle ohne zusätzliche Bibliothek. Die Datenbank-Regeln liegen in `firebase/database.rules.json` und werden in der Firebase-Konsole unter **Realtime Database → Regeln** eingefügt und veröffentlicht.
+
 ## Funktionen
 
 Die App ist in fünf Reiter aufgeteilt (Leiste unten):
@@ -42,6 +48,7 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 | Ordner | Inhalt |
 | --- | --- |
 | `docs/` | Die App selbst (HTML, Schrift, Symbole). Läuft auch direkt im Browser und als installierbare Web-App. |
+| `firebase/` | Datenbank-Regeln für die Online-Partien. |
 | `android/` | Android-Projekt, das `docs/` als App verpackt. |
 | `store/` | Texte für den Store-Eintrag (inklusive Hinweis). |
 | `.github/workflows/android.yml` | Baut bei jedem Push auf `main` die APK und veröffentlicht sie als Release. |
