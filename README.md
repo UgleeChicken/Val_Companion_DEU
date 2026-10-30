@@ -48,4 +48,8 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 
 Die APK ist mit einem öffentlichen Test-Schlüssel signiert (`android/app/debug.keystore`). Für eine Veröffentlichung im Play Store bräuchte es einen eigenen, geheimen Schlüssel.
 
+## Kontakt
+
+Entwickelt von **UgleeChicken** · ugleechicken@gmail.com
+
 Schriften: Averia Serif Libre und Germania One (SIL Open Font License, siehe `docs/fonts/`). Holztextur selbst erzeugt.

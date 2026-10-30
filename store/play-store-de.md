@@ -33,3 +33,8 @@ Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Ir
 
 Für die App wird das Brettspiel benötigt. Sie ersetzt weder Spielmaterial noch Regelheft.
 ```
+
+## Kontaktdaten (Play Console → Store-Einstellungen)
+
+- Entwicklername: `UgleeChicken`
+- E-Mail-Adresse: `ugleechicken@gmail.com`
