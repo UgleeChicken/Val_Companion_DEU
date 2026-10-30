@@ -1675,6 +1675,40 @@ function logText(l) {
     default: return l.text || "";
   }
 }
+// Ältere Protokolleinträge (fertiger deutscher Text) in das neue Format umwandeln, damit sie übersetzt werden können.
+const DE_SHORT = { rot: "red", gelb: "yellow", blau: "blue", schwarz: "black", "grün": "green" };
+const OLD_DIE_NAMES = { "Schadenswürfel": "black" };
+// Aktionsnamen aus früheren Versionen
+const OLD_ACTIONS = { "Sammeln": "Ressourcen sammeln", "Segeln": "Lossegeln", "Möbel herstellen": "Möbelstück herstellen", "Essen kochen": "Nahrung kochen",
+  "Essen essen": "Gekochte Nahrung essen", "Entzünden": "Werkzeug oder Waffe entzünden", "Bombe bauen": "Eine Bombe basteln", "Bienen prüfen": "Nach den Bienen sehen",
+  "Verbrauchsgut nutzen": "Verbrauchsgegenstand nutzen", "Marker auf deinem Feld": "Mit Plättchen interagieren", "Bombe werfen": "Eine Bombe werfen",
+  "Odins Kraft nutzen": "Macht Odins nutzen", "Ausbau-Fertigkeit nutzen": "Freigespielte Aufwertung nutzen", "Ausrüstungseffekt nutzen": "Effekt einer Ausrüstung nutzen",
+  "Im Kampf helfen": "Unterstützung im Kampf", "Grabstein plündern": "Gegenstand vom Grabstein aufsammeln", "Truhe plündern": "Truhe erbeuten", "Möbel": "Möbelstück herstellen" };
+const actName = x => ACTIONS.some(a => a.n === x) ? x : (OLD_ACTIONS[x] || null);
+function parseLegacy(t) {
+  let m;
+  if (!t) return null;
+  if ((m = t.match(/^Runde (\d+) beginnt$/))) return { k: "round", r: +m[1] };
+  if ((m = t.match(/^(.+?) beendet den Zug \((\d+)\/(\d+) Aktionen\)$/))) return { k: "end", w: m[1], c: +m[2], m: +m[3] };
+  if ((m = t.match(/^(.+?) würfelt: (.+)$/))) {
+    const i = m[2].split(", ").map(p => {
+      const q = p.match(/^(\d+)× (.+?)(?: \((rot|gelb|blau|schwarz|grün)\))?$/);
+      if (!q) return null;
+      const d = q[3] ? DE_SHORT[q[3]] : Object.keys(DICE).find(k => DICE[k].faces.some(x => x.n === q[2]));
+      return d ? { c: +q[1], f: q[2], d } : null;
+    });
+    return i.every(Boolean) ? { k: "roll", w: m[1], i } : null;
+  }
+  if ((m = t.match(/^(.+?) wirft neu \((.+?)\): (.+?) → (.+)$/))) {
+    const d = OLD_DIE_NAMES[m[2]] || Object.keys(DICE).find(k => DICE[k].name === m[2]);
+    return d ? { k: "reroll", w: m[1], d, a: m[3], b: m[4] } : null;
+  }
+  if ((m = t.match(/^(.+?): Schiff gebaut – (\d+)\/(\d+)$/))) return { k: "build", w: m[1], x: "schiff", c: +m[2], m: +m[3] };
+  if ((m = t.match(/^(.+?): (.+?) gebaut – (\d+)\/(\d+)$/))) { const fu = FURN.find(x => x.n === m[2]); return fu ? { k: "build", w: m[1], x: fu.k, c: +m[3], m: +m[4] } : null; }
+  if ((m = t.match(/^(.+?): (.+?) \(frei\)$/))) return actName(m[2]) ? { k: "act", w: m[1], x: actName(m[2]), f: 1 } : null;
+  if ((m = t.match(/^(.+?): (.+?) – (\d+)\/(\d+)$/))) return actName(m[2]) ? { k: "act", w: m[1], x: actName(m[2]), c: +m[3], m: +m[4] } : null;
+  return null;
+}
 const LOG_KINDS = ["act", "end", "round", "roll", "reroll", "build"];
 function cleanLog(l, n) {
   const str = (v, max) => String(v ?? "").slice(0, max);
@@ -1685,7 +1719,11 @@ function cleanLog(l, n) {
     Object.assign(e, { k: l.k, w: str(l.w, 24), x: str(l.x, 60), c: int(l.c, 0, 99, 0), m: int(l.m, 0, 99, 0), r: int(l.r, 0, 9999, 0), f: l.f ? 1 : 0,
       d: DICE[l.d] ? l.d : "", a: str(l.a, 40), b: str(l.b, 40),
       i: (Array.isArray(l.i) ? l.i : []).slice(0, 40).map(s => ({ c: int(s && s.c, 0, 99, 0), f: str(s && s.f, 40), d: s && DICE[s.d] ? s.d : "" })) });
-  } else e.text = str(l.text, 300);
+  } else {
+    const pl = parseLegacy(str(l.text, 300));
+    if (pl) return cleanLog(Object.assign({}, l, pl), n);
+    e.text = str(l.text, 300);
+  }
   return e;
 }
 
@@ -1714,6 +1752,7 @@ document.addEventListener("click", e => {
   goTab(t.id === "status" ? "zug" : t.dataset.go);
 });
 
+st.log = (Array.isArray(st.log) ? st.log : []).map(l => (l && l.k) ? l : cleanLog(l, st.players.length));
 if (!st.log.length) { log({ k: "act", w: "Ragnhild", x: "Ressourcen sammeln", c: 1, m: 3 }, ""); st.used = [{ n: "Ressourcen sammeln" }]; }
 render();
 
