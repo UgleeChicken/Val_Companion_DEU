@@ -13,6 +13,10 @@ try {
     // Ohne git (z. B. aus einem ZIP gebaut) bietet die App jedes Web-Update an.
 }
 
+// Repo, dessen Releases die App nach Web-Updates fragt. Auf GitHub das Repo, in dem gebaut wird,
+// so lässt sich der ganze Ablauf auch in einem Fork testen.
+def releasesRepo = System.getenv("GITHUB_REPOSITORY") ?: "UgleeChicken/Val_Companion_DEU"
+
 android {
     namespace "de.ugleechicken.valcompanion"
     compileSdk 34
@@ -24,6 +28,7 @@ android {
         versionCode buildNumber
         versionName "1.0.${buildNumber}"
         buildConfigField "String", "DOCS_TREE", "\"${docsTree}\""
+        buildConfigField "String", "RELEASES_REPO", "\"${releasesRepo}\""
     }
 
     buildFeatures {

@@ -34,7 +34,7 @@ import java.util.zip.ZipInputStream;
 class WebUpdater {
 
     private static final String RELEASES_URL =
-            "https://api.github.com/repos/UgleeChicken/Val_Companion_DEU/releases?per_page=30";
+            "https://api.github.com/repos/" + BuildConfig.RELEASES_REPO + "/releases?per_page=30";
     private static final String TAG_PREFIX = "web-v";
     private static final int TIMEOUT_MS = 10000;
 
