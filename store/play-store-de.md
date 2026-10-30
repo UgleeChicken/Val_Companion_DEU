@@ -37,4 +37,5 @@ Für die App wird das Brettspiel benötigt. Sie ersetzt weder Spielmaterial noch
 ## Kontaktdaten (Play Console → Store-Einstellungen)
 
 - Entwicklername: `UgleeChicken`
-- E-Mail-Adresse: `ugleechicken@gmail.com`
+- Website: `https://wonderl.ink/@ugleechicken`
+- E-Mail-Adresse: Google Play verlangt zusätzlich eine E-Mail-Adresse für den Store-Eintrag (sie wird dort öffentlich angezeigt).

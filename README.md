@@ -50,6 +50,6 @@ Die APK ist mit einem öffentlichen Test-Schlüssel signiert (`android/app/debug
 
 ## Kontakt
 
-Entwickelt von **UgleeChicken** · ugleechicken@gmail.com
+Entwickelt von **UgleeChicken** · https://wonderl.ink/@ugleechicken
 
 Schriften: Averia Serif Libre und Germania One (SIL Open Font License, siehe `docs/fonts/`). Holztextur selbst erzeugt.
