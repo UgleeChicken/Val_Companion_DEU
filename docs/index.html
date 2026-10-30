@@ -439,6 +439,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   background: #2a201bcc; border: 1px solid #120a06; border-radius: 999px; padding: 3px 12px;
 }
 .disclaimer { margin: 0; text-align: center; font-size: .75rem; color: #f0e4cdcc; text-shadow: 0 1px 2px #000; }
+
+/* Über die App */
+.about p { margin: 0 0 10px; line-height: 1.5; }
+.about p:last-child { margin-bottom: 0; }
+.about .disc { border: 1px solid var(--gold); border-left-width: 4px; border-radius: 6px; padding: 10px 12px; background: #f2b53c14; color: var(--fg); }
+.about .disc b { color: var(--gold); }
+.about .small { font-size: .82rem; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -661,7 +668,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </section>
 
   <p class="note" data-tab="spiel">Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
-  <p class="disclaimer" data-tab="spiel">Inoffizielle Fan-App. Nicht verbunden mit Iron Gate, Coffee Stain oder MOOD Publishing. Alle Marken gehören ihren jeweiligen Inhabern.</p>
+  <section class="panel about" data-tab="spiel" id="about">
+    <div class="label">Über die App</div>
+    <p><b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.</p>
+    <p class="disc" role="note"><b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.</p>
+    <p class="small">Der Spielstand wird nur auf diesem Gerät gespeichert. Die App sammelt keine persönlichen Daten.</p>
+    <p class="small">Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.</p>
+  </section>
   <nav class="tabbar" id="tabbar" aria-label="Reiter">
     <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg>Zug</button>
     <button data-go="wuerfeln" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-wuerfel"/></svg>Würfeln</button>

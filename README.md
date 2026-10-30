@@ -2,7 +2,7 @@
 
 Inoffizielle Begleit-App für **Valheim – Das Brettspiel**: Aktionszähler, digitale Würfel und Spielhilfe, als Android-App oder direkt im Browser, funktioniert auch offline.
 
-> Inoffizielle Fan-App. Nicht verbunden mit Iron Gate, Coffee Stain oder MOOD Publishing. Alle Marken gehören ihren jeweiligen Inhabern.
+> **Hinweis:** Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.
 
 ## Android-App installieren
 
@@ -43,6 +43,7 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 | --- | --- |
 | `docs/` | Die App selbst (HTML, Schrift, Symbole). Läuft auch direkt im Browser und als installierbare Web-App. |
 | `android/` | Android-Projekt, das `docs/` als App verpackt. |
+| `store/` | Texte für den Store-Eintrag (inklusive Hinweis). |
 | `.github/workflows/android.yml` | Baut bei jedem Push auf `main` die APK und veröffentlicht sie als Release. |
 
 Die APK ist mit einem öffentlichen Test-Schlüssel signiert (`android/app/debug.keystore`). Für eine Veröffentlichung im Play Store bräuchte es einen eigenen, geheimen Schlüssel.
