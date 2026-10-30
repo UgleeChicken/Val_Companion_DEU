@@ -491,6 +491,54 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
 /* Sprache */
 .lang .on-row { margin: 0; }
 .lang .btn.on { background: linear-gradient(180deg, #b26a2e, #7a4019); color: var(--gold-hi); box-shadow: 0 0 0 2px var(--gold), 0 2px 4px #00000088; }
+
+/* ===== Übersichtlichkeit ===== */
+header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; text-align: left; justify-items: stretch; }
+.topbar h1.brand { display: flex; align-items: baseline; gap: 8px; justify-items: start; }
+.topbar .logo { font-size: 2.2rem; }
+.topbar .sub { margin: 0; font-size: .8rem; letter-spacing: .22em; padding-left: 0; }
+.top-r { display: flex; align-items: center; gap: 8px; }
+.topbar .round, .topbar .on-pill { margin: 0; }
+.tagline-s { flex-basis: 100%; margin: 0; font-size: .74rem; font-style: italic; color: var(--fg); opacity: .85; text-shadow: 0 1px 2px #000; }
+
+.board { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 12; justify-items: stretch; text-align: left; gap: 10px; padding: 12px 14px; }
+.b-top { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 10px; flex-wrap: wrap; }
+.board .who { font-size: 1.25rem; text-align: left; }
+.board .left { font-size: .9rem; }
+.board .left b { font-size: 1.15rem; }
+.b-mid { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.board .pips { gap: 8px; justify-content: flex-start; }
+.board .pip { width: 40px; height: 48px; font-size: 1.4rem; }
+.board .row { justify-content: flex-end; gap: 8px; }
+.board .row .btn { padding: 8px 12px; font-size: .95rem; }
+.board .row .icon-btn { font-family: var(--font); font-size: 1.3rem; line-height: 1; padding: 6px 12px; }
+.board .wait { margin: 0; max-width: none; font-size: .85rem; }
+.board .whoami { margin-bottom: 2px; }
+.last { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 0 0; border: none; border-top: 1px solid #5c432955; background: none; color: var(--muted); font-size: .8rem; text-align: left; cursor: pointer; }
+.last span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.last .pd { width: 8px; height: 8px; border-radius: 50%; background: var(--pc); flex: none; }
+
+.desc-t { display: flex; align-items: center; gap: 8px; margin: -2px 0 10px; font-size: .85rem; color: var(--muted); cursor: pointer; }
+.desc-t input { accent-color: var(--gold); width: 16px; height: 16px; }
+.grp-btn { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 2px; margin-top: 4px; background: none; border: none; border-bottom: 1px solid #5c432955; text-align: left; cursor: pointer; }
+.grp-btn:first-child { margin-top: 0; }
+.grp-btn .gl { display: inline-flex; align-items: center; gap: 6px; }
+.grp-btn .chev2 { color: var(--gold); width: 1em; }
+.grp-btn .cnt { margin-left: auto; font-family: var(--font); font-size: .78rem; letter-spacing: 0; color: var(--muted); background: #00000055; border-radius: 999px; padding: 1px 8px; }
+.actions.nodesc { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+.actions.nodesc .act { grid-template-columns: 24px 1fr; padding: 9px 10px; min-height: 48px; }
+.actions.nodesc .act .ic { width: 24px; height: 24px; grid-row: auto; }
+.actions.nodesc .act .n { font-size: 1rem; line-height: 1.15; }
+.actions.nodesc .act .s { display: none; }
+.actions.nodesc .act .s.req { display: block; grid-column: 1 / -1; font-size: .72rem; }
+
+.setgroup .set-sec { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.setgroup .set-l { color: var(--muted); font-size: .92rem; }
+.setgroup .settings { padding: 0; margin-bottom: 12px; }
+.setgroup .note { background: none; border: none; padding: 0; text-align: left; margin: 0; }
+.about-brand { display: grid; justify-items: center; text-align: center; gap: 6px; margin-bottom: 14px; }
+.about-brand .big-logo { display: grid; justify-items: center; line-height: 1; }
+.about-brand .sub { margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -570,18 +618,14 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
   </svg>
   <button class="status" id="status" data-tab-not="zug" aria-label="Zum Reiter Zug" data-tr-aria="Zum Reiter Zug"></button>
 
-  <header data-tab="zug">
-    <h1><span class="logo">Val</span><span class="sub">Companion</span></h1>
-    <p class="tagline" data-tr>Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
-    <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
-    <div class="round"><span data-tr>Runde</span> <b id="round">1</b></div>
-    <button class="on-pill" id="onPill" hidden aria-label="Online-Partie anzeigen" data-tr-aria="Online-Partie anzeigen"></button>
+  <header data-tab="zug" class="topbar">
+    <h1 class="brand"><span class="logo">Val</span><span class="sub">Companion</span></h1>
+    <div class="top-r">
+      <button class="on-pill" id="onPill" hidden aria-label="Online-Partie anzeigen" data-tr-aria="Online-Partie anzeigen"></button>
+      <div class="round"><span data-tr>Runde</span> <b id="round">1</b></div>
+    </div>
+    <p class="tagline-s" data-tr>Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
   </header>
-
-  <section class="panel lang" data-tab="spiel">
-    <div class="label">Sprache · Language</div>
-    <div class="on-row"><button class="btn" data-lang="de">Deutsch</button><button class="btn" data-lang="en">English</button></div>
-  </section>
 
   <section class="panel online" data-tab="spiel" id="online">
     <div class="label" data-tr>Online-Partie</div>
@@ -612,14 +656,16 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
 
   <section class="board" aria-live="polite" data-tab="zug">
     <div class="whoami" id="whoami" hidden></div>
-    <p class="who" id="who"></p>
+    <div class="b-top"><p class="who" id="who"></p><div class="left" id="left"></div></div>
     <p class="wait" id="waitMsg" hidden></p>
-    <div class="pips" id="pips"></div>
-    <div class="left" id="left"></div>
-    <div class="row">
-      <button class="btn" id="undo" data-tr>Rückgängig</button>
-      <button class="btn primary" id="end" data-tr>Zug beenden →</button>
+    <div class="b-mid">
+      <div class="pips" id="pips"></div>
+      <div class="row">
+        <button class="btn icon-btn" id="undo" aria-label="Rückgängig" data-tr-aria="Rückgängig" data-tr-title="Rückgängig" title="Rückgängig">↶</button>
+        <button class="btn primary" id="end" data-tr>Zug beenden →</button>
+      </div>
     </div>
+    <button class="last" id="lastLog"></button>
   </section>
 
   <section class="panel" id="diceRoller" data-tab="wuerfeln">
@@ -636,6 +682,7 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
 
   <section class="panel" data-tab="zug">
     <div class="label" data-tr>Aktion ausführen</div>
+    <label class="desc-t"><input type="checkbox" id="descT"> <span data-tr>Beschreibungen anzeigen</span></label>
     <div class="actions" id="actions"></div>
   </section>
 
@@ -727,7 +774,15 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
     </div>
   </details>
 
-  <section class="settings panel" data-tab="spiel">
+  <section class="panel" data-tab="spiel">
+    <div class="label" data-tr>Protokoll</div>
+    <ul class="log" id="log"></ul>
+  </section>
+
+  <details class="panel legend setgroup" data-tab="spiel" id="settingsBox">
+    <summary class="label"><span data-tr>Einstellungen</span> <span class="chev" aria-hidden="true">▶</span></summary>
+    <div class="set-sec lang"><div class="set-l">Sprache · Language</div><div class="on-row"><button class="btn" data-lang="de">Deutsch</button><button class="btn" data-lang="en">English</button></div></div>
+  <section class="settings">
     <span data-tr>Aktionen pro Zug</span>
     <span class="stepper">
       <button id="perMinus" aria-label="Weniger Aktionen" data-tr-aria="Weniger Aktionen">−</button>
@@ -736,21 +791,21 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
     </span>
     <span id="resetArea"><button class="btn" id="reset" data-tr>Neues Spiel</button></span>
   </section>
-
-  <section class="panel" data-tab="spiel">
-    <div class="label" data-tr>Protokoll</div>
-    <ul class="log" id="log"></ul>
-  </section>
-
-  <p class="note" data-tab="spiel" data-tr>Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
-  <section class="panel about" data-tab="spiel" id="about">
-    <div class="label" data-tr>Über die App</div>
+  <p class="note" data-tr>Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
+  </details>
+  <details class="panel legend about" data-tab="spiel" id="about">
+    <summary class="label"><span data-tr>Über die App</span> <span class="chev" aria-hidden="true">▶</span></summary>
+    <div class="about-brand">
+      <div class="big-logo"><span class="logo">Val</span><span class="sub">Companion</span></div>
+      <p class="tagline" data-tr>Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
+      <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
+    </div>
     <p data-trh="about1"><b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.</p>
     <p class="disc" role="note" data-trh="disc"><b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.</p>
     <p class="contact"><span class="k" data-tr>Entwickelt von</span> UgleeChicken<br><span class="k" data-tr>Kontakt</span> <a href="https://wonderl.ink/@ugleechicken" target="_blank" rel="noopener">wonderl.ink/@ugleechicken</a></p>
     <p class="small" data-tr>Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.</p>
     <p class="small" data-tr>Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.</p>
-  </section>
+  </details>
   <nav class="tabbar" id="tabbar" aria-label="Reiter" data-tr-aria="Reiter">
     <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg><span data-tr>Zug</span></button>
     <button data-go="wuerfeln" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-wuerfel"/></svg><span data-tr>Würfeln</span></button>
@@ -988,7 +1043,10 @@ const EN = {
 "Zug": "Turn",
 "Hilfe": "Help",
 "Spiel": "Game",
-"Reiter": "Tabs"
+"Reiter": "Tabs",
+"Beschreibungen anzeigen": "Show descriptions",
+"Einstellungen": "Settings",
+"Zuletzt": "Last"
 };
 const HTML_I18N = {"allowAll": {"de": "Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small>", "en": "Everyone may do everything <small>(e.g. if someone has no phone and another player plays for them)</small>"}, "about1": {"de": "<b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.", "en": "<b>Val Companion</b> – unofficial companion app for Valheim: The Board Game: count actions, roll dice, build furniture and look up rules."}, "disc": {"de": "<b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.", "en": "<b>Note:</b> This app is an unofficial fan project and is not affiliated with Iron Gate Studio, Coffee Stain Publishing or the makers of the Valheim board game. Valheim is a registered trademark of Iron Gate Studio."}};
 const tr = s => (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, s)) ? EN[s] : s;
@@ -1002,6 +1060,7 @@ function applyStatic() {
   });
   document.querySelectorAll("[data-trh]").forEach(el => { const h = HTML_I18N[el.dataset.trh]; if (h) el.innerHTML = h[LANG]; });
   document.querySelectorAll("[data-tr-aria]").forEach(el => el.setAttribute("aria-label", tr(el.dataset.trAria)));
+  document.querySelectorAll("[data-tr-title]").forEach(el => el.setAttribute("title", tr(el.dataset.trTitle)));
   document.querySelectorAll("[data-tr-ph]").forEach(el => el.setAttribute("placeholder", tr(el.dataset.trPh)));
   document.documentElement.style.setProperty("--min-l", JSON.stringify(tr("Minerale")));
   document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === LANG));
@@ -1139,13 +1198,27 @@ function render() {
   $("undo").disabled = st.used.length === 0 || locked();
   $("end").disabled = locked();
 
-  $("actions").innerHTML = ACTIONS.map((a, i) =>
-    (i === 0 ? `<div class="grp">${tr("Überall möglich")}</div>` : "") +
-    (a.h && !a.free && !ACTIONS[i - 1].h ? `<div class="grp"><svg class="hs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg> ${tr("Nur im eigenen Haus")}</div>` : "") +
-    (a.free && !ACTIONS[i - 1].free ? `<div class="grp grp-free">${tf("Freie Aktionen · zählen nicht zu den {n} Aktionen", { n: st.per })}</div>` : "") +
-    `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && locked()) || (!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) || (a.req && !st.built.includes(a.req)) ? "disabled" : ""} ${a.req && !st.built.includes(a.req) ? `title="${tf("Erst {f} bauen", { f: tr(furnName(a.req)) })}"` : a.h ? `title="${tr("Nur im Haus")}"` : ""}>
+  if (!st.closed || typeof st.closed !== "object") st.closed = {};
+  const actBtn = (a, i) => `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && locked()) || (!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) || (a.req && !st.built.includes(a.req)) ? "disabled" : ""} ${a.req && !st.built.includes(a.req) ? `title="${tf("Erst {f} bauen", { f: tr(furnName(a.req)) })}"` : a.h ? `title="${tr("Nur im Haus")}"` : ""}>
        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${a.i}"/></svg>
-       <span class="n">${tr(a.n)}</span><span class="s">${a.req && !st.built.includes(a.req) ? tf("Erst {f} bauen", { f: tr(furnName(a.req)) }) : tr(a.s)}</span></button>`).join("");
+       <span class="n">${tr(a.n)}</span><span class="s${a.req && !st.built.includes(a.req) ? " req" : ""}">${a.req && !st.built.includes(a.req) ? tf("Erst {f} bauen", { f: tr(furnName(a.req)) }) : tr(a.s)}</span></button>`;
+  const grpOf = a => a.free ? "free" : a.h ? "house" : "any";
+  const GROUPS = [
+    ["any", tr("Überall möglich"), ""],
+    ["house", `<svg class="hs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg> ${tr("Nur im eigenen Haus")}`, ""],
+    ["free", tf("Freie Aktionen · zählen nicht zu den {n} Aktionen", { n: st.per }), " grp-free"],
+  ];
+  $("actions").innerHTML = GROUPS.map(([g, label, cls]) => {
+    const open = !st.closed[g];
+    const items = ACTIONS.map((a, i) => [a, i]).filter(([a]) => grpOf(a) === g);
+    return `<button class="grp grp-btn${cls}" data-grp="${g}" aria-expanded="${open}"><span class="chev2" aria-hidden="true">${open ? "▾" : "▸"}</span><span class="gl">${label}</span><span class="cnt">${items.length}</span></button>` +
+      (open ? items.map(([a, i]) => actBtn(a, i)).join("") : "");
+  }).join("");
+  $("actions").classList.toggle("nodesc", !st.desc);
+  $("descT").checked = !!st.desc;
+  const l0 = st.log[0];
+  $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span>${tr("Zuletzt")}: ${esc(logText(l0))}</span>` : "";
+  $("lastLog").hidden = !l0;
 
   $("log").innerHTML = st.log.length
     ? st.log.map(l => `<li><span class="t">${esc(l.t)}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${["f", "e"].includes(l.cls) ? l.cls : ""}">${esc(logText(l))}</span></li>`).join("")
@@ -1188,7 +1261,7 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab };
+      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed };
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
       return render();
@@ -1405,7 +1478,7 @@ const FB = Object.assign({
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
-const LOCAL_ONLY = ["tab", "pool", "me", "allowAll"];           // bleibt auf jedem Handy für sich
+const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed"];           // bleibt auf jedem Handy für sich
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
 const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
 
@@ -1726,6 +1799,14 @@ function cleanLog(l, n) {
   }
   return e;
 }
+
+// Aktionsgruppen auf- und zuklappen, Beschreibungen ein- und ausblenden, letzter Eintrag führt zum Protokoll
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-grp]");
+  if (g) { st.closed = st.closed || {}; st.closed[g.dataset.grp] = !st.closed[g.dataset.grp]; return render(); }
+  if (e.target.closest("#lastLog")) { goTab("spiel"); const lg = $("log"); if (lg) lg.scrollIntoView({ block: "center" }); }
+});
+document.addEventListener("change", e => { if (e.target && e.target.id === "descT") { st.desc = e.target.checked; render(); } });
 
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
