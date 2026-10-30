@@ -471,6 +471,22 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .online .on-err { margin: 10px 0 0; padding: 8px 10px; border-radius: 6px; background: #e0564b22; border: 1px solid #e0564b; color: #ffd6d0; font-size: .88rem; }
 .on-pill { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--fg); background: #2a201bcc; border: 1px solid #120a06; border-radius: 999px; padding: 2px 10px; margin-top: 6px; cursor: pointer; }
 .status .on-mini { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; color: var(--muted); }
+
+/* Wer bin ich? */
+.seat-box { margin-bottom: 12px; }
+.seat-box .code-l { display: block; margin-bottom: 6px; }
+.seat-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.seat-btn { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 6px; border: 1px solid #5a3f2c; background: #00000044; color: var(--fg); font-weight: 700; }
+.seat-btn .sd2 { width: 12px; height: 12px; border-radius: 50%; background: var(--pc); box-shadow: 0 0 6px var(--pc); }
+.seat-btn.on { border-color: var(--pc); box-shadow: 0 0 0 1px var(--pc), 0 0 12px color-mix(in srgb, var(--pc) 45%, transparent); }
+.allow { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 12px; font-size: .92rem; cursor: pointer; }
+.allow input { margin-top: 3px; accent-color: var(--gold); width: 18px; height: 18px; flex: none; }
+.allow small { color: var(--muted); }
+.whoami { width: 100%; padding: 10px 12px; border: 1px dashed var(--gold); border-radius: 8px; background: #f2b53c12; }
+.whoami p { margin: 0 0 8px; font-weight: 700; color: var(--gold); }
+.whoami .seat-row { justify-content: center; }
+.wait { margin: -6px 0 0; font-size: .9rem; color: var(--muted); max-width: 34ch; }
+body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
 </style>
 </head>
 <body>
@@ -571,6 +587,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     </div>
     <div id="onOn" hidden>
       <p class="on-status"><span class="dot" id="onDot"></span><span id="onStatusText">Verbinde …</span></p>
+      <div class="seat-box"><span class="code-l">Ich spiele als</span><div class="seat-row" id="seatPick"></div></div>
+      <label class="allow"><input type="checkbox" id="allowAll"> Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small></label>
       <div class="code-box"><span class="code-l">Partie-Code</span><span class="code" id="onCode"></span></div>
       <div class="on-row"><button class="btn" id="onCopy">Code kopieren</button><button class="btn" id="onLeave">Partie verlassen</button></div>
       <p class="on-small">Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.</p>
@@ -584,7 +602,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </section>
 
   <section class="board" aria-live="polite" data-tab="zug">
+    <div class="whoami" id="whoami" hidden></div>
     <p class="who" id="who"></p>
+    <p class="wait" id="waitMsg" hidden></p>
     <div class="pips" id="pips"></div>
     <div class="left" id="left"></div>
     <div class="row">
@@ -795,13 +815,15 @@ const RUNES = ["ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᚱ", "ᚲ", "ᚷ", "ᚹ"];
 const name = () => st.players[st.current] || "Spieler";
 const counted = () => st.used.filter(a => !a.free).length;
 
-function log(text, cls = "") {
-  st.log.unshift({ t: `R${st.round}`, text, cls, p: st.current });
+function log(text, cls = "", p = st.current) {
+  st.log.unshift({ t: `R${st.round}`, text, cls, p });
   st.log = st.log.slice(0, 120);
 }
 
 function doAction(i) {
   const a = ACTIONS[i];
+  if (!a.free && locked()) return;
+  if (a.free && isOther()) { log(`${actorName()}: ${a.n} (frei)`, "f", actorIdx()); return render(); }
   if (!a.free && counted() >= st.per) return;
   if (a.once && st.used.some(u => u.n === a.n)) return;
   if (a.req && !(st.built || []).includes(a.req)) return;
@@ -811,6 +833,7 @@ function doAction(i) {
 }
 
 function undo() {
+  if (locked()) return;
   const a = st.used.pop();
   if (!a) return;
   if (a.build) st.built = st.built.filter(k => k !== a.build);
@@ -820,6 +843,7 @@ function undo() {
 }
 
 function endTurn() {
+  if (locked()) return;
   log(`${name()} beendet den Zug (${counted()}/${st.per} Aktionen)`, "e");
   st.used = [];
   st.current = (st.current + 1) % st.players.length;
@@ -841,7 +865,7 @@ function render() {
       ${st.players.length > 1 ? `<button class="rm" data-rm="${i}" aria-label="Spieler entfernen">×</button>` : ""}
     </div>`).join("") + (st.players.length < 4 ? `<button class="add" id="addP">+ Spieler</button>` : "");
 
-  $("who").textContent = `${name()} ist am Zug`;
+  $("who").textContent = net.code && st.me === st.current && !st.allowAll ? `Du bist am Zug, ${name()}!` : `${name()} ist am Zug`;
   const c = counted();
   $("pips").innerHTML = Array.from({ length: st.per }, (_, i) =>
     `<div class="pip ${i < c ? "used" : ""}" role="button" tabindex="0" data-pip="${i}" aria-label="Aktion ${i + 1}">${RUNES[i % RUNES.length]}</div>`).join("");
@@ -850,13 +874,14 @@ function render() {
   $("left").innerHTML = left === 0
     ? `<b>0</b> Aktionen übrig – Zug beenden`
     : `<b>${left}</b> ${left === 1 ? "Aktion" : "Aktionen"} übrig`;
-  $("undo").disabled = st.used.length === 0;
+  $("undo").disabled = st.used.length === 0 || locked();
+  $("end").disabled = locked();
 
   $("actions").innerHTML = ACTIONS.map((a, i) =>
     (i === 0 ? `<div class="grp">Überall möglich</div>` : "") +
     (a.h && !a.free && !ACTIONS[i - 1].h ? `<div class="grp"><svg class="hs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg> Nur im eigenen Haus</div>` : "") +
     (a.free && !ACTIONS[i - 1].free ? `<div class="grp grp-free">Freie Aktionen · zählen nicht zu den ${st.per} Aktionen</div>` : "") +
-    `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) || (a.req && !st.built.includes(a.req)) ? "disabled" : ""} ${a.req && !st.built.includes(a.req) ? `title="Erst ${furnName(a.req)} bauen"` : a.h ? 'title="Nur im Haus"' : ""}>
+    `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && locked()) || (!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) || (a.req && !st.built.includes(a.req)) ? "disabled" : ""} ${a.req && !st.built.includes(a.req) ? `title="Erst ${furnName(a.req)} bauen"` : a.h ? 'title="Nur im Haus"' : ""}>
        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${a.i}"/></svg>
        <span class="n">${a.n}</span><span class="s">${a.req && !st.built.includes(a.req) ? `Erst ${furnName(a.req)} bauen` : a.s}</span></button>`).join("");
 
@@ -866,7 +891,7 @@ function render() {
   renderDice();
   renderFurniture();
   renderTabs();
-  if (typeof renderOnline === "function") renderOnline();
+  if (typeof renderOnline === "function") { renderOnline(); renderSeat(); }
   save();
 }
 
@@ -901,8 +926,8 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">Alles zurücksetzen? <button class="btn" id="resetYes">Ja, neues Spiel</button><button class="btn" id="resetNo">Abbrechen</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per;
-      st = fresh(); st.players = keep; st.colors = cols; st.per = per;
+      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab };
+      st = fresh(); st.players = keep; st.colors = cols; st.per = per; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">Neues Spiel</button>`;
       return render();
     }
@@ -1024,7 +1049,7 @@ function rollAll() {
   st.roll = [];
   for (const k in DICE) for (let i = 0; i < st.pool[k]; i++) st.roll.push({ d: k, f: rnd(DICE[k].faces.length) });
   tumble = new Set(st.roll.map((_, i) => i));
-  log(`${name()} würfelt: ${rollSummary(st.roll).map(s => `${s.c}× ${s.n} (${DICE[s.d].short})`).join(", ")}`, "f");
+  log(`${actorName()} würfelt: ${rollSummary(st.roll).map(s => `${s.c}× ${s.n} (${DICE[s.d].short})`).join(", ")}`, "f", actorIdx());
   st.log[0].dice = true;
   render();
 }
@@ -1034,7 +1059,7 @@ function reroll(i) {
   const before = DICE[r.d].faces[r.f].n;
   r.f = rnd(DICE[r.d].faces.length);
   tumble = new Set([i]);
-  log(`${name()} wirft neu (${DICE[r.d].name}): ${before} → ${DICE[r.d].faces[r.f].n}`, "f");
+  log(`${actorName()} wirft neu (${DICE[r.d].name}): ${before} → ${DICE[r.d].faces[r.f].n}`, "f", actorIdx());
   st.log[0].dice = true;
   render();
 }
@@ -1072,7 +1097,7 @@ const furnName = k => FURN.find(f => f.k === k)?.n || k;
 
 function build(k) {
   const f = FURN.find(x => x.k === k); if (!f) return;
-  if (counted() >= st.per) return;
+  if (locked() || counted() >= st.per) return;
   if (!f.ship && st.built.includes(k)) return;
   const a = f.ship ? "Schiff bauen" : "Möbelstück herstellen";
   st.used.push({ n: a, build: f.ship ? null : k });
@@ -1093,7 +1118,7 @@ function renderFurniture() {
       <span class="fn">${f.n}${f.ship ? "<small>nicht im Haus</small>" : ""}</span>
       ${done
         ? `<span class="built-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Gebaut<button data-unbuild="${f.k}" aria-label="${f.n} als nicht gebaut markieren" title="Korrektur: als nicht gebaut markieren">×</button></span>`
-        : `<button class="btn act-btn" data-build="${f.k}" ${left === 0 ? "disabled" : ""}>Bauen</button>`}
+        : `<button class="btn act-btn" data-build="${f.k}" ${left === 0 || locked() ? "disabled" : ""}>Bauen</button>`}
       <span class="cost" aria-label="Kosten">${cost}</span>
     </div>`;
   }).join("");
@@ -1118,7 +1143,7 @@ const FB = Object.assign({
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
-const LOCAL_ONLY = ["tab", "pool"];           // bleibt auf jedem Handy für sich
+const LOCAL_ONLY = ["tab", "pool", "me", "allowAll"];           // bleibt auf jedem Handy für sich
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
 const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
 
@@ -1312,6 +1337,40 @@ document.addEventListener("click", e => {
 function selectCode() { const r = document.createRange(); r.selectNodeContents($("onCode")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
 document.addEventListener("keydown", e => { if (e.target && e.target.id === "joinCode" && e.key === "Enter") joinRoom(e.target.value); });
 window.addEventListener("online", () => { if (net.code) { reconnectSoon(0); if (net.lastShared === null) pushNow(); } });
+
+// ---------- Wer bin ich? (nur bei Online-Partien) ----------
+// Jedes Handy wählt seinen Spieler. Aktionen, Bauen, Rückgängig und Zug beenden kann nur,
+// wer am Zug ist. Würfeln und freie Aktionen gehen jederzeit und laufen unter dem eigenen Namen.
+function locked() { return !!(net && net.code) && !st.allowAll && st.me !== st.current; }
+function isOther() { return !!(net && net.code) && !st.allowAll && st.me != null && st.me !== st.current; }
+function actorIdx() { return isOther() ? st.me : st.current; }
+function actorName() { return st.players[actorIdx()] || name(); }
+
+function renderSeat() {
+  if (!$("seatPick")) return;
+  const on = !!net.code;
+  if (st.me != null && !(st.me >= 0 && st.me < st.players.length)) st.me = null;
+  const chips = st.players.map((p, i) =>
+    `<button class="seat-btn ${st.me === i ? "on" : ""}" data-me="${i}" style="--pc:${pc(i)}" aria-pressed="${st.me === i}"><span class="sd2"></span>${esc(p)}</button>`).join("");
+  $("seatPick").innerHTML = chips;
+  $("allowAll").checked = !!st.allowAll;
+  const wa = $("whoami");
+  wa.hidden = !(on && st.me == null && !st.allowAll);
+  wa.innerHTML = wa.hidden ? "" : `<p>Online-Partie: Wer bist du auf diesem Handy?</p><div class="seat-row">${chips}</div>`;
+  const wm = $("waitMsg"), lk = locked();
+  wm.hidden = !(on && st.me != null && lk);
+  wm.innerHTML = wm.hidden ? "" : `Du spielst als <b style="color:${pc(st.me)}">${esc(st.players[st.me])}</b>. Warte, bis du am Zug bist. Würfeln und freie Aktionen gehen jederzeit.`;
+  document.body.classList.toggle("is-locked", lk);
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-me]");
+  if (!t) return;
+  st.me = +t.dataset.me;
+  render();
+});
+document.addEventListener("change", e => {
+  if (e.target && e.target.id === "allowAll") { st.allowAll = e.target.checked; render(); }
+});
 
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];

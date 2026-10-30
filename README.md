@@ -17,6 +17,8 @@ Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich ein
 
 Mehrere Handys können eine gemeinsame Partie spielen: Im Reiter **Spiel → Online-Partie** erstellt einer die Partie und bekommt einen Code (z. B. `K7M-Q2X`), die anderen treten mit diesem Code bei. Alle sehen dann live denselben Spielstand. Ohne Online-Partie funktioniert die App wie gewohnt offline.
 
+Jedes Handy wählt einmal, welcher Spieler es ist (**Ich spiele als …**). Aktionen, Bauen, Rückgängig und Zug beenden kann nur, wer am Zug ist. Würfeln und freie Aktionen gehen jederzeit und werden mit dem eigenen Namen protokolliert. Mit **Alle dürfen alles** lässt sich die Sperre auf einem Handy aufheben, z. B. wenn jemand für einen Mitspieler ohne Handy spielt.
+
 Technik: Firebase (anonyme Anmeldung + Realtime Database in `europe-west1`), angesprochen über die REST-Schnittstelle ohne zusätzliche Bibliothek. Die Datenbank-Regeln liegen in `firebase/database.rules.json` und werden in der Firebase-Konsole unter **Realtime Database → Regeln** eingefügt und veröffentlicht.
 
 ## Funktionen
