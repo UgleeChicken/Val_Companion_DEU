@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Val Companion</string>
+
+    <!-- Hinweis auf eine neue Web-Version (siehe WebUpdater) -->
+    <string name="update_title">New version available</string>
+    <string name="update_message">A new version of Val Companion is ready. Download it now? Your game stays as it is.</string>
+    <string name="update_install">Update</string>
+    <string name="update_later">Later</string>
+    <string name="update_loading">Downloading update…</string>
+    <string name="update_failed">The update could not be downloaded. Please try again later.</string>
 </resources>

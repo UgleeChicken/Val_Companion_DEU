@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">Neue Version verfügbar</string>
+    <string name="update_message">Eine neue Version von Val Companion ist da. Jetzt herunterladen? Der Spielstand bleibt erhalten.</string>
+    <string name="update_install">Aktualisieren</string>
+    <string name="update_later">Später</string>
+    <string name="update_loading">Update wird geladen …</string>
+    <string name="update_failed">Das Update konnte nicht geladen werden. Bitte später noch einmal versuchen.</string>
+</resources>

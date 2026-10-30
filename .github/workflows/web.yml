@@ -1,0 +1,49 @@
+name: Web-Update veröffentlichen
+
+# Packt docs/ als web.zip in ein Release "web-vN". Die Android-App findet es dort und bietet es
+# zum Herunterladen an, ohne dass die ganze App neu installiert werden muss.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - ".github/workflows/web.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # Braucht die Web-App eine neue Funktion der Android-App, hier deren Build-Nummer eintragen.
+  # Ältere Apps bekommen das Update dann nicht angeboten.
+  MIN_APP: 0
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Web-App packen
+        run: |
+          (cd docs && zip -r -X ../web.zip .)
+          printf '{"version":%s,"tree":"%s","sha256":"%s","minApp":%s}\n' \
+            "${{ github.run_number }}" \
+            "$(git rev-parse HEAD:docs)" \
+            "$(sha256sum web.zip | cut -d' ' -f1)" \
+            "$MIN_APP" > web.json
+          cat web.json
+
+      - name: Als Release veröffentlichen
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: web-v${{ github.run_number }}
+          name: Web-Update ${{ github.run_number }}
+          body: |
+            Web-Update, automatisch gebaut aus ${{ github.sha }}.
+            Die Android-App bietet es beim nächsten Start selbst an, hier muss nichts heruntergeladen werden.
+          files: |
+            web.zip
+            web.json
+          # "Latest" bleibt das APK-Release, damit der Download-Link in der README weiter funktioniert.
+          make_latest: false

@@ -5,6 +5,14 @@ plugins {
 // Auf GitHub zählt jede Build-Nummer die Version hoch, damit Updates sich installieren lassen.
 def buildNumber = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
 
+// Git-Hash des docs/-Ordners: So erkennt die App, ob ein Web-Update neuer ist als die eingebaute Version.
+def docsTree = ""
+try {
+    docsTree = ["git", "rev-parse", "HEAD:docs"].execute(null, rootDir).text.trim()
+} catch (Exception ignored) {
+    // Ohne git (z. B. aus einem ZIP gebaut) bietet die App jedes Web-Update an.
+}
+
 android {
     namespace "de.ugleechicken.valcompanion"
     compileSdk 34
@@ -15,6 +23,11 @@ android {
         targetSdk 34
         versionCode buildNumber
         versionName "1.0.${buildNumber}"
+        buildConfigField "String", "DOCS_TREE", "\"${docsTree}\""
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     // Fester Schlüssel, damit neue Versionen die alte überschreiben können.

@@ -1,8 +1,12 @@
 name: Android-App bauen
 
+# Nur bei Änderungen an der Android-App. Änderungen an docs/ kommen über web.yml als Web-Update.
 on:
   push:
     branches: [main]
+    paths:
+      - "android/**"
+      - ".github/workflows/android.yml"
   workflow_dispatch:
 
 permissions:

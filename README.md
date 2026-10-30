@@ -11,7 +11,20 @@ Inoffizielle Begleit-App für **Valheim – Das Brettspiel**: Aktionszähler, di
 2. Die Datei öffnen. Android fragt beim ersten Mal, ob der Browser Apps installieren darf: erlauben.
 3. „Installieren“ tippen. Die App heißt **Val Companion**.
 
-Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich einfach über die alte App installieren. Der Spielstand bleibt dabei erhalten.
+Die APK muss nur einmal installiert werden. Neue Versionen bietet die App beim Start selbst an („Neue Version verfügbar“), ein Tipp auf **Aktualisieren** genügt. Der Spielstand bleibt dabei erhalten.
+
+## Updates
+
+Es gibt zwei Arten von Updates, beide werden auf GitHub automatisch gebaut:
+
+| Änderung an | Was passiert |
+| --- | --- |
+| `docs/` (die eigentliche App) | Ein Release **web-vN** mit `web.zip` und `web.json` wird veröffentlicht. Die Android-App findet es beim nächsten Start und lädt es auf Nachfrage herunter. Die Website auf GitHub Pages ist sofort aktuell. |
+| `android/` | Eine neue APK wird gebaut und als Release **app-vN** veröffentlicht. Sie muss wie bisher neu installiert werden. Das ist nur nötig, wenn sich an der Android-App selbst etwas ändert. |
+
+Die heruntergeladene Version liegt im internen Speicher der App. Klappt der Download nicht, läuft einfach die bisherige Version weiter. Nach einer neuen APK wird wieder die darin eingebaute Version benutzt.
+
+Braucht die Website irgendwann eine neue Funktion der Android-App, in `.github/workflows/web.yml` bei `MIN_APP` die Build-Nummer dieser APK eintragen. Ältere Apps bekommen das Web-Update dann nicht angeboten.
 
 ## Sprachen
 
@@ -55,9 +68,10 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 | --- | --- |
 | `docs/` | Die App selbst (HTML, Schrift, Symbole). Läuft auch direkt im Browser und als installierbare Web-App. |
 | `firebase/` | Datenbank-Regeln für die Online-Partien. |
-| `android/` | Android-Projekt, das `docs/` als App verpackt. |
+| `android/` | Android-Projekt, das `docs/` als App verpackt und Web-Updates herunterlädt. |
 | `store/` | Texte für den Store-Eintrag auf Deutsch und Englisch (inklusive Hinweis). |
-| `.github/workflows/android.yml` | Baut bei jedem Push auf `main` die APK und veröffentlicht sie als Release. |
+| `.github/workflows/android.yml` | Baut bei Änderungen an `android/` die APK und veröffentlicht sie als Release. |
+| `.github/workflows/web.yml` | Veröffentlicht bei Änderungen an `docs/` ein Web-Update für die App. |
 
 Die APK ist mit einem öffentlichen Test-Schlüssel signiert (`android/app/debug.keystore`). Für eine Veröffentlichung im Play Store bräuchte es einen eigenen, geheimen Schlüssel.
 
