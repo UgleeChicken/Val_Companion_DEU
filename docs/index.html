@@ -886,7 +886,7 @@ function render() {
        <span class="n">${a.n}</span><span class="s">${a.req && !st.built.includes(a.req) ? `Erst ${furnName(a.req)} bauen` : a.s}</span></button>`).join("");
 
   $("log").innerHTML = st.log.length
-    ? st.log.map(l => `<li><span class="t">${l.t}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${l.cls}">${esc(l.text)}</span></li>`).join("")
+    ? st.log.map(l => `<li><span class="t">${esc(l.t)}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${["f", "e"].includes(l.cls) ? l.cls : ""}">${esc(l.text)}</span></li>`).join("")
     : `<li class="empty">Noch keine Aktionen. Wähle oben eine Aktion aus.</li>`;
   renderDice();
   renderFurniture();
@@ -1259,14 +1259,46 @@ function onStream(msg) {
   if (typeof s === "string") applyRemote(s);
 }
 
+// Spielstand von anderen Handys nur in geprüfter Form übernehmen (Schutz vor kaputten oder manipulierten Daten).
+function cleanState(o) {
+  if (!o || typeof o !== "object" || !Array.isArray(o.players)) return null;
+  const str = (v, max) => String(v ?? "").slice(0, max);
+  const int = (v, lo, hi, d) => { const n = Math.floor(Number(v)); return Number.isFinite(n) && n >= lo && n <= hi ? n : d; };
+  const players = o.players.slice(0, 4).map(p => str(p, 24) || "Spieler");
+  if (!players.length) return null;
+  const n = players.length;
+  const out = {
+    players,
+    colors: players.map((_, i) => int(Array.isArray(o.colors) ? o.colors[i] : i, 0, COLORS.length - 1, i % COLORS.length)),
+    colorsV: 2,
+    current: int(o.current, 0, n - 1, 0),
+    round: int(o.round, 1, 9999, 1),
+    per: int(o.per, 1, 8, 3),
+    used: (Array.isArray(o.used) ? o.used : []).slice(0, 30).map(u => ({
+      n: str(u && u.n, 60), free: !!(u && u.free),
+      build: u && FURN.some(f => f.k === u.build) ? u.build : null,
+    })),
+    log: (Array.isArray(o.log) ? o.log : []).slice(0, 120).map(l => ({
+      t: str(l && l.t, 8), text: str(l && l.text, 300),
+      cls: ["f", "e"].includes(l && l.cls) ? l.cls : "",
+      p: int(l && l.p, 0, n - 1, 0), dice: !!(l && l.dice),
+    })),
+    built: (Array.isArray(o.built) ? o.built : []).filter(k => FURN.some(f => f.k === k && !f.ship)),
+    roll: (Array.isArray(o.roll) ? o.roll : []).slice(0, 40)
+      .filter(r => r && DICE[r.d] && DICE[r.d].faces && Number.isInteger(r.f) && r.f >= 0 && r.f < DICE[r.d].faces.length)
+      .map(r => ({ d: r.d, f: r.f })),
+  };
+  return out;
+}
+
 function applyRemote(s) {
   if (s === net.lastShared) return;
-  let o; try { o = JSON.parse(s); } catch { return; }
-  if (!o || !Array.isArray(o.players)) return;
+  let o; try { o = cleanState(JSON.parse(s)); } catch { return; }
+  if (!o) return;
   const keep = {}; LOCAL_ONLY.forEach(k => { if (k in st) keep[k] = st[k]; });
   const rolled = JSON.stringify(o.roll || []) !== JSON.stringify(st.roll || []);
   st = Object.assign(o, keep);
-  net.lastShared = s;
+  net.lastShared = sharedJson();   // geprüfte Fassung, damit sie nicht zurückgesendet wird
   if (rolled && typeof tumble !== "undefined") tumble = new Set((st.roll || []).map((_, i) => i));
   render();
 }
