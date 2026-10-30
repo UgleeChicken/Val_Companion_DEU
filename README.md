@@ -13,6 +13,10 @@ Inoffizielle Begleit-App für **Valheim – Das Brettspiel**: Aktionszähler, di
 
 Neue Versionen werden bei jeder Änderung automatisch gebaut und lassen sich einfach über die alte App installieren. Der Spielstand bleibt dabei erhalten.
 
+## Sprachen
+
+Die App gibt es auf **Deutsch** und **Englisch**. Beim ersten Start richtet sie sich nach der Sprache des Geräts; umschalten lässt sie sich im Reiter **Spiel → Sprache · Language**. In Online-Partien sieht jeder das Protokoll in seiner eigenen Sprache.
+
 ## Online-Partien
 
 Mehrere Handys können eine gemeinsame Partie spielen: Im Reiter **Spiel → Online-Partie** erstellt einer die Partie und bekommt einen Code (z. B. `K7M-Q2X`), die anderen treten mit diesem Code bei. Alle sehen dann live denselben Spielstand. Ohne Online-Partie funktioniert die App wie gewohnt offline.
@@ -52,7 +56,7 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 | `docs/` | Die App selbst (HTML, Schrift, Symbole). Läuft auch direkt im Browser und als installierbare Web-App. |
 | `firebase/` | Datenbank-Regeln für die Online-Partien. |
 | `android/` | Android-Projekt, das `docs/` als App verpackt. |
-| `store/` | Texte für den Store-Eintrag (inklusive Hinweis). |
+| `store/` | Texte für den Store-Eintrag auf Deutsch und Englisch (inklusive Hinweis). |
 | `.github/workflows/android.yml` | Baut bei jedem Push auf `main` die APK und veröffentlicht sie als Release. |
 
 Die APK ist mit einem öffentlichen Test-Schlüssel signiert (`android/app/debug.keystore`). Für eine Veröffentlichung im Play Store bräuchte es einen eigenen, geheimen Schlüssel.

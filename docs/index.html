@@ -289,7 +289,7 @@ button:focus-visible, input:focus-visible, [role="button"]:focus-visible { outli
 .res-grid span { display: inline-flex; align-items: center; gap: 5px; font-size: .92rem; }
 .res-grid .res { width: 26px; height: 26px; }
 .res-grid .grp-min { display: flex; flex-wrap: wrap; gap: 8px 16px; padding-left: 14px; border-left: 1px solid var(--edge); }
-.res-grid .grp-min::before { content: "Minerale"; width: 100%; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.res-grid .grp-min::before { content: var(--min-l, "Minerale"); width: 100%; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .trade { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .trade li { display: grid; grid-template-columns: 64px 14px 1fr; align-items: center; gap: 8px; font-size: .92rem; }
 .trade .or { min-width: 0; }
@@ -487,6 +487,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .whoami .seat-row { justify-content: center; }
 .wait { margin: -6px 0 0; font-size: .9rem; color: var(--muted); max-width: 34ch; }
 body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
+
+/* Sprache */
+.lang .on-row { margin: 0; }
+.lang .btn.on { background: linear-gradient(180deg, #b26a2e, #7a4019); color: var(--gold-hi); box-shadow: 0 0 0 2px var(--gold), 0 2px 4px #00000088; }
 </style>
 </head>
 <body>
@@ -564,40 +568,45 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
       <g id="t-spiel" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20 Q3.5 13.5 9 13.5 Q14.5 13.5 15 20"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 13.6 Q20.5 13.8 21 19"/></g>
     </defs>
   </svg>
-  <button class="status" id="status" data-tab-not="zug" aria-label="Zum Reiter Zug"></button>
+  <button class="status" id="status" data-tab-not="zug" aria-label="Zum Reiter Zug" data-tr-aria="Zum Reiter Zug"></button>
 
   <header data-tab="zug">
     <h1><span class="logo">Val</span><span class="sub">Companion</span></h1>
-    <p class="tagline">Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
+    <p class="tagline" data-tr>Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
     <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
-    <div class="round">Runde <b id="round">1</b></div>
-    <button class="on-pill" id="onPill" hidden aria-label="Online-Partie anzeigen"></button>
+    <div class="round"><span data-tr>Runde</span> <b id="round">1</b></div>
+    <button class="on-pill" id="onPill" hidden aria-label="Online-Partie anzeigen" data-tr-aria="Online-Partie anzeigen"></button>
   </header>
 
+  <section class="panel lang" data-tab="spiel">
+    <div class="label">Sprache · Language</div>
+    <div class="on-row"><button class="btn" data-lang="de">Deutsch</button><button class="btn" data-lang="en">English</button></div>
+  </section>
+
   <section class="panel online" data-tab="spiel" id="online">
-    <div class="label">Online-Partie</div>
+    <div class="label" data-tr>Online-Partie</div>
     <div id="onOff">
-      <p class="on-p">Spielt gemeinsam auf mehreren Handys: Alle sehen live denselben Spielstand. Einer erstellt die Partie, die anderen treten mit dem Code bei.</p>
-      <div class="on-row"><button class="btn primary" id="onCreate">Partie erstellen</button></div>
+      <p class="on-p" data-tr>Spielt gemeinsam auf mehreren Handys: Alle sehen live denselben Spielstand. Einer erstellt die Partie, die anderen treten mit dem Code bei.</p>
+      <div class="on-row"><button class="btn primary" id="onCreate" data-tr>Partie erstellen</button></div>
       <div class="on-row">
-        <input id="joinCode" class="code-in" maxlength="8" placeholder="Code, z. B. K7M-Q2X" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Partie-Code">
-        <button class="btn" id="onJoin">Beitreten</button>
+        <input id="joinCode" class="code-in" maxlength="8" placeholder="Code, z. B. K7M-Q2X" data-tr-ph="Code, z. B. K7M-Q2X" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Partie-Code" data-tr-aria="Partie-Code">
+        <button class="btn" id="onJoin" data-tr>Beitreten</button>
       </div>
-      <p class="on-small">Beim Beitreten wird der Spielstand auf diesem Handy durch den der Partie ersetzt.</p>
+      <p class="on-small" data-tr>Beim Beitreten wird der Spielstand auf diesem Handy durch den der Partie ersetzt.</p>
     </div>
     <div id="onOn" hidden>
       <p class="on-status"><span class="dot" id="onDot"></span><span id="onStatusText">Verbinde …</span></p>
-      <div class="seat-box"><span class="code-l">Ich spiele als</span><div class="seat-row" id="seatPick"></div></div>
-      <label class="allow"><input type="checkbox" id="allowAll"> Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small></label>
-      <div class="code-box"><span class="code-l">Partie-Code</span><span class="code" id="onCode"></span></div>
-      <div class="on-row"><button class="btn" id="onCopy">Code kopieren</button><button class="btn" id="onLeave">Partie verlassen</button></div>
-      <p class="on-small">Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.</p>
+      <div class="seat-box"><span class="code-l" data-tr>Ich spiele als</span><div class="seat-row" id="seatPick"></div></div>
+      <label class="allow"><input type="checkbox" id="allowAll"> <span data-trh="allowAll">Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small></span></label>
+      <div class="code-box"><span class="code-l" data-tr>Partie-Code</span><span class="code" id="onCode"></span></div>
+      <div class="on-row"><button class="btn" id="onCopy" data-tr>Code kopieren</button><button class="btn" id="onLeave" data-tr>Partie verlassen</button></div>
+      <p class="on-small" data-tr>Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.</p>
     </div>
     <p class="on-err" id="onErr" role="alert" hidden></p>
   </section>
 
   <section class="panel" data-tab="spiel">
-    <div class="label">Wikinger am Tisch</div>
+    <div class="label" data-tr>Wikinger am Tisch</div>
     <div class="players" id="players"></div>
   </section>
 
@@ -608,17 +617,17 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
     <div class="pips" id="pips"></div>
     <div class="left" id="left"></div>
     <div class="row">
-      <button class="btn" id="undo">Rückgängig</button>
-      <button class="btn primary" id="end">Zug beenden →</button>
+      <button class="btn" id="undo" data-tr>Rückgängig</button>
+      <button class="btn primary" id="end" data-tr>Zug beenden →</button>
     </div>
   </section>
 
   <section class="panel" id="diceRoller" data-tab="wuerfeln">
-    <div class="label">Würfeln</div>
+    <div class="label" data-tr>Würfeln</div>
     <div class="pool" id="pool"></div>
     <div class="roll-row">
       <button class="btn primary" id="rollBtn">Würfeln</button>
-      <button class="btn" id="poolClear">Leeren</button>
+      <button class="btn" id="poolClear" data-tr>Leeren</button>
     </div>
     <div class="result" id="result" aria-live="polite"></div>
     <ul class="summary" id="summary"></ul>
@@ -626,132 +635,385 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
   </section>
 
   <section class="panel" data-tab="zug">
-    <div class="label">Aktion ausführen</div>
+    <div class="label" data-tr>Aktion ausführen</div>
     <div class="actions" id="actions"></div>
   </section>
 
   <details class="panel legend" id="furniture" open data-tab="bauen">
-    <summary class="label">Möbelstücke bauen <span class="chev" aria-hidden="true">▶</span></summary>
+    <summary class="label"><span data-tr>Möbelstücke bauen</span> <span class="chev" aria-hidden="true">▶</span></summary>
     <div class="res-key" id="resKey"></div>
     <div class="furn" id="furn"></div>
-    <p class="furn-hint">„Bauen“ verbraucht eine Aktion. Möbelstücke gehören zum gemeinsamen Haus; Fermentierer, Feuertisch, Bombentisch und Bienenstock schalten ihre Aktionen frei.</p>
+    <p class="furn-hint" data-tr>„Bauen“ verbraucht eine Aktion. Möbelstücke gehören zum gemeinsamen Haus; Fermentierer, Feuertisch, Bombentisch und Bienenstock schalten ihre Aktionen frei.</p>
   </details>
 
   <details class="panel legend guide" id="guide" open data-tab="hilfe">
-    <summary class="label">Spielhilfe <span class="chev" aria-hidden="true">▶</span></summary>
+    <summary class="label"><span data-tr>Spielhilfe</span> <span class="chev" aria-hidden="true">▶</span></summary>
     <section>
-      <h3>Effekte</h3>
+      <h3 data-tr>Effekte</h3>
       <ul class="fx">
-        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-flask" style="--fl:#c0392b"/></svg></span><span><b>+2</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Lebenspunkte"><use href="#e-hp"/></svg> Lebenspunkte</span></li>
-        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-flask" style="--fl:#e0b23a"/></svg></span><span><b>+2</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Ausdauer"><use href="#e-st"/></svg> Ausdauer</span></li>
-        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-lantern"/></svg></span><span>Entferne <svg class="sym" viewBox="0 0 24 24" style="color:#cfe3f0" aria-hidden="true"><use href="#i-drop"/></svg> oder <svg class="sym" viewBox="0 0 24 24" aria-hidden="true"><use href="#e-frost"/></svg></span></li>
-        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-reroll"/></svg></span><span>Wirf beliebige eigene Würfel neu</span></li>
-        <li><span class="tok fire"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fire"/></svg></span><span><b>+1</b> <svg class="sym" viewBox="0 0 24 24" style="color:var(--fg)" aria-hidden="true"><use href="#i-axe"/></svg> bei Treffer</span></li>
-        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-frost"/></svg></span><span><b>−1</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Ausdauer"><use href="#e-st"/></svg> Ausdauer</span></li>
-        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-poison"/></svg></span><span><b>−1</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Lebenspunkte"><use href="#e-hp"/></svg> Lebenspunkte</span></li>
+        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-flask" style="--fl:#c0392b"/></svg></span><span><b>+2</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Lebenspunkte"><use href="#e-hp"/></svg> <span data-tr>Lebenspunkte</span></span></li>
+        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-flask" style="--fl:#e0b23a"/></svg></span><span><b>+2</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Ausdauer"><use href="#e-st"/></svg> <span data-tr>Ausdauer</span></span></li>
+        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-lantern"/></svg></span><span><span data-tr>Entferne</span> <svg class="sym" viewBox="0 0 24 24" style="color:#cfe3f0" aria-hidden="true"><use href="#i-drop"/></svg> <span data-tr>oder</span> <svg class="sym" viewBox="0 0 24 24" aria-hidden="true"><use href="#e-frost"/></svg></span></li>
+        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-reroll"/></svg></span><span data-tr>Wirf beliebige eigene Würfel neu</span></li>
+        <li><span class="tok fire"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fire"/></svg></span><span><b>+1</b> <svg class="sym" viewBox="0 0 24 24" style="color:var(--fg)" aria-hidden="true"><use href="#i-axe"/></svg> <span data-tr>bei Treffer</span></span></li>
+        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-frost"/></svg></span><span><b>−1</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Ausdauer"><use href="#e-st"/></svg> <span data-tr>Ausdauer</span></span></li>
+        <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-poison"/></svg></span><span><b>−1</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Lebenspunkte"><use href="#e-hp"/></svg> <span data-tr>Lebenspunkte</span></span></li>
       </ul>
     </section>
     <section>
-      <h3>Ressourcen</h3>
+      <h3 data-tr>Ressourcen</h3>
       <div class="res-grid">
-        <span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg>Münze</span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-harz"/></svg>Harz</span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-holz"/></svg>Holz</span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-fell"/></svg>Fell</span>
-        <div class="grp-min"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-stein"/></svg>Stein</span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-bronze"/></svg>Bronze</span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-eisen"/></svg>Eisen</span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-silber"/></svg>Silber</span></div>
+        <span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><span data-tr>Münze</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-harz"/></svg><span data-tr>Harz</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-holz"/></svg><span data-tr>Holz</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-fell"/></svg><span data-tr>Fell</span></span>
+        <div class="grp-min"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-stein"/></svg><span data-tr>Stein</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-bronze"/></svg><span data-tr>Bronze</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-eisen"/></svg><span data-tr>Eisen</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-silber"/></svg><span data-tr>Silber</span></span></div>
       </div>
     </section>
     <section>
-      <h3>Haldor</h3>
-      <p class="note-h">Für 1 Münze extra kannst du auch von eurem Haus aus mit Haldor handeln.</p>
+      <h3 data-tr>Haldor</h3>
+      <p class="note-h" data-tr>Für 1 Münze extra kannst du auch von eurem Haus aus mit Haldor handeln.</p>
       <ul class="trade">
-        <li><span class="coins"><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg></span><span class="arrow">→</span><span class="or"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-holz"/></svg>Holz</span>/<span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-stein"/></svg>Stein</span>/<span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-harz"/></svg>Harz</span>/<span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-fell"/></svg>Fell</span></span></li>
-        <li><span class="coins"><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg></span><span class="arrow">→</span><span class="or"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-bronze"/></svg>Bronze</span>/<span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-eisen"/></svg>Eisen</span></span></li>
-        <li><span class="coins"><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg></span><span class="arrow">→</span><span class="or"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-karte"/></svg>1 Haldorkarte</span></span></li>
+        <li><span class="coins"><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg></span><span class="arrow">→</span><span class="or"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-holz"/></svg><span data-tr>Holz</span></span>/<span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-stein"/></svg><span data-tr>Stein</span></span>/<span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-harz"/></svg><span data-tr>Harz</span></span>/<span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-fell"/></svg><span data-tr>Fell</span></span></span></li>
+        <li><span class="coins"><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg></span><span class="arrow">→</span><span class="or"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-bronze"/></svg><span data-tr>Bronze</span></span>/<span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-eisen"/></svg><span data-tr>Eisen</span></span></span></li>
+        <li><span class="coins"><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg></span><span class="arrow">→</span><span class="or"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-karte"/></svg><span data-tr>1 Haldorkarte</span></span></span></li>
       </ul>
-      <p class="note-h" style="margin-top:8px">Führst du „Mit Haldor handeln“ aus, decke die 3 obersten Haldorkarten auf.</p>
+      <p class="note-h" style="margin-top:8px" data-tr>Führst du „Mit Haldor handeln“ aus, decke die 3 obersten Haldorkarten auf.</p>
     </section>
   </details>
 
   <details class="panel legend" id="legend" open data-tab="wuerfeln">
-    <summary class="label">Würfel-Legende <span class="chev" aria-hidden="true">▶</span></summary>
+    <summary class="label"><span data-tr>Würfel-Legende</span> <span class="chev" aria-hidden="true">▶</span></summary>
     <div class="dice">
       <div class="die">
-        <h3>Angriffswürfel (rot)</h3>
+        <h3 data-tr>Angriffswürfel (rot)</h3>
         <ul class="faces">
-          <li><span class="x">4×</span><span class="face d-red"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span><span><b>1 Axt</b></span></li>
-          <li><span class="x">1×</span><span class="face d-red"><svg viewBox="0 0 24 24"><use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/></svg></span><span><b>2 Äxte</b></span></li>
-          <li><span class="x">1×</span><span class="face d-red blank"><svg viewBox="0 0 24 24"></svg></span><span><b>Leer</b> – kein Effekt</span></li>
+          <li><span class="x">4×</span><span class="face d-red"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span><span><b data-tr>1 Axt</b></span></li>
+          <li><span class="x">1×</span><span class="face d-red"><svg viewBox="0 0 24 24"><use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/></svg></span><span><b data-tr>2 Äxte</b></span></li>
+          <li><span class="x">1×</span><span class="face d-red blank"><svg viewBox="0 0 24 24"></svg></span><span><b data-tr>Leer</b> <span data-tr>– kein Effekt</span></span></li>
         </ul>
       </div>
       <div class="die">
-        <h3>Angriffswürfel (gelb)</h3>
+        <h3 data-tr>Angriffswürfel (gelb)</h3>
         <ul class="faces">
-          <li><span class="x">3×</span><span class="face d-yellow"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span><span><b>1 Axt</b></span></li>
-          <li><span class="x">1×</span><span class="face d-yellow"><svg viewBox="0 0 24 24"><use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/></svg></span><span><b>2 Äxte</b></span></li>
-          <li><span class="x">2×</span><span class="face d-yellow blank"><svg viewBox="0 0 24 24"></svg></span><span><b>Leer</b> – kein Effekt</span></li>
+          <li><span class="x">3×</span><span class="face d-yellow"><svg viewBox="0 0 24 24"><use href="#i-axe"/></svg></span><span><b data-tr>1 Axt</b></span></li>
+          <li><span class="x">1×</span><span class="face d-yellow"><svg viewBox="0 0 24 24"><use href="#i-axe" transform="translate(-1 -1) scale(.6)"/><use href="#i-axe" transform="translate(10 10) scale(.6)"/></svg></span><span><b data-tr>2 Äxte</b></span></li>
+          <li><span class="x">2×</span><span class="face d-yellow blank"><svg viewBox="0 0 24 24"></svg></span><span><b data-tr>Leer</b> <span data-tr>– kein Effekt</span></span></li>
         </ul>
       </div>
       <div class="die">
-        <h3>Verteidigungswürfel (blau)</h3>
+        <h3 data-tr>Verteidigungswürfel (blau)</h3>
         <ul class="faces">
-          <li><span class="x">3×</span><span class="face d-blue"><svg viewBox="0 0 24 24"><use href="#i-shield"/></svg></span><span><b>1 Schild</b></span></li>
-          <li><span class="x">1×</span><span class="face d-blue"><svg viewBox="0 0 24 24"><use href="#i-shield" transform="translate(-1 -1) scale(.6)"/><use href="#i-shield" transform="translate(10 10) scale(.6)"/></svg></span><span><b>2 Schilde</b></span></li>
-          <li><span class="x">2×</span><span class="face d-blue blank"><svg viewBox="0 0 24 24"></svg></span><span><b>Leer</b> – kein Effekt</span></li>
+          <li><span class="x">3×</span><span class="face d-blue"><svg viewBox="0 0 24 24"><use href="#i-shield"/></svg></span><span><b data-tr>1 Schild</b></span></li>
+          <li><span class="x">1×</span><span class="face d-blue"><svg viewBox="0 0 24 24"><use href="#i-shield" transform="translate(-1 -1) scale(.6)"/><use href="#i-shield" transform="translate(10 10) scale(.6)"/></svg></span><span><b data-tr>2 Schilde</b></span></li>
+          <li><span class="x">2×</span><span class="face d-blue blank"><svg viewBox="0 0 24 24"></svg></span><span><b data-tr>Leer</b> <span data-tr>– kein Effekt</span></span></li>
         </ul>
       </div>
       <div class="die">
-        <h3>Sammelwürfel (grün)</h3>
+        <h3 data-tr>Sammelwürfel (grün)</h3>
         <ul class="faces">
-          <li><span class="x">3×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand"/></svg></span><span><b>Sammeln</b></span></li>
-          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 1) scale(.82)"/><use href="#i-bang" transform="translate(13 4) scale(.5)"/></svg></span><span><b>Lautes Sammeln</b> (!)</span></li>
-          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 -1) scale(.55)"/><use href="#i-bang" transform="translate(8.5 7) scale(.45)"/><use href="#i-hand" transform="translate(11 11) scale(.55)"/></svg></span><span><b>Lautes kritisches Sammeln</b></span></li>
-          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 -1) scale(.6)"/><use href="#i-hand" transform="translate(10 10) scale(.6)"/></svg></span><span><b>Kritisches Sammeln</b></span></li>
+          <li><span class="x">3×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand"/></svg></span><span><b data-tr>Sammeln</b></span></li>
+          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 1) scale(.82)"/><use href="#i-bang" transform="translate(13 4) scale(.5)"/></svg></span><span><b data-tr>Lautes Sammeln</b> (!)</span></li>
+          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 -1) scale(.55)"/><use href="#i-bang" transform="translate(8.5 7) scale(.45)"/><use href="#i-hand" transform="translate(11 11) scale(.55)"/></svg></span><span><b data-tr>Lautes kritisches Sammeln</b></span></li>
+          <li><span class="x">1×</span><span class="face d-green"><svg viewBox="0 0 24 24"><use href="#i-hand" transform="translate(-1 -1) scale(.6)"/><use href="#i-hand" transform="translate(10 10) scale(.6)"/></svg></span><span><b data-tr>Kritisches Sammeln</b></span></li>
         </ul>
       </div>
       <div class="die">
-        <h3>Kreaturenschaden (schwarz)</h3>
+        <h3 data-tr>Kreaturenschaden (schwarz)</h3>
         <ul class="faces">
-          <li><span class="x">2×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw"/></svg></span><span><b>Treffer</b></span></li>
-          <li><span class="x">1×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw" transform="translate(9 0) rotate(30 6 6) scale(.5)"/><use href="#i-claw" transform="translate(3 11) rotate(30 6 6) scale(.5)"/></svg></span><span><b>Kritischer Treffer</b></span></li>
-          <li><span class="x">1×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-bang"/></svg></span><span><b>Spezialeffekt</b> (!)</span></li>
-          <li><span class="x">2×</span><span class="face d-black blank"><svg viewBox="0 0 24 24"></svg></span><span><b>Leer</b> – kein Effekt</span></li>
+          <li><span class="x">2×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw"/></svg></span><span><b data-tr>Treffer</b></span></li>
+          <li><span class="x">1×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw" transform="translate(9 0) rotate(30 6 6) scale(.5)"/><use href="#i-claw" transform="translate(3 11) rotate(30 6 6) scale(.5)"/></svg></span><span><b data-tr>Kritischer Treffer</b></span></li>
+          <li><span class="x">1×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-bang"/></svg></span><span><b data-tr>Spezialeffekt</b> (!)</span></li>
+          <li><span class="x">2×</span><span class="face d-black blank"><svg viewBox="0 0 24 24"></svg></span><span><b data-tr>Leer</b> <span data-tr>– kein Effekt</span></span></li>
         </ul>
       </div>
     </div>
   </details>
 
   <section class="settings panel" data-tab="spiel">
-    <span>Aktionen pro Zug</span>
+    <span data-tr>Aktionen pro Zug</span>
     <span class="stepper">
-      <button id="perMinus" aria-label="Weniger Aktionen">−</button>
+      <button id="perMinus" aria-label="Weniger Aktionen" data-tr-aria="Weniger Aktionen">−</button>
       <span id="per">3</span>
-      <button id="perPlus" aria-label="Mehr Aktionen">+</button>
+      <button id="perPlus" aria-label="Mehr Aktionen" data-tr-aria="Mehr Aktionen">+</button>
     </span>
-    <span id="resetArea"><button class="btn" id="reset">Neues Spiel</button></span>
+    <span id="resetArea"><button class="btn" id="reset" data-tr>Neues Spiel</button></span>
   </section>
 
   <section class="panel" data-tab="spiel">
-    <div class="label">Protokoll</div>
+    <div class="label" data-tr>Protokoll</div>
     <ul class="log" id="log"></ul>
   </section>
 
-  <p class="note" data-tab="spiel">Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
+  <p class="note" data-tab="spiel" data-tr>Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
   <section class="panel about" data-tab="spiel" id="about">
-    <div class="label">Über die App</div>
-    <p><b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.</p>
-    <p class="disc" role="note"><b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.</p>
-    <p class="contact"><span class="k">Entwickelt von</span> UgleeChicken<br><span class="k">Kontakt</span> <a href="https://wonderl.ink/@ugleechicken" target="_blank" rel="noopener">wonderl.ink/@ugleechicken</a></p>
-    <p class="small">Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.</p>
-    <p class="small">Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.</p>
+    <div class="label" data-tr>Über die App</div>
+    <p data-trh="about1"><b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.</p>
+    <p class="disc" role="note" data-trh="disc"><b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.</p>
+    <p class="contact"><span class="k" data-tr>Entwickelt von</span> UgleeChicken<br><span class="k" data-tr>Kontakt</span> <a href="https://wonderl.ink/@ugleechicken" target="_blank" rel="noopener">wonderl.ink/@ugleechicken</a></p>
+    <p class="small" data-tr>Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.</p>
+    <p class="small" data-tr>Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.</p>
   </section>
-  <nav class="tabbar" id="tabbar" aria-label="Reiter">
-    <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg>Zug</button>
-    <button data-go="wuerfeln" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-wuerfel"/></svg>Würfeln</button>
-    <button data-go="bauen" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-hammer"/></svg>Bauen</button>
-    <button data-go="hilfe" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-hilfe"/></svg>Hilfe</button>
-    <button data-go="spiel" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-spiel"/></svg>Spiel</button>
+  <nav class="tabbar" id="tabbar" aria-label="Reiter" data-tr-aria="Reiter">
+    <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg><span data-tr>Zug</span></button>
+    <button data-go="wuerfeln" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-wuerfel"/></svg><span data-tr>Würfeln</span></button>
+    <button data-go="bauen" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-hammer"/></svg><span data-tr>Bauen</span></button>
+    <button data-go="hilfe" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-hilfe"/></svg><span data-tr>Hilfe</span></button>
+    <button data-go="spiel" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-spiel"/></svg><span data-tr>Spiel</span></button>
   </nav>
 </div>
 
 <script>
+// ---------- Sprache (Deutsch / Englisch) ----------
+// Texte stehen auf Deutsch im Code; EN übersetzt sie. Unbekannte Texte bleiben deutsch.
+const LANG_KEY = "valcompanion-lang";
+let LANG = (() => {
+  try { const l = localStorage.getItem(LANG_KEY); if (l === "de" || l === "en") return l; } catch {}
+  return /^de\b/i.test(navigator.language || "de") ? "de" : "en";
+})();
+const EN = {
+"Bewegen": "Move",
+"Bis zu 2 Felder, unerforschte Plättchen aufdecken": "Up to 2 spaces, reveal unexplored tiles",
+"Ressourcen sammeln": "Collect resources",
+"Sammelwürfel werfen, vom derzeitigen Feld einsammeln": "Roll the collect die, collect from your current space",
+"Ausrüstung tauschen": "Exchange equipment",
+"Karten oder Verbrauchsgegenstände mit Charakteren auf deinem Feld": "Cards or consumables with players on your space",
+"Schiff bauen": "Build a ship",
+"Angrenzend zu Wasser · öffnet den Reiter Bauen": "Adjacent to water · opens the Build tab",
+"Lossegeln": "Sail",
+"Zu einem Feld am selben Gewässer": "To a space on the same body of water",
+"Mit Haldor handeln": "Trade with Haldor",
+"Münzen zahlen für Karten oder Ressourcen · vom Haus aus +1 Münze": "Pay coins for cards or resources · from your house +1 coin",
+"Hinterhalt": "Ambush",
+"Fernkampfwaffe gegen angrenzende Kreatur": "Ranged weapon against an adjacent creature",
+"Sonstige": "Other",
+"Andere Aktion": "Any other action",
+"Möbelstück herstellen": "Craft furniture",
+"Möbelstück wählen · öffnet den Reiter Bauen": "Choose furniture · opens the Build tab",
+"Ausrüstung herstellen": "Craft equipment",
+"Ressourcen zahlen, aufs Charaktertableau": "Pay resources, place on your character board",
+"Nahrung kochen": "Cook food",
+"Oberste Nahrungskarte aufdecken": "Reveal the top food card",
+"Gekochte Nahrung essen": "Eat prepared food",
+"Nahrungskarte abwerfen: Lebenspunkte, Ausdauer oder Neuwurfplättchen": "Discard a food card: health, stamina or reroll",
+"Werkzeug oder Waffe entzünden": "Ignite a tool or a weapon",
+"Feuertisch: 1 Harz, dauerhaft 1 Feuer": "Fire table: 1 resin, permanent fire token",
+"Met brauen": "Brew mead",
+"Fermentierer: 1 Met deiner Wahl aufs Charaktertableau": "Fermenter: 1 mead token of your choice",
+"Eine Bombe basteln": "Fabricate a bomb",
+"Bombentisch: 1 Bombe deiner Wahl aufs Charaktertableau": "Bomb table: 1 bomb token of your choice",
+"Nach den Bienen sehen": "Check on the bees",
+"Bienenstock: 1 zufällige Honigwabe · 1× pro Zug": "Beehive: 1 random honeycomb · once per turn",
+"Verbrauchsgegenstand nutzen": "Use consumable",
+"1 Met oder 1 Honigwabe abwerfen, Belohnung erhalten": "Discard a mead or honeycomb token for its benefit",
+"Mit Plättchen interagieren": "Interact with a token",
+"Jederzeit mit Plättchen auf deinem Feld": "Any time, with a token on your space",
+"Eine Bombe werfen": "Throw a bomb",
+"Im Kampf: Bombe abwerfen, angegebene Würfel werfen": "In combat: discard a bomb token, roll the shown dice",
+"Ausrüstung zerlegen": "Dismantle equipment",
+"Nur im Haus: Karte zurück, 1 Ressource der Kosten · 1× pro Zug": "House only: return the card, gain 1 resource of its cost · once per turn",
+"Macht Odins nutzen": "Use power of Odin skills",
+"Ausdauer abgeben, auch außerhalb deines Zuges": "Pay stamina, even during another player's turn",
+"Freigespielte Aufwertung nutzen": "Use unlocked upgrade skill",
+"Angegebene Kosten zahlen, falls vorhanden": "Pay the indicated cost, if any",
+"Effekt einer Ausrüstung nutzen": "Use effect from equipment",
+"Manche Ausrüstung: 1× pro Zug eine freie Aktion": "Some equipment: one free action per turn",
+"Unterstützung im Kampf": "Assist in combat",
+"Im Zug eines anderen: 1 Ausdauer, zu einem Kampf in Bewegungsreichweite": "Another player's turn: 1 stamina, move to combat within movement range",
+"Mitsegeln": "Join sailing",
+"Im Zug eines anderen: 1 Ausdauer, auf ein Schiff, das gleich lossegelt": "Another player's turn: 1 stamina, board a ship that is about to sail",
+"Gegenstand vom Grabstein aufsammeln": "Pick up items from tombstone",
+"Gegenstand nehmen, Grabstein dem Charakter zurückgeben": "Take the items, return the tombstone to its owner",
+"Truhe erbeuten": "Loot a chest",
+"Truhe auf deinem Feld aufdecken und nehmen, Inhalt erhalten": "Reveal and take a chest on your space, gain its content",
+"Rot": "Red",
+"Blau": "Blue",
+"Grün": "Green",
+"Gelb": "Yellow",
+"Roter Angriffswürfel": "Red attack die",
+"Gelber Angriffswürfel": "Yellow attack die",
+"Blauer Verteidigungswürfel": "Blue defense die",
+"Kreaturenschaden-Würfel": "Creature damage die",
+"Sammelwürfel": "Collect die",
+"rot": "red",
+"gelb": "yellow",
+"blau": "blue",
+"schwarz": "black",
+"grün": "green",
+"1 Axt": "1 axe",
+"2 Äxte": "2 axes",
+"Leer": "Blank",
+"1 Schild": "1 shield",
+"2 Schilde": "2 shields",
+"Treffer": "Hit",
+"Kritischer Treffer": "Critical hit",
+"Spezialeffekt": "Special",
+"Sammeln": "Collect",
+"Lautes Sammeln": "Noisy collect",
+"Lautes kritisches Sammeln": "Noisy critical collect",
+"Kritisches Sammeln": "Critical collect",
+"Münze": "Coin",
+"Harz": "Resin",
+"Holz": "Wood",
+"Fell": "Hide",
+"Stein": "Stone",
+"Bronze": "Bronze",
+"Eisen": "Iron",
+"Silber": "Silver",
+"Bett": "Bed",
+"Teppich": "Rug",
+"Thron": "Throne",
+"Tisch": "Table",
+"Kochkessel": "Cauldron",
+"Feuertisch": "Fire table",
+"Bombentisch": "Bomb table",
+"Fermentierer": "Fermenter",
+"Bienenstock": "Beehive",
+"Schiff": "Ship",
+"(frei)": "(free)",
+"{w} beendet den Zug ({c}/{m} Aktionen)": "{w} ends the turn ({c}/{m} actions)",
+"Runde {r} beginnt": "Round {r} begins",
+"{w} würfelt: {i}": "{w} rolls: {i}",
+"{w} wirft neu ({d}): {a} → {b}": "{w} rerolls ({d}): {a} → {b}",
+"{w}: Schiff gebaut – {c}/{m}": "{w}: built a ship – {c}/{m}",
+"{w}: {f} gebaut – {c}/{m}": "{w}: built {f} – {c}/{m}",
+"Farbe von {p} wechseln ({c})": "Change color of {p} ({c})",
+"Farbe wechseln: {c}": "Change color: {c}",
+"Name Spieler {n}": "Name of player {n}",
+"Spieler entfernen": "Remove player",
+"+ Spieler": "+ Player",
+"Spieler {n}": "Player {n}",
+"Du bist am Zug, {n}!": "It's your turn, {n}!",
+"{n} ist am Zug": "{n}'s turn",
+"Aktion {n}": "Action {n}",
+"<b>0</b> Aktionen übrig – Zug beenden": "<b>0</b> actions left – end your turn",
+"<b>{n}</b> Aktion übrig": "<b>{n}</b> action left",
+"<b>{n}</b> Aktionen übrig": "<b>{n}</b> actions left",
+"{n} Aktion übrig": "{n} action left",
+"{n} Aktionen übrig": "{n} actions left",
+"Überall möglich": "Available anywhere",
+"Nur im eigenen Haus": "Only in your house",
+"Freie Aktionen · zählen nicht zu den {n} Aktionen": "Free actions · don't count toward your {n} actions",
+"Erst {f} bauen": "Build the {f} first",
+"Nur im Haus": "House only",
+"Noch keine Aktionen. Wähle oben eine Aktion aus.": "No actions yet. Choose an action above.",
+"Alles zurücksetzen?": "Reset everything?",
+"Ja, neues Spiel": "Yes, new game",
+"Abbrechen": "Cancel",
+"Neues Spiel": "New game",
+"{d} weniger": "{d}: fewer",
+"{d} mehr": "{d}: more",
+"1 Würfel werfen": "Roll 1 die",
+"{n} Würfel werfen": "Roll {n} dice",
+"Würfel wählen": "Choose dice",
+"{d}: {f} – neu werfen": "{d}: {f} – reroll",
+"{f} · antippen zum Neuwurf": "{f} · tap to reroll",
+"Einzelnen Würfel antippen, um ihn neu zu werfen (z. B. mit einem Neuwurfplättchen).": "Tap a single die to reroll it (e.g. with a reroll token).",
+"Würfel auswählen und werfen. Das Ergebnis erscheint auch im Protokoll.": "Choose dice and roll. The result also appears in the log.",
+"nicht im Haus": "not in the house",
+"Gebaut": "Built",
+"{f} als nicht gebaut markieren": "Mark {f} as not built",
+"Korrektur: als nicht gebaut markieren": "Correction: mark as not built",
+"Bauen": "Build",
+"Kosten": "Cost",
+"Anmeldung beim Server fehlgeschlagen.": "Sign-in to the server failed.",
+"Keine Verbindung zum Server. Ist das Handy online?": "No connection to the server. Is the phone online?",
+"Der Server verweigert den Zugriff. Sind die Datenbank-Regeln eingetragen?": "The server denied access. Are the database rules published?",
+"Der Server meldet einen Fehler ({s}).": "The server reported an error ({s}).",
+"Es konnte kein freier Code gefunden werden. Bitte nochmal versuchen.": "No free code was found. Please try again.",
+"Der Code hat 6 Zeichen, z. B. K7M-Q2X.": "The code has 6 characters, e.g. K7M-Q2X.",
+"Keine Partie mit dem Code {c} gefunden.": "No game found with the code {c}.",
+"Keine Verbindung zum Server. Neuer Versuch läuft …": "No connection to the server. Retrying …",
+"Der Server verweigert den Zugriff auf diese Partie.": "The server denied access to this game.",
+"Die Partie wurde gelöscht.": "This game was deleted.",
+"Neuer Versuch läuft …": "Retrying …",
+"Verbunden – alle sehen denselben Spielstand": "Connected – everyone sees the same game",
+"Getrennt": "Disconnected",
+"Verbinde …": "Connecting …",
+"Online-Partie {c}": "Online game {c}",
+"Kopiert": "Copied",
+"Code kopieren": "Copy code",
+"Online-Partie: Wer bist du auf diesem Handy?": "Online game: who are you on this phone?",
+"Du spielst als {n}. Warte, bis du am Zug bist. Würfeln und freie Aktionen gehen jederzeit.": "You are playing as {n}. Wait for your turn. Rolling dice and free actions are possible at any time.",
+"Online-Partien funktionieren in der Android-App und unter ugleechicken.github.io/Val_Companion_DEU, nicht in dieser Vorschau.": "Online games work in the Android app and at ugleechicken.github.io/Val_Companion_DEU, not in this preview.",
+"Zum Reiter Zug": "Go to the Turn tab",
+"Inoffizielle Begleit-App für Valheim – Das Brettspiel": "Unofficial Companion for Valheim: The Board Game",
+"Runde": "Round",
+"Online-Partie anzeigen": "Show online game",
+"Online-Partie": "Online game",
+"Spielt gemeinsam auf mehreren Handys: Alle sehen live denselben Spielstand. Einer erstellt die Partie, die anderen treten mit dem Code bei.": "Play together on several phones: everyone sees the same game live. One player creates the game, the others join with the code.",
+"Partie erstellen": "Create game",
+"Code, z. B. K7M-Q2X": "Code, e.g. K7M-Q2X",
+"Partie-Code": "Game code",
+"Beitreten": "Join",
+"Beim Beitreten wird der Spielstand auf diesem Handy durch den der Partie ersetzt.": "Joining replaces the game on this phone with the shared game.",
+"Ich spiele als": "I'm playing as",
+"Partie verlassen": "Leave game",
+"Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.": "Share the code with your fellow players. They open Val Companion, go to “Game” and enter it under “Online game”.",
+"Wikinger am Tisch": "Vikings at the table",
+"Rückgängig": "Undo",
+"Zug beenden →": "End turn →",
+"Würfeln": "Dice",
+"Leeren": "Clear",
+"Aktion ausführen": "Take an action",
+"Möbelstücke bauen": "Build furniture",
+"„Bauen“ verbraucht eine Aktion. Möbelstücke gehören zum gemeinsamen Haus; Fermentierer, Feuertisch, Bombentisch und Bienenstock schalten ihre Aktionen frei.": "“Build” uses one action. Furniture belongs to the shared house; the fermenter, fire table, bomb table and beehive unlock their actions.",
+"Spielhilfe": "Game aid",
+"Effekte": "Effects",
+"Lebenspunkte": "health",
+"Ausdauer": "stamina",
+"Entferne": "Remove",
+"oder": "or",
+"Wirf beliebige eigene Würfel neu": "Reroll any of your own dice",
+"bei Treffer": "on a hit",
+"Ressourcen": "Resources",
+"Minerale": "Minerals",
+"Für 1 Münze extra kannst du auch von eurem Haus aus mit Haldor handeln.": "For 1 extra coin you can also trade with Haldor from your house.",
+"1 Haldorkarte": "1 Haldor card",
+"Führst du „Mit Haldor handeln“ aus, decke die 3 obersten Haldorkarten auf.": "When you take “Trade with Haldor”, reveal the top 3 Haldor cards.",
+"Würfel-Legende": "Dice legend",
+"Angriffswürfel (rot)": "Attack die (red)",
+"Angriffswürfel (gelb)": "Attack die (yellow)",
+"Verteidigungswürfel (blau)": "Defense die (blue)",
+"Sammelwürfel (grün)": "Collect die (green)",
+"Kreaturenschaden (schwarz)": "Creature damage (black)",
+"– kein Effekt": "– no effect",
+"Aktionen pro Zug": "Actions per turn",
+"Weniger Aktionen": "Fewer actions",
+"Mehr Aktionen": "More actions",
+"Protokoll": "Log",
+"Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.": "Tip: tapping a rune stone also counts an action. Free actions (dashed) cost nothing and are only logged. Player names can be edited directly.",
+"Über die App": "About",
+"Entwickelt von": "Developed by",
+"Kontakt": "Contact",
+"Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.": "Without an online game, everything is stored only on this device. In an online game, the game state and player names are stored via Google Firebase (servers in Belgium) and can only be accessed with the game code. For this, the app creates an anonymous ID – no account and no personal data.",
+"Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.": "Fonts: Averia Serif Libre and Germania One (SIL Open Font License). Icons, app icon and wood texture are original drawings.",
+"Zug": "Turn",
+"Hilfe": "Help",
+"Spiel": "Game",
+"Reiter": "Tabs"
+};
+const HTML_I18N = {"allowAll": {"de": "Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small>", "en": "Everyone may do everything <small>(e.g. if someone has no phone and another player plays for them)</small>"}, "about1": {"de": "<b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.", "en": "<b>Val Companion</b> – unofficial companion app for Valheim: The Board Game: count actions, roll dice, build furniture and look up rules."}, "disc": {"de": "<b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.", "en": "<b>Note:</b> This app is an unofficial fan project and is not affiliated with Iron Gate Studio, Coffee Stain Publishing or the makers of the Valheim board game. Valheim is a registered trademark of Iron Gate Studio."}};
+const tr = s => (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, s)) ? EN[s] : s;
+const tf = (s, v) => tr(s).replace(/\{(\w+)\}/g, (_, k) => (v && v[k] !== undefined ? v[k] : ""));
+function applyStatic() {
+  document.documentElement.lang = LANG;
+  const w = document.querySelector(".wrap"); if (w) w.lang = LANG;
+  document.querySelectorAll("[data-tr]").forEach(el => {
+    if (el.dataset.de === undefined) el.dataset.de = el.textContent.replace(/\s+/g, " ").trim();
+    el.textContent = tr(el.dataset.de);
+  });
+  document.querySelectorAll("[data-trh]").forEach(el => { const h = HTML_I18N[el.dataset.trh]; if (h) el.innerHTML = h[LANG]; });
+  document.querySelectorAll("[data-tr-aria]").forEach(el => el.setAttribute("aria-label", tr(el.dataset.trAria)));
+  document.querySelectorAll("[data-tr-ph]").forEach(el => el.setAttribute("placeholder", tr(el.dataset.trPh)));
+  document.documentElement.style.setProperty("--min-l", JSON.stringify(tr("Minerale")));
+  document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === LANG));
+}
+function setLang(l) {
+  LANG = l === "en" ? "en" : "de";
+  try { localStorage.setItem(LANG_KEY, LANG); } catch {}
+  applyStatic(); render();
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-lang]"); if (b) setLang(b.dataset.lang); });
+applyStatic();
+
 const ACTIONS = [
   { n: "Bewegen", s: "Bis zu 2 Felder, unerforschte Plättchen aufdecken", i: "move" },
   { n: "Ressourcen sammeln", s: "Sammelwürfel werfen, vom derzeitigen Feld einsammeln", i: "hand" },
@@ -816,19 +1078,19 @@ const name = () => st.players[st.current] || "Spieler";
 const counted = () => st.used.filter(a => !a.free).length;
 
 function log(text, cls = "", p = st.current) {
-  st.log.unshift({ t: `R${st.round}`, text, cls, p });
+  st.log.unshift(Object.assign({ t: `R${st.round}`, cls, p }, typeof text === "string" ? { text } : text));
   st.log = st.log.slice(0, 120);
 }
 
 function doAction(i) {
   const a = ACTIONS[i];
   if (!a.free && locked()) return;
-  if (a.free && isOther()) { log(`${actorName()}: ${a.n} (frei)`, "f", actorIdx()); return render(); }
+  if (a.free && isOther()) { log({ k: "act", w: actorName(), x: a.n, f: 1 }, "f", actorIdx()); return render(); }
   if (!a.free && counted() >= st.per) return;
   if (a.once && st.used.some(u => u.n === a.n)) return;
   if (a.req && !(st.built || []).includes(a.req)) return;
   st.used.push({ n: a.n, free: !!a.free });
-  log(`${name()}: ${a.n}${a.free ? " (frei)" : ` – ${counted()}/${st.per}`}`, a.free ? "f" : "");
+  log(a.free ? { k: "act", w: name(), x: a.n, f: 1 } : { k: "act", w: name(), x: a.n, c: counted(), m: st.per }, a.free ? "f" : "");
   render();
 }
 
@@ -844,10 +1106,10 @@ function undo() {
 
 function endTurn() {
   if (locked()) return;
-  log(`${name()} beendet den Zug (${counted()}/${st.per} Aktionen)`, "e");
+  log({ k: "end", w: name(), c: counted(), m: st.per }, "e");
   st.used = [];
   st.current = (st.current + 1) % st.players.length;
-  if (st.current === 0) { st.round++; log(`Runde ${st.round} beginnt`, "e"); }
+  if (st.current === 0) { st.round++; log({ k: "round", r: st.round }, "e"); }
   render();
 }
 
@@ -860,34 +1122,34 @@ function render() {
 
   $("players").innerHTML = st.players.map((p, i) => `
     <div class="player ${i === st.current ? "active" : ""}" style="--pc:${pc(i)}">
-      <button class="dot" data-col="${i}" aria-label="Farbe von ${esc(p)} wechseln (${COLORS[st.colors[i]].name})" title="Farbe wechseln: ${COLORS[st.colors[i]].name}"></button>
-      <input id="pl${i}" value="${esc(p)}" aria-label="Name Spieler ${i + 1}" data-i="${i}">
-      ${st.players.length > 1 ? `<button class="rm" data-rm="${i}" aria-label="Spieler entfernen">×</button>` : ""}
-    </div>`).join("") + (st.players.length < 4 ? `<button class="add" id="addP">+ Spieler</button>` : "");
+      <button class="dot" data-col="${i}" aria-label="${tf("Farbe von {p} wechseln ({c})", { p: esc(p), c: tr(COLORS[st.colors[i]].name) })}" title="${tf("Farbe wechseln: {c}", { c: tr(COLORS[st.colors[i]].name) })}"></button>
+      <input id="pl${i}" value="${esc(p)}" aria-label="${tf("Name Spieler {n}", { n: i + 1 })}" data-i="${i}">
+      ${st.players.length > 1 ? `<button class="rm" data-rm="${i}" aria-label="${tr("Spieler entfernen")}">×</button>` : ""}
+    </div>`).join("") + (st.players.length < 4 ? `<button class="add" id="addP">${tr("+ Spieler")}</button>` : "");
 
-  $("who").textContent = net.code && st.me === st.current && !st.allowAll ? `Du bist am Zug, ${name()}!` : `${name()} ist am Zug`;
+  $("who").textContent = net.code && st.me === st.current && !st.allowAll ? tf("Du bist am Zug, {n}!", { n: name() }) : tf("{n} ist am Zug", { n: name() });
   const c = counted();
   $("pips").innerHTML = Array.from({ length: st.per }, (_, i) =>
-    `<div class="pip ${i < c ? "used" : ""}" role="button" tabindex="0" data-pip="${i}" aria-label="Aktion ${i + 1}">${RUNES[i % RUNES.length]}</div>`).join("");
+    `<div class="pip ${i < c ? "used" : ""}" role="button" tabindex="0" data-pip="${i}" aria-label="${tf("Aktion {n}", { n: i + 1 })}">${RUNES[i % RUNES.length]}</div>`).join("");
   const left = st.per - c;
   $("left").className = "left" + (left === 0 ? " zero" : "");
   $("left").innerHTML = left === 0
-    ? `<b>0</b> Aktionen übrig – Zug beenden`
-    : `<b>${left}</b> ${left === 1 ? "Aktion" : "Aktionen"} übrig`;
+    ? tr("<b>0</b> Aktionen übrig – Zug beenden")
+    : tf(left === 1 ? "<b>{n}</b> Aktion übrig" : "<b>{n}</b> Aktionen übrig", { n: left });
   $("undo").disabled = st.used.length === 0 || locked();
   $("end").disabled = locked();
 
   $("actions").innerHTML = ACTIONS.map((a, i) =>
-    (i === 0 ? `<div class="grp">Überall möglich</div>` : "") +
-    (a.h && !a.free && !ACTIONS[i - 1].h ? `<div class="grp"><svg class="hs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg> Nur im eigenen Haus</div>` : "") +
-    (a.free && !ACTIONS[i - 1].free ? `<div class="grp grp-free">Freie Aktionen · zählen nicht zu den ${st.per} Aktionen</div>` : "") +
-    `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && locked()) || (!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) || (a.req && !st.built.includes(a.req)) ? "disabled" : ""} ${a.req && !st.built.includes(a.req) ? `title="Erst ${furnName(a.req)} bauen"` : a.h ? 'title="Nur im Haus"' : ""}>
+    (i === 0 ? `<div class="grp">${tr("Überall möglich")}</div>` : "") +
+    (a.h && !a.free && !ACTIONS[i - 1].h ? `<div class="grp"><svg class="hs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg> ${tr("Nur im eigenen Haus")}</div>` : "") +
+    (a.free && !ACTIONS[i - 1].free ? `<div class="grp grp-free">${tf("Freie Aktionen · zählen nicht zu den {n} Aktionen", { n: st.per })}</div>` : "") +
+    `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && locked()) || (!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) || (a.req && !st.built.includes(a.req)) ? "disabled" : ""} ${a.req && !st.built.includes(a.req) ? `title="${tf("Erst {f} bauen", { f: tr(furnName(a.req)) })}"` : a.h ? `title="${tr("Nur im Haus")}"` : ""}>
        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${a.i}"/></svg>
-       <span class="n">${a.n}</span><span class="s">${a.req && !st.built.includes(a.req) ? `Erst ${furnName(a.req)} bauen` : a.s}</span></button>`).join("");
+       <span class="n">${tr(a.n)}</span><span class="s">${a.req && !st.built.includes(a.req) ? tf("Erst {f} bauen", { f: tr(furnName(a.req)) }) : tr(a.s)}</span></button>`).join("");
 
   $("log").innerHTML = st.log.length
-    ? st.log.map(l => `<li><span class="t">${esc(l.t)}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${["f", "e"].includes(l.cls) ? l.cls : ""}">${esc(l.text)}</span></li>`).join("")
-    : `<li class="empty">Noch keine Aktionen. Wähle oben eine Aktion aus.</li>`;
+    ? st.log.map(l => `<li><span class="t">${esc(l.t)}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${["f", "e"].includes(l.cls) ? l.cls : ""}">${esc(logText(l))}</span></li>`).join("")
+    : `<li class="empty">${tr("Noch keine Aktionen. Wähle oben eine Aktion aus.")}</li>`;
   renderDice();
   renderFurniture();
   renderTabs();
@@ -923,16 +1185,16 @@ document.addEventListener("click", e => {
     case "perMinus": st.per = Math.max(1, st.per - 1); return render();
     case "perPlus": st.per = Math.min(8, st.per + 1); return render();
     case "reset":
-      $("resetArea").innerHTML = `<span class="confirm">Alles zurücksetzen? <button class="btn" id="resetYes">Ja, neues Spiel</button><button class="btn" id="resetNo">Abbrechen</button></span>`;
+      $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
       const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab };
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; Object.assign(st, mine);
-      $("resetArea").innerHTML = `<button class="btn" id="reset">Neues Spiel</button>`;
+      $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
       return render();
     }
     case "resetNo":
-      $("resetArea").innerHTML = `<button class="btn" id="reset">Neues Spiel</button>`; return;
+      $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`; return;
   }
 });
 document.addEventListener("keydown", e => {
@@ -941,7 +1203,7 @@ document.addEventListener("keydown", e => {
 });
 document.addEventListener("change", e => {
   if (e.target.dataset?.i !== undefined) {
-    st.players[+e.target.dataset.i] = e.target.value.trim() || `Spieler ${+e.target.dataset.i + 1}`;
+    st.players[+e.target.dataset.i] = e.target.value.trim() || tf("Spieler {n}", { n: +e.target.dataset.i + 1 });
     render();
   }
 });
@@ -1022,26 +1284,26 @@ function renderDice() {
   $("pool").innerHTML = Object.entries(DICE).map(([k, d]) => `
     <div class="dp ${d.faces ? "" : "off"}">
       ${faceHtml(k, d.icon)}
-      <span class="nm">${d.name}${d.faces ? "" : "<small>Würfelseiten fehlen noch</small>"}</span>
+      <span class="nm">${tr(d.name)}</span>
       <span class="stepper">
-        <button data-dm="${k}" aria-label="${d.name} weniger" ${!d.faces || !st.pool[k] ? "disabled" : ""}>−</button>
+        <button data-dm="${k}" aria-label="${tf("{d} weniger", { d: tr(d.name) })}" ${!d.faces || !st.pool[k] ? "disabled" : ""}>−</button>
         <span>${st.pool[k]}</span>
-        <button data-dp="${k}" aria-label="${d.name} mehr" ${!d.faces || st.pool[k] >= MAX_DICE ? "disabled" : ""}>+</button>
+        <button data-dp="${k}" aria-label="${tf("{d} mehr", { d: tr(d.name) })}" ${!d.faces || st.pool[k] >= MAX_DICE ? "disabled" : ""}>+</button>
       </span>
     </div>`).join("");
   const total = Object.values(st.pool).reduce((a, b) => a + b, 0);
   $("rollBtn").disabled = total === 0;
-  $("rollBtn").textContent = total ? `${total} Würfel werfen` : "Würfel wählen";
+  $("rollBtn").textContent = total ? tf(total === 1 ? "1 Würfel werfen" : "{n} Würfel werfen", { n: total }) : tr("Würfel wählen");
   $("poolClear").disabled = total === 0 && st.roll.length === 0;
   $("result").innerHTML = st.roll.map((r, i) => {
     const f = DICE[r.d].faces[r.f];
-    return `<button class="face ${DICE[r.d].cls}${f.svg ? "" : " blank"}${tumble.has(i) ? " tumble" : ""}" data-rr="${i}" aria-label="${DICE[r.d].name}: ${f.n} – neu werfen" title="${f.n} · antippen zum Neuwurf"><svg viewBox="0 0 24 24" aria-hidden="true">${f.svg}</svg></button>`;
+    return `<button class="face ${DICE[r.d].cls}${f.svg ? "" : " blank"}${tumble.has(i) ? " tumble" : ""}" data-rr="${i}" aria-label="${tf("{d}: {f} – neu werfen", { d: tr(DICE[r.d].name), f: tr(f.n) })}" title="${tf("{f} · antippen zum Neuwurf", { f: tr(f.n) })}"><svg viewBox="0 0 24 24" aria-hidden="true">${f.svg}</svg></button>`;
   }).join("");
   tumble = new Set();
-  $("summary").innerHTML = rollSummary(st.roll).map(s => `<li><span class="sd ${DICE[s.d].cls}" title="${DICE[s.d].name}"></span><b>${s.c}×</b> ${s.n}</li>`).join("");
+  $("summary").innerHTML = rollSummary(st.roll).map(s => `<li><span class="sd ${DICE[s.d].cls}" title="${tr(DICE[s.d].name)}"></span><b>${s.c}×</b> ${tr(s.n)}</li>`).join("");
   $("diceHint").textContent = st.roll.length
-    ? "Einzelnen Würfel antippen, um ihn neu zu werfen (z. B. mit einem Neuwurfplättchen)."
-    : "Würfel auswählen und werfen. Das Ergebnis erscheint auch im Protokoll.";
+    ? tr("Einzelnen Würfel antippen, um ihn neu zu werfen (z. B. mit einem Neuwurfplättchen).")
+    : tr("Würfel auswählen und werfen. Das Ergebnis erscheint auch im Protokoll.");
 }
 
 function rollAll() {
@@ -1049,7 +1311,7 @@ function rollAll() {
   st.roll = [];
   for (const k in DICE) for (let i = 0; i < st.pool[k]; i++) st.roll.push({ d: k, f: rnd(DICE[k].faces.length) });
   tumble = new Set(st.roll.map((_, i) => i));
-  log(`${actorName()} würfelt: ${rollSummary(st.roll).map(s => `${s.c}× ${s.n} (${DICE[s.d].short})`).join(", ")}`, "f", actorIdx());
+  log({ k: "roll", w: actorName(), i: rollSummary(st.roll).map(s => ({ c: s.c, f: s.n, d: s.d })) }, "f", actorIdx());
   st.log[0].dice = true;
   render();
 }
@@ -1059,7 +1321,7 @@ function reroll(i) {
   const before = DICE[r.d].faces[r.f].n;
   r.f = rnd(DICE[r.d].faces.length);
   tumble = new Set([i]);
-  log(`${actorName()} wirft neu (${DICE[r.d].name}): ${before} → ${DICE[r.d].faces[r.f].n}`, "f", actorIdx());
+  log({ k: "reroll", w: actorName(), d: r.d, a: before, b: DICE[r.d].faces[r.f].n }, "f", actorIdx());
   st.log[0].dice = true;
   render();
 }
@@ -1102,24 +1364,24 @@ function build(k) {
   const a = f.ship ? "Schiff bauen" : "Möbelstück herstellen";
   st.used.push({ n: a, build: f.ship ? null : k });
   if (!f.ship) st.built.push(k);
-  log(`${name()}: ${f.ship ? "Schiff gebaut" : `${f.n} gebaut`} – ${counted()}/${st.per}`, "");
+  log({ k: "build", w: name(), x: f.k, c: counted(), m: st.per }, "");
   render();
 }
 
 function renderFurniture() {
   if (!Array.isArray(st.built)) st.built = [];
   const left = st.per - counted();
-  $("resKey").innerHTML = Object.entries(RES).map(([r, n]) => `<span>${resIcon(r)}${n}</span>`).join("");
+  $("resKey").innerHTML = Object.entries(RES).map(([r, n]) => `<span>${resIcon(r)}${tr(n)}</span>`).join("");
   $("furn").innerHTML = FURN.map(f => {
     const done = !f.ship && st.built.includes(f.k);
-    const cost = Object.entries(f.c).map(([r, n]) => `<span title="${n}× ${RES[r]}">${n}× ${resIcon(r)}</span>`).join("");
+    const cost = Object.entries(f.c).map(([r, n]) => `<span title="${n}× ${tr(RES[r])}">${n}× ${resIcon(r)}</span>`).join("");
     return `<div class="fr ${done ? "built" : ""}">
       <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${f.i}"/></svg>
-      <span class="fn">${f.n}${f.ship ? "<small>nicht im Haus</small>" : ""}</span>
+      <span class="fn">${tr(f.n)}${f.ship ? `<small>${tr("nicht im Haus")}</small>` : ""}</span>
       ${done
-        ? `<span class="built-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Gebaut<button data-unbuild="${f.k}" aria-label="${f.n} als nicht gebaut markieren" title="Korrektur: als nicht gebaut markieren">×</button></span>`
-        : `<button class="btn act-btn" data-build="${f.k}" ${left === 0 || locked() ? "disabled" : ""}>Bauen</button>`}
-      <span class="cost" aria-label="Kosten">${cost}</span>
+        ? `<span class="built-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>${tr("Gebaut")}<button data-unbuild="${f.k}" aria-label="${tf("{f} als nicht gebaut markieren", { f: tr(f.n) })}" title="${tr("Korrektur: als nicht gebaut markieren")}">×</button></span>`
+        : `<button class="btn act-btn" data-build="${f.k}" ${left === 0 || locked() ? "disabled" : ""}>${tr("Bauen")}</button>`}
+      <span class="cost" aria-label="${tr("Kosten")}">${cost}</span>
     </div>`;
   }).join("");
 }
@@ -1169,7 +1431,7 @@ async function authToken() {
   const r = await fetch(`${FB.idt}/v1/accounts:signUp?key=${FB.key}`, {
     method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ returnSecureToken: true }),
   });
-  if (!r.ok) throw new Error("Anmeldung beim Server fehlgeschlagen.");
+  if (!r.ok) throw new Error(tr("Anmeldung beim Server fehlgeschlagen."));
   const d = await r.json(); setAuth(d.idToken, d.refreshToken, d.localId, d.expiresIn); return net.token;
 }
 const roomUrl = (code, token) => `${FB.db}/rooms/${code}.json?auth=${encodeURIComponent(token)}`;
@@ -1178,9 +1440,9 @@ async function dbReq(method, code, body) {
   let r;
   try {
     r = await fetch(roomUrl(code, t), { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
-  } catch { throw new Error("Keine Verbindung zum Server. Ist das Handy online?"); }
-  if (r.status === 401 || r.status === 403) throw new Error("Der Server verweigert den Zugriff. Sind die Datenbank-Regeln eingetragen?");
-  if (!r.ok) throw new Error(`Der Server meldet einen Fehler (${r.status}).`);
+  } catch { throw new Error(tr("Keine Verbindung zum Server. Ist das Handy online?")); }
+  if (r.status === 401 || r.status === 403) throw new Error(tr("Der Server verweigert den Zugriff. Sind die Datenbank-Regeln eingetragen?"));
+  if (!r.ok) throw new Error(tf("Der Server meldet einen Fehler ({s}).", { s: r.status }));
   return r.json();
 }
 
@@ -1198,17 +1460,17 @@ async function createRoom() {
       net.lastShared = s;
       return startSync(code);
     }
-    throw new Error("Es konnte kein freier Code gefunden werden. Bitte nochmal versuchen.");
+    throw new Error(tr("Es konnte kein freier Code gefunden werden. Bitte nochmal versuchen."));
   } catch (e) { setNet("aus", e.message); }
 }
 
 async function joinRoom(raw) {
   const code = normCode(raw);
-  if (code.length !== 6 || [...code].some(ch => !CODE_CHARS.includes(ch))) return setNet("aus", "Der Code hat 6 Zeichen, z. B. K7M-Q2X.");
+  if (code.length !== 6 || [...code].some(ch => !CODE_CHARS.includes(ch))) return setNet("aus", tr("Der Code hat 6 Zeichen, z. B. K7M-Q2X."));
   setNet("verbinde");
   try {
     const room = await dbReq("GET", code);
-    if (!room || typeof room.state !== "string") throw new Error(`Keine Partie mit dem Code ${fmtCode(code)} gefunden.`);
+    if (!room || typeof room.state !== "string") throw new Error(tf("Keine Partie mit dem Code {c} gefunden.", { c: fmtCode(code) }));
     applyRemote(room.state);
     startSync(code);
   } catch (e) { setNet("aus", e.message); }
@@ -1234,7 +1496,7 @@ async function openStream() {
   closeStream();
   const code = net.code; if (!code) return;
   let t;
-  try { t = await authToken(); } catch (e) { setNet("verbinde", "Keine Verbindung zum Server. Neuer Versuch läuft …"); return reconnectSoon(5000); }
+  try { t = await authToken(); } catch (e) { setNet("verbinde", tr("Keine Verbindung zum Server. Neuer Versuch läuft …")); return reconnectSoon(5000); }
   if (net.code !== code) return;
   const es = new EventSource(roomUrl(code, t));
   net.es = es;
@@ -1242,7 +1504,7 @@ async function openStream() {
   es.addEventListener("put", onData);
   es.addEventListener("patch", onData);
   es.addEventListener("auth_revoked", () => { net.token = null; reconnectSoon(0); });
-  es.addEventListener("cancel", () => { closeStream(); setNet("fehler", "Der Server verweigert den Zugriff auf diese Partie."); });
+  es.addEventListener("cancel", () => { closeStream(); setNet("fehler", tr("Der Server verweigert den Zugriff auf diese Partie.")); });
   es.onopen = () => { if (net.status !== "verbunden") setNet("verbunden"); if (net.lastShared === null) pushNow(); };
   es.onerror = () => { if (net.es !== es) return; setNet("verbinde", ""); es.close(); reconnectSoon(4000); };
   // Das Anmelde-Token läuft nach einer Stunde ab: rechtzeitig neu verbinden.
@@ -1253,7 +1515,7 @@ function onStream(msg) {
   const { path, data } = msg || {};
   let s;
   if (path === "/") {
-    if (data === null) { closeStream(); net.code = null; remember(null); return setNet("aus", "Die Partie wurde gelöscht."); }
+    if (data === null) { closeStream(); net.code = null; remember(null); return setNet("aus", tr("Die Partie wurde gelöscht.")); }
     s = data && data.state;
   } else if (path === "/state") s = data;
   if (typeof s === "string") applyRemote(s);
@@ -1278,11 +1540,7 @@ function cleanState(o) {
       n: str(u && u.n, 60), free: !!(u && u.free),
       build: u && FURN.some(f => f.k === u.build) ? u.build : null,
     })),
-    log: (Array.isArray(o.log) ? o.log : []).slice(0, 120).map(l => ({
-      t: str(l && l.t, 8), text: str(l && l.text, 300),
-      cls: ["f", "e"].includes(l && l.cls) ? l.cls : "",
-      p: int(l && l.p, 0, n - 1, 0), dice: !!(l && l.dice),
-    })),
+    log: (Array.isArray(o.log) ? o.log : []).slice(0, 120).map(l => cleanLog(l, n)),
     built: (Array.isArray(o.built) ? o.built : []).filter(k => FURN.some(f => f.k === k && !f.ship)),
     roll: (Array.isArray(o.roll) ? o.roll : []).slice(0, 40)
       .filter(r => r && DICE[r.d] && DICE[r.d].faces && Number.isInteger(r.f) && r.f >= 0 && r.f < DICE[r.d].faces.length)
@@ -1321,7 +1579,7 @@ async function pushNow() {
   } catch (e) {
     if (net.code !== code) return;
     net.lastShared = null;                              // beim nächsten Versuch erneut senden
-    setNet("verbinde", e.message + " Neuer Versuch läuft …");
+    setNet("verbinde", e.message + " " + tr("Neuer Versuch läuft …"));
     net.retry = setTimeout(pushNow, 5000);
   }
 }
@@ -1337,7 +1595,7 @@ function renderOnline() {
   const on = !!net.code;
   $("onOff").hidden = on; $("onOn").hidden = !on;
   const dotCls = net.status === "verbunden" ? "ok" : net.status === "fehler" ? "bad" : "wait";
-  const label = net.status === "verbunden" ? "Verbunden – alle sehen denselben Spielstand" : net.status === "fehler" ? "Getrennt" : "Verbinde …";
+  const label = tr(net.status === "verbunden" ? "Verbunden – alle sehen denselben Spielstand" : net.status === "fehler" ? "Getrennt" : "Verbinde …");
   $("onDot").className = `dot ${dotCls}`;
   $("onStatusText").textContent = label;
   $("onCode").textContent = fmtCode(net.code);
@@ -1350,7 +1608,7 @@ function renderOnline() {
     pill.innerHTML = on ? `<span class="dot ${dotCls}"></span>Online · ${fmtCode(net.code)}` : "";
   }
   const mini = document.querySelector("#status .on-mini");
-  if (mini) mini.innerHTML = on ? `<span class="dot ${dotCls}" title="Online-Partie ${fmtCode(net.code)}" style="width:8px;height:8px;border-radius:50%;display:inline-block"></span>` : "";
+  if (mini) mini.innerHTML = on ? `<span class="dot ${dotCls}" title="${tf("Online-Partie {c}", { c: fmtCode(net.code) })}" style="width:8px;height:8px;border-radius:50%;display:inline-block"></span>` : "";
 }
 
 document.addEventListener("click", e => {
@@ -1362,7 +1620,7 @@ document.addEventListener("click", e => {
   if (t.id === "onPill") return goTab("spiel");
   if (t.id === "onCopy") {
     const txt = fmtCode(net.code);
-    const done = () => { t.textContent = "Kopiert"; setTimeout(() => { t.textContent = "Code kopieren"; }, 1500); };
+    const done = () => { t.textContent = tr("Kopiert"); setTimeout(() => { t.textContent = tr("Code kopieren"); }, 1500); };
     try { navigator.clipboard.writeText(txt).then(done, () => selectCode()); } catch { selectCode(); }
   }
 });
@@ -1388,10 +1646,10 @@ function renderSeat() {
   $("allowAll").checked = !!st.allowAll;
   const wa = $("whoami");
   wa.hidden = !(on && st.me == null && !st.allowAll);
-  wa.innerHTML = wa.hidden ? "" : `<p>Online-Partie: Wer bist du auf diesem Handy?</p><div class="seat-row">${chips}</div>`;
+  wa.innerHTML = wa.hidden ? "" : `<p>${tr("Online-Partie: Wer bist du auf diesem Handy?")}</p><div class="seat-row">${chips}</div>`;
   const wm = $("waitMsg"), lk = locked();
   wm.hidden = !(on && st.me != null && lk);
-  wm.innerHTML = wm.hidden ? "" : `Du spielst als <b style="color:${pc(st.me)}">${esc(st.players[st.me])}</b>. Warte, bis du am Zug bist. Würfeln und freie Aktionen gehen jederzeit.`;
+  wm.innerHTML = wm.hidden ? "" : tf("Du spielst als {n}. Warte, bis du am Zug bist. Würfeln und freie Aktionen gehen jederzeit.", { n: `<b style="color:${pc(st.me)}">${esc(st.players[st.me])}</b>` });
   document.body.classList.toggle("is-locked", lk);
 }
 document.addEventListener("click", e => {
@@ -1404,6 +1662,33 @@ document.addEventListener("change", e => {
   if (e.target && e.target.id === "allowAll") { st.allowAll = e.target.checked; render(); }
 });
 
+
+// Protokolleinträge werden in der Sprache des jeweiligen Handys angezeigt.
+function logText(l) {
+  switch (l.k) {
+    case "act": return `${l.w}: ${tr(l.x)}${l.f ? " " + tr("(frei)") : ` – ${l.c}/${l.m}`}`;
+    case "end": return tf("{w} beendet den Zug ({c}/{m} Aktionen)", l);
+    case "round": return tf("Runde {r} beginnt", l);
+    case "roll": return tf("{w} würfelt: {i}", { w: l.w, i: (l.i || []).map(s => `${s.c}× ${tr(s.f)} (${tr((DICE[s.d] || {}).short || "")})`).join(", ") });
+    case "reroll": return tf("{w} wirft neu ({d}): {a} → {b}", { w: l.w, d: tr((DICE[l.d] || {}).name || ""), a: tr(l.a), b: tr(l.b) });
+    case "build": return l.x === "schiff" ? tf("{w}: Schiff gebaut – {c}/{m}", l) : tf("{w}: {f} gebaut – {c}/{m}", { w: l.w, c: l.c, m: l.m, f: tr(furnName(l.x)) });
+    default: return l.text || "";
+  }
+}
+const LOG_KINDS = ["act", "end", "round", "roll", "reroll", "build"];
+function cleanLog(l, n) {
+  const str = (v, max) => String(v ?? "").slice(0, max);
+  const int = (v, lo, hi, d) => { const x = Math.floor(Number(v)); return Number.isFinite(x) && x >= lo && x <= hi ? x : d; };
+  l = l || {};
+  const e = { t: str(l.t, 8), cls: ["f", "e"].includes(l.cls) ? l.cls : "", p: int(l.p, 0, n - 1, 0), dice: !!l.dice };
+  if (LOG_KINDS.includes(l.k)) {
+    Object.assign(e, { k: l.k, w: str(l.w, 24), x: str(l.x, 60), c: int(l.c, 0, 99, 0), m: int(l.m, 0, 99, 0), r: int(l.r, 0, 9999, 0), f: l.f ? 1 : 0,
+      d: DICE[l.d] ? l.d : "", a: str(l.a, 40), b: str(l.b, 40),
+      i: (Array.isArray(l.i) ? l.i : []).slice(0, 40).map(s => ({ c: int(s && s.c, 0, 99, 0), f: str(s && s.f, 40), d: s && DICE[s.d] ? s.d : "" })) });
+  } else e.text = str(l.text, 300);
+  return e;
+}
+
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
 const GOES_TO_BUILD = ["Möbelstück herstellen", "Schiff bauen"];
@@ -1415,9 +1700,9 @@ function renderTabs() {
   const c = counted(), left = st.per - c;
   $("status").innerHTML = `<span class="sn">${esc(name())}</span>
     <span class="mini">${Array.from({ length: st.per }, (_, i) => `<i class="${i < c ? "used" : ""}"></i>`).join("")}</span>
-    <span class="sl">${left} ${left === 1 ? "Aktion" : "Aktionen"} übrig</span>
+    <span class="sl">${tf(left === 1 ? "{n} Aktion übrig" : "{n} Aktionen übrig", { n: left })}</span>
     <span class="on-mini"></span>
-    <span class="sr">Runde <b>${st.round}</b></span>`;
+    <span class="sr">${tr("Runde")} <b>${st.round}</b></span>`;
 }
 function goTab(t) {
   st.tab = t; render();
@@ -1429,13 +1714,13 @@ document.addEventListener("click", e => {
   goTab(t.id === "status" ? "zug" : t.dataset.go);
 });
 
-if (!st.log.length) { log("Ragnhild: Ressourcen sammeln – 1/3", ""); st.used = [{ n: "Ressourcen sammeln" }]; }
+if (!st.log.length) { log({ k: "act", w: "Ragnhild", x: "Ressourcen sammeln", c: 1, m: 3 }, ""); st.used = [{ n: "Ressourcen sammeln" }]; }
 render();
 
 // Gespeicherte Online-Partie wieder aufnehmen
 try { const c = localStorage.getItem(ONLINE_KEY); if (c && !window.VAL_NO_ONLINE) startSync(c); } catch {}
 if (window.VAL_NO_ONLINE) {
-  $("onOff").innerHTML = '<p class="on-p">Online-Partien funktionieren in der Android-App und unter ugleechicken.github.io/Val_Companion_DEU, nicht in dieser Vorschau.</p>';
+  $("onOff").innerHTML = `<p class="on-p">${tr("Online-Partien funktionieren in der Android-App und unter ugleechicken.github.io/Val_Companion_DEU, nicht in dieser Vorschau.")}</p>`;
 }
 if ("serviceWorker" in navigator && location.protocol.startsWith("http") && !/ValCompanionApp/.test(navigator.userAgent)) {
   navigator.serviceWorker.register("sw.js").catch(() => {});

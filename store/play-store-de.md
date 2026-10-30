@@ -14,7 +14,7 @@ Val Companion
 Inoffizielle Begleit-App: Aktionen zählen, würfeln und bauen für deine Runde
 ```
 
-## Vollständige Beschreibung (1458/4000 Zeichen)
+## Vollständige Beschreibung (1495/4000 Zeichen)
 
 ```
 Val Companion ist eine inoffizielle Begleit-App für Valheim – Das Brettspiel. Sie nimmt deiner Spielrunde das Mitzählen ab und hat die wichtigsten Regeln immer griffbereit.
@@ -28,6 +28,7 @@ FUNKTIONEN
 • 1 bis 4 Spieler mit eigenen Farben und Protokoll aller Züge
 • Online-Partien: Mit einem Code spielt ihr auf mehreren Handys gemeinsam und seht live denselben Spielstand
 • Funktioniert ohne Online-Partie komplett offline, der Bildschirm bleibt während des Spiels an
+• Auf Deutsch und Englisch verfügbar
 
 DATENSCHUTZ
 Ohne Online-Partie bleibt alles auf deinem Gerät. Bei Online-Partien werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Es wird kein Konto benötigt.
