@@ -1,7 +1,7 @@
 {
-  "name": "Valheim Aktionszähler",
-  "short_name": "Valheim",
-  "description": "Aktionszähler für Valheim: Das Brettspiel",
+  "name": "Val Companion",
+  "short_name": "Val Companion",
+  "description": "Aktionszähler, Würfel und Spielhilfe für deine Brettspielrunde",
   "lang": "de",
   "start_url": "./",
   "scope": "./",

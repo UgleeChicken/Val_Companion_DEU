@@ -6,11 +6,11 @@ plugins {
 def buildNumber = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
 
 android {
-    namespace "de.ugleechicken.valheim"
+    namespace "de.ugleechicken.valcompanion"
     compileSdk 34
 
     defaultConfig {
-        applicationId "de.ugleechicken.valheim"
+        applicationId "de.ugleechicken.valcompanion"
         minSdk 24
         targetSdk 34
         versionCode buildNumber

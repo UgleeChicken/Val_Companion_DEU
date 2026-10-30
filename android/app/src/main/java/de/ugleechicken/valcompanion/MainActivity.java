@@ -1,4 +1,4 @@
-package de.ugleechicken.valheim;
+package de.ugleechicken.valcompanion;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
