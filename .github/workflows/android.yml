@@ -46,6 +46,6 @@ jobs:
             Android-App, automatisch gebaut aus ${{ github.sha }}.
             Auf dem Handy die Datei **Val-Companion.apk** herunterladen und öffnen.
 
-            Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.
+            Diese App ist ein inoffizielles Fan-Projekt. Sie steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing, dem Verlag von Valheim – Das Brettspiel, und wird von diesen weder unterstützt noch geprüft. Valheim ist eine eingetragene Marke von Iron Gate Studio. Alle Marken gehören ihren jeweiligen Inhabern.
           files: Val-Companion.apk
           make_latest: true

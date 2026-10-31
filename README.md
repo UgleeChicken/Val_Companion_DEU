@@ -2,7 +2,7 @@
 
 Inoffizielle Begleit-App für **Valheim – Das Brettspiel**: Aktionszähler, digitale Würfel und Spielhilfe, als Android-App oder direkt im Browser, funktioniert auch offline.
 
-> **Hinweis:** Diese App ist ein inoffizielles Fan-Projekt und steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder den Machern des Valheim-Brettspiels. Valheim ist eine eingetragene Marke von Iron Gate Studio.
+> **Hinweis:** Diese App ist ein inoffizielles Fan-Projekt. Sie steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing, dem Verlag von Valheim – Das Brettspiel, und wird von diesen weder unterstützt noch geprüft. Valheim ist eine eingetragene Marke von Iron Gate Studio. Alle Marken gehören ihren jeweiligen Inhabern.
 
 ## Android-App installieren
 

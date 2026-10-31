@@ -14,7 +14,7 @@ Val Companion
 Unofficial companion: count actions, roll dice and build for your board game
 ```
 
-## Full description (1366/4000 characters)
+## Full description (1462/4000 characters)
 
 ```
 Val Companion is an unofficial companion app for Valheim: The Board Game. It keeps track of everything for your group and has the key rules at hand.
@@ -34,7 +34,7 @@ PRIVACY
 Without an online game, everything stays on your device. In an online game, the game state and player names are stored via Google Firebase (servers in Belgium) and can only be accessed with the game code. No account is needed.
 
 NOTE
-This app is an unofficial fan project and is not affiliated with Iron Gate Studio, Coffee Stain Publishing or the makers of the Valheim board game. Valheim is a registered trademark of Iron Gate Studio.
+This app is an unofficial fan project. It is not affiliated with, endorsed or reviewed by Iron Gate Studio, Coffee Stain Publishing or MOOD Publishing, the publisher of Valheim: The Board Game. Valheim is a registered trademark of Iron Gate Studio. All trademarks belong to their respective owners.
 
 The board game is required. This app does not replace any game components or the rulebook.
 ```
