@@ -493,6 +493,16 @@ body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
 .lang .btn.on { background: linear-gradient(180deg, #b26a2e, #7a4019); color: var(--gold-hi); box-shadow: 0 0 0 2px var(--gold), 0 2px 4px #00000088; }
 
 /* ===== Übersichtlichkeit ===== */
+/* Die Spalte darf nie breiter als der Bildschirm werden (auch bei großer Systemschrift). */
+.wrap { grid-template-columns: minmax(0, 1fr); }
+.wrap > * { min-width: 0; }
+.topbar h1.brand { min-width: 0; flex-wrap: wrap; }
+.top-r { flex-wrap: wrap; justify-content: flex-end; }
+.b-mid > *, .b-top > * { min-width: 0; }
+.board .row { flex-wrap: wrap; }
+.board, .panel { grid-template-columns: minmax(0, 1fr); }
+.board > * { min-width: 0; max-width: 100%; }
+.last { min-width: 0; overflow: hidden; }
 header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; text-align: left; justify-items: stretch; }
 .topbar h1.brand { display: flex; align-items: baseline; gap: 8px; justify-items: start; }
 .topbar .logo { font-size: 2.2rem; }
