@@ -5,13 +5,16 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.webkit.WebViewAssetLoader;
@@ -83,7 +86,21 @@ public class MainActivity extends Activity {
             }
         });
 
-        setContentView(web);
+        // Ab Android 15 zeichnet die App bis unter Status- und Navigationsleiste.
+        // Der Rahmen hält die Seite davon frei, die Leisten bekommen die dunkle Hintergrundfarbe.
+        FrameLayout root = new FrameLayout(this);
+        root.setBackgroundColor(BACKGROUND);
+        root.addView(web, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        if (Build.VERSION.SDK_INT >= 35) { // Android 15: Darstellung bis an den Rand ist Pflicht
+            root.setOnApplyWindowInsetsListener((v, insets) -> {
+                android.graphics.Insets bars = insets.getInsets(
+                        WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout() | WindowInsets.Type.ime());
+                v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+                return WindowInsets.CONSUMED;
+            });
+        }
+        setContentView(root);
 
         if (savedInstanceState == null || web.restoreState(savedInstanceState) == null) {
             web.loadUrl(START_URL);

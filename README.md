@@ -69,7 +69,7 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 | `docs/` | Die App selbst (HTML, Schrift, Symbole). Läuft auch direkt im Browser und als installierbare Web-App. |
 | `firebase/` | Datenbank-Regeln für die Online-Partien. |
 | `android/` | Android-Projekt, das `docs/` als App verpackt und Web-Updates herunterlädt. |
-| `store/` | Texte für den Store-Eintrag auf Deutsch und Englisch (inklusive Hinweis). |
+| `store/` | Texte für den Store-Eintrag auf Deutsch und Englisch und eine Anleitung für die Play Console. |
 | `.github/workflows/android.yml` | Baut bei Änderungen an `android/` die APK und veröffentlicht sie als Release. |
 | `.github/workflows/web.yml` | Veröffentlicht bei Änderungen an `docs/` ein Web-Update für die App. |
 

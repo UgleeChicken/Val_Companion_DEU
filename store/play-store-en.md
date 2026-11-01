@@ -44,3 +44,7 @@ The board game is required. This app does not replace any game components or the
 - Developer name: `UgleeChicken`
 - Website: `https://wonderl.ink/@ugleechicken`
 - Email address: Google Play also requires an email address for the listing (it is shown publicly).
+
+## Privacy policy (URL)
+
+`https://ugleechicken.github.io/Val_Companion_DEU/datenschutz.html`

@@ -32,10 +32,35 @@ jobs:
       - name: APK umbenennen
         run: cp android/app/build/outputs/apk/release/app-release.apk Val-Companion.apk
 
+      # App-Bundle für den Play Store, signiert mit dem geheimen Upload-Schlüssel.
+      # Läuft nur, wenn die Secrets UPLOAD_KEYSTORE_BASE64 und UPLOAD_KEYSTORE_PASSWORD gesetzt sind.
+      - name: App-Bundle (Play Store) bauen
+        id: bundle
+        env:
+          UPLOAD_KEYSTORE_BASE64: ${{ secrets.UPLOAD_KEYSTORE_BASE64 }}
+          UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$UPLOAD_KEYSTORE_BASE64" ] || [ -z "$UPLOAD_KEYSTORE_PASSWORD" ]; then
+            echo "Keine Upload-Secrets gesetzt, App-Bundle wird übersprungen."
+            exit 0
+          fi
+          echo "$UPLOAD_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          cd android
+          UPLOAD_KEYSTORE_FILE="$RUNNER_TEMP/upload.jks" ./gradlew bundleRelease --no-daemon
+          cp app/build/outputs/bundle/release/app-release.aab ../Val-Companion.aab
+          rm -f "$RUNNER_TEMP/upload.jks"
+          echo "aab=Val-Companion.aab" >> "$GITHUB_OUTPUT"
+
       - uses: actions/upload-artifact@v4
         with:
           name: Val-Companion-APK
           path: Val-Companion.apk
+
+      - uses: actions/upload-artifact@v4
+        if: steps.bundle.outputs.aab != ''
+        with:
+          name: Val-Companion-AAB
+          path: Val-Companion.aab
 
       - name: Als Release veröffentlichen
         uses: softprops/action-gh-release@v2
@@ -45,7 +70,10 @@ jobs:
           body: |
             Android-App, automatisch gebaut aus ${{ github.sha }}.
             Auf dem Handy die Datei **Val-Companion.apk** herunterladen und öffnen.
+            Für den Play Store: **Val-Companion.aab** in der Play Console hochladen (nur vorhanden, wenn die Upload-Secrets gesetzt sind).
 
             Diese App ist ein inoffizielles Fan-Projekt. Sie steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing, dem Verlag von Valheim – Das Brettspiel, und wird von diesen weder unterstützt noch geprüft. Valheim ist eine eingetragene Marke von Iron Gate Studio. Alle Marken gehören ihren jeweiligen Inhabern.
-          files: Val-Companion.apk
+          files: |
+            Val-Companion.apk
+            ${{ steps.bundle.outputs.aab }}
           make_latest: true

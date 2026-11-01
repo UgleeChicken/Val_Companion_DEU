@@ -19,12 +19,12 @@ def releasesRepo = System.getenv("GITHUB_REPOSITORY") ?: "UgleeChicken/Val_Compa
 
 android {
     namespace "de.ugleechicken.valcompanion"
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "de.ugleechicken.valcompanion"
         minSdk 24
-        targetSdk 34
+        targetSdk 36
         versionCode buildNumber
         versionName "1.0.${buildNumber}"
         buildConfigField "String", "DOCS_TREE", "\"${docsTree}\""
@@ -35,14 +35,24 @@ android {
         buildConfig true
     }
 
-    // Fester Schlüssel, damit neue Versionen die alte überschreiben können.
-    // Das ist ein Test-Schlüssel – für den Play Store bräuchte es einen eigenen, geheimen Schlüssel.
     signingConfigs {
+        // Öffentlicher Test-Schlüssel für die APK zum direkten Installieren (GitHub-Releases).
+        // Bleibt gleich, damit neue APKs sich über die alte App installieren lassen.
         shared {
             storeFile file("debug.keystore")
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
+        }
+        // Geheimer Upload-Schlüssel für den Play Store. Kommt nur über GitHub-Secrets in den Build
+        // (UPLOAD_KEYSTORE_FILE und UPLOAD_KEYSTORE_PASSWORD), nie ins Repository.
+        if (System.getenv("UPLOAD_KEYSTORE_FILE")) {
+            upload {
+                storeFile file(System.getenv("UPLOAD_KEYSTORE_FILE"))
+                storePassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
+                keyAlias "upload"
+                keyPassword System.getenv("UPLOAD_KEYSTORE_PASSWORD")
+            }
         }
     }
 
@@ -52,7 +62,8 @@ android {
         }
         release {
             minifyEnabled false
-            signingConfig signingConfigs.shared
+            // Mit Upload-Schlüssel (Play Store) oder sonst mit dem öffentlichen Test-Schlüssel (APK)
+            signingConfig System.getenv("UPLOAD_KEYSTORE_FILE") ? signingConfigs.upload : signingConfigs.shared
         }
     }
 
