@@ -14,10 +14,10 @@ Val Companion
 Unofficial companion: count actions, roll dice and build for your board game
 ```
 
-## Full description (1462/4000 characters)
+## Full description (1505/4000 characters)
 
 ```
-Val Companion is an unofficial companion app for Valheim: The Board Game. It keeps track of everything for your group and has the key rules at hand.
+Val Companion is an unofficial companion app for Valheim: The Board Game. It does the counting for your group and keeps actions, dice, building costs and effects at hand as a quick reference.
 
 FEATURES
 • Action counter: 3 actions per turn as glowing rune stones, end turn, undo and round counter

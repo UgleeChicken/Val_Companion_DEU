@@ -14,10 +14,10 @@ Val Companion
 Inoffizielle Begleit-App: Aktionen zählen, würfeln und bauen für deine Runde
 ```
 
-## Vollständige Beschreibung (1616/4000 Zeichen)
+## Vollständige Beschreibung (1648/4000 Zeichen)
 
 ```
-Val Companion ist eine inoffizielle Begleit-App für Valheim – Das Brettspiel. Sie nimmt deiner Spielrunde das Mitzählen ab und hat die wichtigsten Regeln immer griffbereit.
+Val Companion ist eine inoffizielle Begleit-App für Valheim – Das Brettspiel. Sie nimmt deiner Spielrunde das Mitzählen ab und hat Aktionen, Würfel, Baukosten und Effekte als Spielhilfe immer griffbereit.
 
 FUNKTIONEN
 • Aktionszähler: 3 Aktionen pro Zug als glühende Runensteine, Zug beenden, Rückgängig und Rundenzähler
