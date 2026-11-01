@@ -549,6 +549,8 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
 .about-brand { display: grid; justify-items: center; text-align: center; gap: 6px; margin-bottom: 14px; }
 .about-brand .big-logo { display: grid; justify-items: center; line-height: 1; }
 .about-brand .sub { margin-top: 8px; }
+.btn.danger { background: linear-gradient(180deg, #8a2f22, #5a1a12); color: #ffd6d0; }
+.online .confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: .9rem; }
 </style>
 </head>
 <body>
@@ -654,6 +656,7 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
       <label class="allow"><input type="checkbox" id="allowAll"> <span data-trh="allowAll">Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small></span></label>
       <div class="code-box"><span class="code-l" data-tr>Partie-Code</span><span class="code" id="onCode"></span></div>
       <div class="on-row"><button class="btn" id="onCopy" data-tr>Code kopieren</button><button class="btn" id="onLeave" data-tr>Partie verlassen</button></div>
+      <div class="on-row" id="delArea"><button class="btn danger" id="onDelete" data-tr>Partie für alle löschen</button></div>
       <p class="on-small" data-tr>Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.</p>
     </div>
     <p class="on-err" id="onErr" role="alert" hidden></p>
@@ -814,7 +817,7 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
     <p class="disc" role="note" data-trh="disc"><b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt. Sie steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing, dem Verlag von Valheim – Das Brettspiel, und wird von diesen weder unterstützt noch geprüft. Valheim ist eine eingetragene Marke von Iron Gate Studio. Alle Marken gehören ihren jeweiligen Inhabern.</p>
     <p class="contact"><span class="k" data-tr>Entwickelt von</span> UgleeChicken<br><span class="k" data-tr>Kontakt</span> <a href="https://wonderl.ink/@ugleechicken" target="_blank" rel="noopener">wonderl.ink/@ugleechicken</a></p>
     <p class="small" data-tr>Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.</p>
-    <p class="small"><a href="datenschutz.html" data-tr>Datenschutzerklärung</a></p>
+    <p class="small"><a href="datenschutz.html" data-tr>Datenschutzerklärung</a> · <a href="daten-loeschen.html" data-tr>Daten löschen</a></p>
     <p class="small" data-tr>Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.</p>
   </details>
   <nav class="tabbar" id="tabbar" aria-label="Reiter" data-tr-aria="Reiter">
@@ -1058,7 +1061,11 @@ const EN = {
 "Beschreibungen anzeigen": "Show descriptions",
 "Einstellungen": "Settings",
 "Zuletzt": "Last",
-"Datenschutzerklärung": "Privacy policy"
+"Datenschutzerklärung": "Privacy policy",
+"Partie für alle löschen": "Delete game for everyone",
+"Partie und alle Online-Daten für alle Mitspieler löschen?": "Delete the game and all its online data for every player?",
+"Ja, löschen": "Yes, delete",
+"Daten löschen": "Delete your data"
 };
 const HTML_I18N = {"allowAll": {"de": "Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small>", "en": "Everyone may do everything <small>(e.g. if someone has no phone and another player plays for them)</small>"}, "about1": {"de": "<b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.", "en": "<b>Val Companion</b> – unofficial companion app for Valheim: The Board Game: count actions, roll dice, build furniture and look up rules."}, "disc": {"de": "<b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt. Sie steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing, dem Verlag von Valheim – Das Brettspiel, und wird von diesen weder unterstützt noch geprüft. Valheim ist eine eingetragene Marke von Iron Gate Studio. Alle Marken gehören ihren jeweiligen Inhabern.", "en": "<b>Note:</b> This app is an unofficial fan project. It is not affiliated with, endorsed or reviewed by Iron Gate Studio, Coffee Stain Publishing or MOOD Publishing, the publisher of Valheim: The Board Game. Valheim is a registered trademark of Iron Gate Studio. All trademarks belong to their respective owners."}};
 const tr = s => (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, s)) ? EN[s] : s;
@@ -1669,6 +1676,19 @@ async function pushNow() {
   }
 }
 
+function resetDelArea() {
+  const a = $("delArea"); if (a) a.innerHTML = `<button class="btn danger" id="onDelete">${tr("Partie für alle löschen")}</button>`;
+}
+// Löscht die Partie samt Spielstand, Spielernamen und Protokoll aus der Datenbank. Die anderen Handys werden getrennt.
+async function deleteRoom() {
+  const code = net.code; if (!code) return;
+  try {
+    await dbReq("DELETE", code);
+    leaveRoom(); resetDelArea();
+    setNet("aus", tr("Die Partie wurde gelöscht."));
+  } catch (e) { resetDelArea(); setNet(net.status, e.message); }
+}
+
 function leaveRoom() {
   closeStream(); clearTimeout(net.pushTimer); clearTimeout(net.retry);
   net.code = null; net.lastShared = null; remember(null);
@@ -1697,11 +1717,17 @@ function renderOnline() {
 }
 
 document.addEventListener("click", e => {
-  const t = e.target.closest("#onCreate,#onJoin,#onLeave,#onCopy,#onPill");
+  const t = e.target.closest("#onCreate,#onJoin,#onLeave,#onCopy,#onPill,#onDelete,#onDelYes,#onDelNo");
   if (!t) return;
   if (t.id === "onCreate") return createRoom();
   if (t.id === "onJoin") return joinRoom($("joinCode").value);
   if (t.id === "onLeave") return leaveRoom();
+  if (t.id === "onDelete") {
+    $("delArea").innerHTML = `<span class="confirm">${tr("Partie und alle Online-Daten für alle Mitspieler löschen?")} <button class="btn danger" id="onDelYes">${tr("Ja, löschen")}</button><button class="btn" id="onDelNo">${tr("Abbrechen")}</button></span>`;
+    return;
+  }
+  if (t.id === "onDelNo") return resetDelArea();
+  if (t.id === "onDelYes") return deleteRoom();
   if (t.id === "onPill") return goTab("spiel");
   if (t.id === "onCopy") {
     const txt = fmtCode(net.code);

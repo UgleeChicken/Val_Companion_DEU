@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Val Companion – Daten löschen / Delete your data</title>
+<meta name="theme-color" content="#2a1709">
+<style>
+@font-face { font-family: "Averia Serif Libre"; font-weight: 400; font-display: swap; src: url("fonts/averia-serif-libre-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Averia Serif Libre"; font-weight: 700; font-display: swap; src: url("fonts/averia-serif-libre-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Germania One"; font-weight: 400; font-display: swap; src: url("fonts/germania-one-latin-400-normal.woff2") format("woff2"); }
+:root { --panel: #2a201b; --fg: #f0e4cd; --muted: #b9a78c; --gold: #f2b53c; --ink: #2e1608; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #6e3818 url("img/wood.jpg") repeat; background-size: 640px 480px; color: var(--fg);
+  font: 16px/1.55 "Averia Serif Libre", Georgia, serif; }
+main { max-width: 760px; margin: 0 auto; padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 18px; }
+section { background: var(--panel) url("img/panel.png"); border: 2px solid #120a06; border-radius: 10px; padding: 18px 20px; box-shadow: 0 8px 20px #00000066; min-width: 0; }
+h1, h2 { font-family: "Germania One", Georgia, serif; font-weight: 400; color: var(--gold); letter-spacing: .04em;
+  text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink); text-wrap: balance; }
+h1 { margin: 0 0 6px; font-size: 1.8rem; }
+h2 { margin: 22px 0 6px; font-size: 1.2rem; }
+p, li { max-width: 68ch; }
+ul { padding-left: 1.2em; }
+a { color: var(--gold); overflow-wrap: anywhere; }
+.top { display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+.top a { background: var(--panel); border: 2px solid #120a06; border-radius: 999px; padding: 4px 14px; text-decoration: none; }
+.muted { color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><a href="index.html">← Zur App / Back to the app</a><a href="#en">English</a></div>
+
+  <section id="de" lang="de">
+    <h1>Daten löschen</h1>
+    <p class="muted">Val Companion – App von UgleeChicken. Stand: November 2026.</p>
+    <p>Val Companion hat keine Benutzerkonten. Daten entstehen nur als Spielstand auf deinem Gerät und – wenn du eine Online-Partie nutzt – als gemeinsamer Spielstand in der Online-Datenbank (Google Firebase).</p>
+
+    <h2>1. Online-Partie selbst löschen (sofort)</h2>
+    <ol>
+      <li>App öffnen und den Reiter <b>Spiel</b> wählen.</li>
+      <li>Im Bereich <b>Online-Partie</b> auf <b>„Partie für alle löschen“</b> tippen.</li>
+      <li>Mit <b>„Ja, löschen“</b> bestätigen.</li>
+    </ol>
+    <p>Gelöscht werden sofort und vollständig: der Partie-Code, der Spielstand, alle Spielernamen und das Protokoll der Partie. Alle Mitspieler werden dabei getrennt.</p>
+
+    <h2>2. Löschung anfragen</h2>
+    <p>Kommst du nicht mehr an die Partie, schreib uns über <a href="https://wonderl.ink/@ugleechicken" target="_blank" rel="noopener">wonderl.ink/@ugleechicken</a> und nenne möglichst den Partie-Code. Wir löschen die Partie innerhalb von 30 Tagen. Ohne Code löschen wir auf Wunsch alle Partien, die zu deiner Beschreibung passen.</p>
+
+    <h2>3. Daten auf deinem Gerät</h2>
+    <p>Spielstand und Einstellungen auf deinem Gerät löschst du, indem du in den Android-Einstellungen bei Val Companion <b>Speicher → Daten löschen</b> wählst oder die App deinstallierst. Im Browser entfernst du dafür die Website-Daten.</p>
+
+    <h2>Was gespeichert bleibt</h2>
+    <p>Nach der Löschung bewahren wir keine Kopien der Partie auf. Die anonyme Anmeldekennung von Firebase enthält keine persönlichen Daten und ist mit keiner Partie verknüpft; sie wird auf deinem Gerät mit den App-Daten gelöscht. Technische Protokolle der Dienstleister (Google, GitHub) werden nach deren Fristen gelöscht.</p>
+  </section>
+
+  <section id="en" lang="en">
+    <h1>Delete your data</h1>
+    <p class="muted">Val Companion – app by UgleeChicken. Last updated: November 2026.</p>
+    <p>Val Companion has no user accounts. Data only exists as the game state on your device and – if you use an online game – as a shared game state in the online database (Google Firebase).</p>
+
+    <h2>1. Delete an online game yourself (immediately)</h2>
+    <ol>
+      <li>Open the app and go to the <b>Game</b> tab.</li>
+      <li>In the <b>Online game</b> section, tap <b>“Delete game for everyone”</b>.</li>
+      <li>Confirm with <b>“Yes, delete”</b>.</li>
+    </ol>
+    <p>This immediately and completely deletes the game code, the game state, all player names and the game log. All players are disconnected.</p>
+
+    <h2>2. Request deletion</h2>
+    <p>If you can no longer access the game, contact us via <a href="https://wonderl.ink/@ugleechicken" target="_blank" rel="noopener">wonderl.ink/@ugleechicken</a> and include the game code if possible. We delete the game within 30 days. Without a code, we will delete any games matching your description on request.</p>
+
+    <h2>3. Data on your device</h2>
+    <p>To delete the game state and settings on your device, go to Android settings → Val Companion → <b>Storage → Clear data</b>, or uninstall the app. In a browser, remove the site data.</p>
+
+    <h2>What is retained</h2>
+    <p>After deletion we keep no copies of the game. The anonymous Firebase sign-in ID contains no personal data and is not linked to any game; it is deleted together with the app data on your device. Technical logs of our service providers (Google, GitHub) are deleted according to their retention periods.</p>
+  </section>
+</main>
+<script>
+try { if (localStorage.getItem("valcompanion-lang") === "en" && !location.hash) document.getElementById("en").scrollIntoView(); } catch {}
+</script>
+</body>
+</html>
