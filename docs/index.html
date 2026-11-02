@@ -553,6 +553,7 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
 .btn.danger { background: linear-gradient(180deg, #8a2f22, #5a1a12); color: #ffd6d0; }
 .online .confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: .9rem; }
 .new-game { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #5c432955; }
+.setgroup .set-opt { margin: 0 0 14px; color: var(--fg); }
 </style>
 </head>
 <body>
@@ -798,6 +799,7 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
   <details class="panel legend setgroup" data-tab="spiel" id="settingsBox">
     <summary class="label"><span data-tr>Einstellungen</span> <span class="chev" aria-hidden="true">▶</span></summary>
     <div class="set-sec lang"><div class="set-l">Sprache · Language</div><div class="on-row"><button class="btn" data-lang="de">Deutsch</button><button class="btn" data-lang="en">English</button></div></div>
+  <label class="desc-t set-opt"><input type="checkbox" id="autoDiceT"> <span data-tr>Bei „Ressourcen sammeln“ automatisch zum Würfeln wechseln</span></label>
   <section class="settings">
     <span data-tr>Aktionen pro Zug</span>
     <span class="stepper">
@@ -1067,7 +1069,8 @@ const EN = {
 "Partie für alle löschen": "Delete game for everyone",
 "Partie und alle Online-Daten für alle Mitspieler löschen?": "Delete the game and all its online data for every player?",
 "Ja, löschen": "Yes, delete",
-"Daten löschen": "Delete your data"
+"Daten löschen": "Delete your data",
+"Bei „Ressourcen sammeln“ automatisch zum Würfeln wechseln": "Switch to the dice automatically after “Collect resources”"
 };
 const HTML_I18N = {"allowAll": {"de": "Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small>", "en": "Everyone may do everything <small>(e.g. if someone has no phone and another player plays for them)</small>"}, "about1": {"de": "<b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.", "en": "<b>Val Companion</b> – unofficial companion app for Valheim: The Board Game: count actions, roll dice, build furniture and look up rules."}, "disc": {"de": "<b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt. Sie steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing, dem Verlag von Valheim – Das Brettspiel, und wird von diesen weder unterstützt noch geprüft. Valheim ist eine eingetragene Marke von Iron Gate Studio. Alle Marken gehören ihren jeweiligen Inhabern.", "en": "<b>Note:</b> This app is an unofficial fan project. It is not affiliated with, endorsed or reviewed by Iron Gate Studio, Coffee Stain Publishing or MOOD Publishing, the publisher of Valheim: The Board Game. Valheim is a registered trademark of Iron Gate Studio. All trademarks belong to their respective owners."}};
 const tr = s => (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, s)) ? EN[s] : s;
@@ -1237,6 +1240,7 @@ function render() {
   }).join("");
   $("actions").classList.toggle("nodesc", !st.desc);
   $("descT").checked = !!st.desc;
+  $("autoDiceT").checked = st.autoDice !== false;
   const l0 = st.log[0];
   $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span>${tr("Zuletzt")}: ${esc(logText(l0))}</span>` : "";
   $("lastLog").hidden = !l0;
@@ -1254,7 +1258,19 @@ function render() {
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-a],[data-pip],[data-rm],[data-col],#addP,#undo,#end,#perMinus,#perPlus,#reset,#resetYes,#resetNo");
   if (!t) return;
-  if (t.dataset.a) { const a = ACTIONS[+t.dataset.a]; if (GOES_TO_BUILD.includes(a.n)) return goTab("bauen"); return doAction(+t.dataset.a); }
+  if (t.dataset.a) {
+    const a = ACTIONS[+t.dataset.a];
+    if (GOES_TO_BUILD.includes(a.n)) return goTab("bauen");
+    const top = st.log[0];
+    doAction(+t.dataset.a);
+    // Ressourcen sammeln: gleich zum Würfeln, Sammelwürfel schon ausgewählt (abschaltbar in den Einstellungen)
+    if (a.n === "Ressourcen sammeln" && st.autoDice !== false && st.log[0] !== top) {
+      st.pool = { red: 0, yellow: 0, blue: 0, black: 0, green: 1 };
+      st.roll = [];
+      goTab("wuerfeln");
+    }
+    return;
+  }
   if (t.dataset.pip) { if (+t.dataset.pip >= counted()) doAction(ACTIONS.findIndex(a => a.n === "Sonstige")); return; }
   if (t.dataset.col) {
     const i = +t.dataset.col, others = st.colors.filter((_, k) => k !== i);
@@ -1282,7 +1298,7 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed };
+      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice };
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
       return render();
@@ -1499,7 +1515,7 @@ const FB = Object.assign({
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
-const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed"];           // bleibt auf jedem Handy für sich
+const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed", "autoDice"];           // bleibt auf jedem Handy für sich
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
 const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
 
@@ -1846,7 +1862,10 @@ document.addEventListener("click", e => {
   if (g) { st.closed = st.closed || {}; st.closed[g.dataset.grp] = !st.closed[g.dataset.grp]; return render(); }
   if (e.target.closest("#lastLog")) { goTab("spiel"); const lg = $("log"); if (lg) lg.scrollIntoView({ block: "center" }); }
 });
-document.addEventListener("change", e => { if (e.target && e.target.id === "descT") { st.desc = e.target.checked; render(); } });
+document.addEventListener("change", e => {
+  if (e.target && e.target.id === "descT") { st.desc = e.target.checked; render(); }
+  if (e.target && e.target.id === "autoDiceT") { st.autoDice = e.target.checked; render(); }
+});
 
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
