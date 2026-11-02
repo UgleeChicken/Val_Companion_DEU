@@ -553,7 +553,12 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
 .btn.danger { background: linear-gradient(180deg, #8a2f22, #5a1a12); color: #ffd6d0; }
 .online .confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: .9rem; }
 .new-game { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #5c432955; }
-.act-opts { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: -2px 0 10px; }
+.act-opts { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 8px 0 4px; padding-left: 2px; }
+details.opts { margin: -4px 0 10px; }
+details.opts summary { list-style: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: .85rem; color: var(--muted); padding: 4px 0; }
+details.opts summary::-webkit-details-marker { display: none; }
+details.opts .chev3 { color: var(--gold); display: inline-block; transition: transform .2s; }
+details.opts[open] .chev3 { transform: rotate(90deg); }
 .act-opts .desc-t { margin: 0; }
 </style>
 </head>
@@ -700,10 +705,14 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
 
   <section class="panel" data-tab="zug">
     <div class="label" data-tr>Aktion ausführen</div>
-    <div class="act-opts">
-      <label class="desc-t"><input type="checkbox" id="descT"> <span data-tr>Beschreibungen anzeigen</span></label>
-      <label class="desc-t"><input type="checkbox" id="autoDiceT"> <span data-tr>Nach „Ressourcen sammeln“ zum Würfeln</span></label>
-    </div>
+    <details class="opts" id="actOpts">
+      <summary><span class="chev3" aria-hidden="true">▸</span><span data-tr>Optionen</span></summary>
+      <div class="act-opts">
+        <label class="desc-t"><input type="checkbox" id="descT"> <span data-tr>Beschreibungen anzeigen</span></label>
+        <label class="desc-t"><input type="checkbox" id="autoDiceT"> <span data-tr>Nach „Ressourcen sammeln“ zum Würfeln</span></label>
+        <label class="desc-t"><input type="checkbox" id="autoBuildT"> <span data-tr>Nach „Möbelstück herstellen“ zum Bauen</span></label>
+      </div>
+    </details>
     <div class="actions" id="actions"></div>
   </section>
 
@@ -1073,7 +1082,11 @@ const EN = {
 "Partie und alle Online-Daten für alle Mitspieler löschen?": "Delete the game and all its online data for every player?",
 "Ja, löschen": "Yes, delete",
 "Daten löschen": "Delete your data",
-"Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”"
+"Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
+"Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
+"Optionen": "Options",
+"Ressourcen zahlen, aufs Haustableau": "Pay resources, add it to your house board",
+"Angrenzend zu Wasser: Ressourcen zahlen": "Adjacent to water: pay resources"
 };
 const HTML_I18N = {"allowAll": {"de": "Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small>", "en": "Everyone may do everything <small>(e.g. if someone has no phone and another player plays for them)</small>"}, "about1": {"de": "<b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.", "en": "<b>Val Companion</b> – unofficial companion app for Valheim: The Board Game: count actions, roll dice, build furniture and look up rules."}, "disc": {"de": "<b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt. Sie steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing, dem Verlag von Valheim – Das Brettspiel, und wird von diesen weder unterstützt noch geprüft. Valheim ist eine eingetragene Marke von Iron Gate Studio. Alle Marken gehören ihren jeweiligen Inhabern.", "en": "<b>Note:</b> This app is an unofficial fan project. It is not affiliated with, endorsed or reviewed by Iron Gate Studio, Coffee Stain Publishing or MOOD Publishing, the publisher of Valheim: The Board Game. Valheim is a registered trademark of Iron Gate Studio. All trademarks belong to their respective owners."}};
 const tr = s => (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, s)) ? EN[s] : s;
@@ -1104,12 +1117,12 @@ const ACTIONS = [
   { n: "Bewegen", s: "Bis zu 2 Felder, unerforschte Plättchen aufdecken", i: "move" },
   { n: "Ressourcen sammeln", s: "Sammelwürfel werfen, vom derzeitigen Feld einsammeln", i: "hand" },
   { n: "Ausrüstung tauschen", s: "Karten oder Verbrauchsgegenstände mit Charakteren auf deinem Feld", i: "swap" },
-  { n: "Schiff bauen", s: "Angrenzend zu Wasser · öffnet den Reiter Bauen", i: "ship" },
+  { n: "Schiff bauen", s: "Angrenzend zu Wasser · öffnet den Reiter Bauen", s2: "Angrenzend zu Wasser: Ressourcen zahlen", i: "ship" },
   { n: "Lossegeln", s: "Zu einem Feld am selben Gewässer", i: "sail" },
   { n: "Mit Haldor handeln", s: "Münzen zahlen für Karten oder Ressourcen · vom Haus aus +1 Münze", i: "bag" },
   { n: "Hinterhalt", s: "Fernkampfwaffe gegen angrenzende Kreatur", i: "bow" },
   { n: "Sonstige", s: "Andere Aktion", i: "dots" },
-  { n: "Möbelstück herstellen", s: "Möbelstück wählen · öffnet den Reiter Bauen", i: "hammer", h: 1 },
+  { n: "Möbelstück herstellen", s: "Möbelstück wählen · öffnet den Reiter Bauen", s2: "Ressourcen zahlen, aufs Haustableau", i: "hammer", h: 1 },
   { n: "Ausrüstung herstellen", s: "Ressourcen zahlen, aufs Charaktertableau", i: "anvil", h: 1 },
   { n: "Nahrung kochen", s: "Oberste Nahrungskarte aufdecken", i: "pot", h: 1 },
   { n: "Gekochte Nahrung essen", s: "Nahrungskarte abwerfen: Lebenspunkte, Ausdauer oder Neuwurfplättchen", i: "meat", h: 1 },
@@ -1228,7 +1241,7 @@ function render() {
   if (!st.closed || typeof st.closed !== "object") st.closed = {};
   const actBtn = (a, i) => `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && locked()) || (!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) || (a.req && !st.built.includes(a.req)) ? "disabled" : ""} ${a.req && !st.built.includes(a.req) ? `title="${tf("Erst {f} bauen", { f: tr(furnName(a.req)) })}"` : a.h ? `title="${tr("Nur im Haus")}"` : ""}>
        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${a.i}"/></svg>
-       <span class="n">${tr(a.n)}</span><span class="s${a.req && !st.built.includes(a.req) ? " req" : ""}">${a.req && !st.built.includes(a.req) ? tf("Erst {f} bauen", { f: tr(furnName(a.req)) }) : tr(a.s)}</span></button>`;
+       <span class="n">${tr(a.n)}</span><span class="s${a.req && !st.built.includes(a.req) ? " req" : ""}">${a.req && !st.built.includes(a.req) ? tf("Erst {f} bauen", { f: tr(furnName(a.req)) }) : tr(a.s2 && st.autoBuild === false ? a.s2 : a.s)}</span></button>`;
   const grpOf = a => a.free ? "free" : a.h ? "house" : "any";
   const GROUPS = [
     ["any", tr("Überall möglich"), ""],
@@ -1244,6 +1257,8 @@ function render() {
   $("actions").classList.toggle("nodesc", !st.desc);
   $("descT").checked = !!st.desc;
   $("autoDiceT").checked = st.autoDice !== false;
+  $("autoBuildT").checked = st.autoBuild !== false;
+  if ($("actOpts").open !== !!st.optsOpen) $("actOpts").open = !!st.optsOpen;
   const l0 = st.log[0];
   $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span>${tr("Zuletzt")}: ${esc(logText(l0))}</span>` : "";
   $("lastLog").hidden = !l0;
@@ -1263,7 +1278,7 @@ document.addEventListener("click", e => {
   if (!t) return;
   if (t.dataset.a) {
     const a = ACTIONS[+t.dataset.a];
-    if (GOES_TO_BUILD.includes(a.n)) return goTab("bauen");
+    if (GOES_TO_BUILD.includes(a.n) && st.autoBuild !== false) return goTab("bauen");
     const top = st.log[0];
     doAction(+t.dataset.a);
     // Ressourcen sammeln: gleich zum Würfeln, Sammelwürfel schon ausgewählt (abschaltbar in den Einstellungen)
@@ -1301,7 +1316,7 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice };
+      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen };
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
       return render();
@@ -1518,7 +1533,7 @@ const FB = Object.assign({
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
-const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed", "autoDice"];           // bleibt auf jedem Handy für sich
+const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen"];           // bleibt auf jedem Handy für sich
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
 const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
 
@@ -1868,7 +1883,13 @@ document.addEventListener("click", e => {
 document.addEventListener("change", e => {
   if (e.target && e.target.id === "descT") { st.desc = e.target.checked; render(); }
   if (e.target && e.target.id === "autoDiceT") { st.autoDice = e.target.checked; render(); }
+  if (e.target && e.target.id === "autoBuildT") { st.autoBuild = e.target.checked; render(); }
 });
+
+// Bereich „Optionen“ auf- und zuklappen und merken
+document.addEventListener("toggle", e => {
+  if (e.target && e.target.id === "actOpts" && st.optsOpen !== e.target.open) { st.optsOpen = e.target.open; save(); }
+}, true);
 
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
