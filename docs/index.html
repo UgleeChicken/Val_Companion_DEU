@@ -489,7 +489,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 body.is-locked .pip { cursor: not-allowed; filter: saturate(.6); }
 
 /* Sprache */
-.lang .on-row { margin: 0; }
+.lang .on-row { margin: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+.lang .on-row .btn { min-width: 7.5em; }
 .lang .btn.on { background: linear-gradient(180deg, #b26a2e, #7a4019); color: var(--gold-hi); box-shadow: 0 0 0 2px var(--gold), 0 2px 4px #00000088; }
 
 /* ===== Übersichtlichkeit ===== */
@@ -551,6 +552,7 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
 .about-brand .sub { margin-top: 8px; }
 .btn.danger { background: linear-gradient(180deg, #8a2f22, #5a1a12); color: #ffd6d0; }
 .online .confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: .9rem; }
+.new-game { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #5c432955; }
 </style>
 </head>
 <body>
@@ -665,6 +667,7 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
   <section class="panel" data-tab="spiel">
     <div class="label" data-tr>Wikinger am Tisch</div>
     <div class="players" id="players"></div>
+    <div class="new-game" id="resetArea"><button class="btn" id="reset" data-tr>Neues Spiel</button></div>
   </section>
 
   <section class="board" aria-live="polite" data-tab="zug">
@@ -802,7 +805,6 @@ header.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-con
       <span id="per">3</span>
       <button id="perPlus" aria-label="Mehr Aktionen" data-tr-aria="Mehr Aktionen">+</button>
     </span>
-    <span id="resetArea"><button class="btn" id="reset" data-tr>Neues Spiel</button></span>
   </section>
   <p class="note" data-tr>Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
   </details>
