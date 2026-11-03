@@ -566,6 +566,9 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 .fx .tok.tok-dark { background: #0d0907; box-shadow: inset 0 0 0 1px #f3e6cf33; }
 .fx .eqd { font-size: .85rem; color: var(--muted); }
 .ext-tag { display: inline-block; margin-left: 6px; font-size: .7rem; letter-spacing: .04em; color: var(--frost); border: 1px solid #9ccfe066; border-radius: 999px; padding: 0 7px; vertical-align: 1px; }
+.dmax { font-size: .7em; color: var(--muted); margin-left: 1px; }
+.settings .set-break { flex-basis: 100%; height: 0; }
+.settings .set-hint { flex-basis: 100%; font-size: .8rem; color: var(--muted); font-style: italic; }
 </style>
 </head>
 <body>
@@ -845,7 +848,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
         </ul>
       </div>
       <div class="die">
-        <h3 data-tr>Kreaturenschaden (schwarz)</h3>
+        <h3 data-tr>Schadenswürfel (schwarz)</h3>
         <ul class="faces">
           <li><span class="x">2×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw"/></svg></span><span><b data-tr>Treffer</b></span></li>
           <li><span class="x">1×</span><span class="face d-black"><svg viewBox="0 0 24 24"><use href="#i-claw" transform="translate(9 0) rotate(30 6 6) scale(.5)"/><use href="#i-claw" transform="translate(3 11) rotate(30 6 6) scale(.5)"/></svg></span><span><b data-tr>Kritischer Treffer</b></span></li>
@@ -873,6 +876,14 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
       <span id="per">3</span>
       <button id="perPlus" aria-label="Mehr Aktionen" data-tr-aria="Mehr Aktionen">+</button>
     </span>
+    <span class="set-break"></span>
+    <span data-tr>Zusätzliche Würfel je Sorte</span>
+    <span class="stepper">
+      <button id="dxMinus" aria-label="Weniger Würfel" data-tr-aria="Weniger Würfel">−</button>
+      <span id="diceExtra">0</span>
+      <button id="dxPlus" aria-label="Mehr Würfel" data-tr-aria="Mehr Würfel">+</button>
+    </span>
+    <span class="set-hint" data-tr>Im Spiel: 2 rote, 2 gelbe, 2 blaue, 3 Schadens- und 1 Sammelwürfel.</span>
   </section>
   <p class="note" data-tr>Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
   </details>
@@ -969,7 +980,7 @@ const EN = {
 "Roter Angriffswürfel": "Red attack die",
 "Gelber Angriffswürfel": "Yellow attack die",
 "Blauer Verteidigungswürfel": "Blue defense die",
-"Kreaturenschaden-Würfel": "Damage die",
+"Schadenswürfel": "Damage die",
 "Sammelwürfel": "Collect die",
 "rot": "red",
 "gelb": "yellow",
@@ -1112,7 +1123,7 @@ const EN = {
 "Angriffswürfel (gelb)": "Attack die (yellow)",
 "Verteidigungswürfel (blau)": "Defense die (blue)",
 "Sammelwürfel (grün)": "Collect die (green)",
-"Kreaturenschaden (schwarz)": "Damage die (black)",
+"Schadenswürfel (schwarz)": "Damage die (black)",
 "– kein Effekt": "– no effect",
 "Aktionen pro Zug": "Actions per turn",
 "Weniger Aktionen": "Fewer actions",
@@ -1139,6 +1150,10 @@ const EN = {
 "Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
 "Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
 "Optionen": "Options",
+"Zusätzliche Würfel je Sorte": "Extra dice per type",
+"Weniger Würfel": "Fewer dice",
+"Mehr Würfel": "More dice",
+"Im Spiel: 2 rote, 2 gelbe, 2 blaue, 3 Schadens- und 1 Sammelwürfel.": "In the game: 2 red, 2 yellow, 2 blue, 3 damage and 1 collect die.",
 "Gartenbeet bestellen": "Tend a garden bed",
 "Gartenharke nötig: 1 Holz, Gartenbeet wählen · öffnet den Reiter Bauen": "Needs the garden rake: 1 wood, choose a garden bed · opens the Build tab",
 "Gartenharke nötig: 1 Holz, 1 Gartenbeet über die gekochte Nahrung legen": "Needs the garden rake: 1 wood, place 1 garden bed above the prepared food",
@@ -1328,6 +1343,8 @@ function render() {
   $("round").textContent = st.round;
   document.documentElement.style.setProperty("--pc", pc(st.current));
   $("per").textContent = st.per;
+  $("diceExtra").textContent = st.diceExtra | 0;
+  $("dxMinus").disabled = !(st.diceExtra | 0); $("dxPlus").disabled = (st.diceExtra | 0) >= 5;
 
   $("players").innerHTML = st.players.map((p, i) => `
     <div class="player ${i === st.current ? "active" : ""}" style="--pc:${pc(i)}">
@@ -1388,7 +1405,7 @@ function render() {
 }
 
 document.addEventListener("click", e => {
-  const t = e.target.closest("[data-a],[data-pip],[data-rm],[data-col],#addP,#undo,#end,#perMinus,#perPlus,#reset,#resetYes,#resetNo");
+  const t = e.target.closest("[data-a],[data-pip],[data-rm],[data-col],#addP,#undo,#end,#perMinus,#perPlus,#dxMinus,#dxPlus,#reset,#resetYes,#resetNo");
   if (!t) return;
   if (t.dataset.a) {
     const a = ACTIONS[+t.dataset.a];
@@ -1426,13 +1443,15 @@ document.addEventListener("click", e => {
     case "end": return endTurn();
     case "perMinus": st.per = Math.max(1, st.per - 1); return render();
     case "perPlus": st.per = Math.min(8, st.per + 1); return render();
+    case "dxMinus": st.diceExtra = Math.max(0, (st.diceExtra | 0) - 1); return render();
+    case "dxPlus": st.diceExtra = Math.min(5, (st.diceExtra | 0) + 1); return render();
     case "reset":
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
       const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen };
-      const ext = st.ext;
-      st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; Object.assign(st, mine);
+      const ext = st.ext, dx = st.diceExtra | 0;
+      st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; st.diceExtra = dx; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
       return render();
     }
@@ -1479,7 +1498,7 @@ const DICE = {
     { n: "Leer", svg: "" },
     { n: "Leer", svg: "" },
   ] },
-  black:  { name: "Kreaturenschaden-Würfel", short: "schwarz", cls: "d-black", icon: '<use href="#i-claw"/>', faces: [
+  black:  { name: "Schadenswürfel", short: "schwarz", cls: "d-black", icon: '<use href="#i-claw"/>', faces: [
     { n: "Treffer", svg: '<use href="#i-claw"/>' },
     { n: "Treffer", svg: '<use href="#i-claw"/>' },
     { n: "Kritischer Treffer", svg: '<use href="#i-claw" transform="translate(9 0) rotate(30 6 6) scale(.5)"/><use href="#i-claw" transform="translate(3 11) rotate(30 6 6) scale(.5)"/>' },
@@ -1496,7 +1515,9 @@ const DICE = {
     { n: "Kritisches Sammeln", svg: '<use href="#i-hand" transform="translate(-1 -1) scale(.6)"/><use href="#i-hand" transform="translate(10 10) scale(.6)"/>' },
   ] },
 };
-const MAX_DICE = 6;
+// Würfel im Spiel: so viele gibt es von jeder Sorte. In den Einstellungen lässt sich die Zahl erhöhen.
+const DICE_MAX = { red: 2, yellow: 2, blue: 2, black: 3, green: 1 };
+const maxDice = k => (DICE_MAX[k] || 1) + (st.diceExtra | 0);
 let tumble = new Set();
 
 function diceState() {
@@ -1524,14 +1545,15 @@ function rollSummary(rolls) {
 
 function renderDice() {
   diceState();
+  for (const k in st.pool) if (DICE[k] && st.pool[k] > maxDice(k)) st.pool[k] = maxDice(k);
   $("pool").innerHTML = Object.entries(DICE).map(([k, d]) => `
     <div class="dp ${d.faces ? "" : "off"}">
       ${faceHtml(k, d.icon)}
       <span class="nm">${tr(d.name)}</span>
       <span class="stepper">
         <button data-dm="${k}" aria-label="${tf("{d} weniger", { d: tr(d.name) })}" ${!d.faces || !st.pool[k] ? "disabled" : ""}>−</button>
-        <span>${st.pool[k]}</span>
-        <button data-dp="${k}" aria-label="${tf("{d} mehr", { d: tr(d.name) })}" ${!d.faces || st.pool[k] >= MAX_DICE ? "disabled" : ""}>+</button>
+        <span>${st.pool[k]}<small class="dmax">/${maxDice(k)}</small></span>
+        <button data-dp="${k}" aria-label="${tf("{d} mehr", { d: tr(d.name) })}" ${!d.faces || st.pool[k] >= maxDice(k) ? "disabled" : ""}>+</button>
       </span>
     </div>`).join("");
   const total = Object.values(st.pool).reduce((a, b) => a + b, 0);
@@ -1573,7 +1595,7 @@ document.addEventListener("click", e => {
   const t = e.target.closest("[data-dp],[data-dm],[data-rr],#rollBtn,#poolClear");
   if (!t) return;
   diceState();
-  if (t.dataset.dp) { st.pool[t.dataset.dp] = Math.min(MAX_DICE, st.pool[t.dataset.dp] + 1); return render(); }
+  if (t.dataset.dp) { st.pool[t.dataset.dp] = Math.min(maxDice(t.dataset.dp), st.pool[t.dataset.dp] + 1); return render(); }
   if (t.dataset.dm) { st.pool[t.dataset.dm] = Math.max(0, st.pool[t.dataset.dm] - 1); return render(); }
   if (t.dataset.rr) return reroll(+t.dataset.rr);
   if (t.id === "rollBtn") return rollAll();
@@ -1788,6 +1810,7 @@ function cleanState(o) {
     })),
     log: (Array.isArray(o.log) ? o.log : []).slice(0, 120).map(l => cleanLog(l, n)),
     built: (Array.isArray(o.built) ? o.built : []).filter(k => FURN.some(f => f.k === k && !f.ship)),
+    diceExtra: int(o.diceExtra, 0, 5, 0),
     ext: { rache: !!(o.ext && o.ext.rache), gf: !!(o.ext && o.ext.gf) },
     roll: (Array.isArray(o.roll) ? o.roll : []).slice(0, 40)
       .filter(r => r && DICE[r.d] && DICE[r.d].faces && Number.isInteger(r.f) && r.f >= 0 && r.f < DICE[r.d].faces.length)
