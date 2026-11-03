@@ -53,6 +53,7 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 
 - Zählt die Aktionen pro Zug (Standard: 3, einstellbar von 1 bis 8) mit glühenden Runensteinen
 - Alle 15 Aktionen mit den offiziellen deutschen Bezeichnungen, Symbol und Kurzbeschreibung; Haus-Aktionen gruppiert, „Nach den Bienen sehen“ nur 1× pro Zug
+- Gamefound-Inhalte zuschaltbar (Spiel → Einstellungen): Aktion „Gartenbeet bestellen“, drei Gartenbeete im Reiter Bauen, zusätzliche Symbole in der Spielhilfe
 - Erweiterung „Rache des Verlassenen“ zuschaltbar (Spiel → Einstellungen): neue Aktion „Inschriften studieren“
 - Eigene Rubrik mit allen 11 freien Aktionen: werden protokolliert, zählen aber nicht mit
 - 1 bis 4 Spieler mit änderbaren Namen und den Spielerfarben Rot, Blau, Grün und Gelb (Klick auf den Farbpunkt wechselt sie), Spielerwechsel und Rundenzähler

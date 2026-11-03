@@ -658,6 +658,10 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
       <g id="ex-blaze"><use href="#i-fire" transform="translate(0 3) scale(.68)" style="color:#f08a3a"/><text x="12" y="16" font-size="7.5" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">=+2</text></g>
       <g id="ex-bettermead"><use href="#e-flask" style="--fl:#c0392b" transform="translate(-1 3) scale(.78)"/><text x="13.5" y="11" font-size="8.5" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">+1</text></g>
       <g id="ex-shared" fill="currentColor"><circle cx="12" cy="12" r="4.2"/><path d="M12 2 V5.5 M12 18.5 V22 M2 12 H5.5 M18.5 12 H22 M4.9 4.9 L7.4 7.4 M16.6 16.6 L19.1 19.1 M19.1 4.9 L16.6 7.4 M7.4 16.6 L4.9 19.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
+      <g id="i-sprout" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21 V11"/><path d="M12 13 Q5 13 4 6 Q11 6 12 13 Z"/><path d="M12 11 Q13 4.5 20 4 Q19.5 11 12 11 Z"/><path d="M5 21 H19"/></g>
+      <g id="gf-lessmove"><path d="M4 5 H10 V13.5 L16 15.5 Q19.5 16.8 19.5 19.5 V20.5 H4 Z" fill="currentColor"/><text x="12.5" y="10.5" font-size="8.5" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">−1</text></g>
+      <g id="gf-critplus"><text x="0.5" y="12" font-size="8.5" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">+1</text><use href="#i-axe" transform="translate(11 1) scale(.45)"/><use href="#i-axe" transform="translate(4 12) scale(.42)"/><use href="#i-axe" transform="translate(13 12) scale(.42)"/></g>
+      <g id="gf-garden"><use href="#r-holz" transform="translate(0 4) scale(.5)"/><path d="M11.5 12 H15.5 M14 10.3 L15.8 12 L14 13.7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><use href="#i-sprout" transform="translate(15.5 6) scale(.42)"/></g>
     </defs>
   </svg>
   <button class="status" id="status" data-tab-not="zug" aria-label="Zum Reiter Zug" data-tr-aria="Zum Reiter Zug"></button>
@@ -758,6 +762,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
         <li><span class="tok fire"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fire"/></svg></span><span><b>+1</b> <svg class="sym" viewBox="0 0 24 24" style="color:var(--fg)" aria-hidden="true"><use href="#i-axe"/></svg> <span data-tr>bei Treffer</span></span></li>
         <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-frost"/></svg></span><span><b>−1</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Ausdauer"><use href="#e-st"/></svg> <span data-tr>Ausdauer</span></span></li>
         <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-poison"/></svg></span><span><b>−1</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Lebenspunkte"><use href="#e-hp"/></svg> <span data-tr>Lebenspunkte</span></span></li>
+        <li class="ext-gf"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sprout"/></svg></span><span><b data-tr>Gartenbeete</b> <span class="ext-tag">Gamefound</span><br><span class="eqd" data-tr>Jedes bestellte Gartenbeet gibt beim Essen gekochter Nahrung zusätzlich +1 Lebenspunkt, +1 Ausdauer oder +1 Neuwurfplättchen. Jede Gartenbeetart nur 1-mal.</span></span></li>
       </ul>
     </section>
     <section>
@@ -779,6 +784,9 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
         <li class="ext-rache"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ex-blaze"/></svg></span><span><b data-tr>Loderndes Feuer</b> <span class="ext-tag" data-tr>Erweiterung</span><br><span class="eqd" data-tr>Feuer gibt dieser Waffe +2 statt +1 auf den Angriff.</span></span></li>
         <li class="ext-rache"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ex-bettermead"/></svg></span><span><b data-tr>Besserer Met</b> <span class="ext-tag" data-tr>Erweiterung</span><br><span class="eqd" data-tr>Beim Konsum von Met erhältst du zusätzlich den angegebenen Bonus.</span></span></li>
         <li class="ext-rache"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ex-shared"/></svg></span><span><b data-tr>Geteilter Met</b> <span class="ext-tag" data-tr>Erweiterung</span><br><span class="eqd" data-tr>Der Effekt deines Mets gilt auch für alle anderen Charaktere. Met anderer Charaktere wirkt dafür nicht bei dir.</span></span></li>
+        <li class="ext-gf"><span class="tok tok-dark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gf-lessmove"/></svg></span><span><b data-tr>Weniger Bewegung</b> <span class="ext-tag">Gamefound</span><br><span class="eqd" data-tr>Mit dieser Ausrüstung ist jede Bewegungsaktion um 1 Feld kürzer (z. B. Arbalest).</span></span></li>
+        <li class="ext-gf"><span class="tok tok-dark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gf-critplus"/></svg></span><span><b data-tr>+1 pro kritischem Treffer</b> <span class="ext-tag">Gamefound</span><br><span class="eqd" data-tr>Jeder kritische Treffer zählt 3 statt 2 (z. B. Improvisiertes Messer).</span></span></li>
+        <li class="ext-gf"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gf-garden"/></svg></span><span><b data-tr>Gartenbeet bestellen</b> <span class="ext-tag">Gamefound</span><br><span class="eqd" data-tr>Werkzeug-Fähigkeit der Gartenharke: im Haus 1 Aktion und 1 Holz, um 1 Gartenbeet zu bestellen.</span></span></li>
       </ul>
     </section>
     <section>
@@ -857,6 +865,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
     <summary class="label"><span data-tr>Einstellungen</span> <span class="chev" aria-hidden="true">▶</span></summary>
     <div class="set-sec lang"><div class="set-l">Sprache · Language</div><div class="on-row"><button class="btn" data-lang="de">Deutsch</button><button class="btn" data-lang="en">English</button></div></div>
   <label class="desc-t set-ext"><input type="checkbox" id="extRache"> <span data-tr>Erweiterung „Rache des Verlassenen“</span></label>
+  <label class="desc-t set-ext"><input type="checkbox" id="extGf"> <span data-tr>Gamefound-Inhalte</span></label>
   <section class="settings">
     <span data-tr>Aktionen pro Zug</span>
     <span class="stepper">
@@ -1130,6 +1139,23 @@ const EN = {
 "Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
 "Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
 "Optionen": "Options",
+"Gartenbeet bestellen": "Tend a garden bed",
+"Gartenharke nötig: 1 Holz, Gartenbeet wählen · öffnet den Reiter Bauen": "Needs the garden rake: 1 wood, choose a garden bed · opens the Build tab",
+"Gartenharke nötig: 1 Holz, 1 Gartenbeet über die gekochte Nahrung legen": "Needs the garden rake: 1 wood, place 1 garden bed above the prepared food",
+"Gartenbeet: +1 Lebenspunkt": "Garden bed: +1 health",
+"Gartenbeet: +1 Neuwurfplättchen": "Garden bed: +1 reroll token",
+"Gartenbeet: +1 Ausdauer": "Garden bed: +1 stamina",
+"Bestellen": "Plant",
+"Bestellt": "Planted",
+"{w}: {f} bestellt – {c}/{m}": "{w}: planted {f} – {c}/{m}",
+"Gartenbeete": "Garden beds",
+"Jedes bestellte Gartenbeet gibt beim Essen gekochter Nahrung zusätzlich +1 Lebenspunkt, +1 Ausdauer oder +1 Neuwurfplättchen. Jede Gartenbeetart nur 1-mal.": "Each planted garden bed adds +1 health, +1 stamina or +1 reroll token when you eat prepared food. Each type of garden bed only once.",
+"Gamefound-Inhalte": "Gamefound content",
+"Weniger Bewegung": "Reduced movement",
+"Mit dieser Ausrüstung ist jede Bewegungsaktion um 1 Feld kürzer (z. B. Arbalest).": "With this equipment, each movement action is 1 space shorter (e.g. arbalest).",
+"+1 pro kritischem Treffer": "+1 per critical hit",
+"Jeder kritische Treffer zählt 3 statt 2 (z. B. Improvisiertes Messer).": "Each critical hit counts as 3 instead of 2 (e.g. improvised knife).",
+"Werkzeug-Fähigkeit der Gartenharke: im Haus 1 Aktion und 1 Holz, um 1 Gartenbeet zu bestellen.": "Tool ability of the garden rake: in the house, 1 action and 1 wood to plant 1 garden bed.",
 "Ausrüstungssymbole": "Equipment icons",
 "Erweiterung": "Expansion",
 "Fernkampf": "Ranged",
@@ -1212,6 +1238,7 @@ const ACTIONS = [
   { n: "Werkzeug oder Waffe entzünden", s: "Feuertisch: 1 Harz, dauerhaft 1 Feuer", i: "fire", h: 1, req: "feuertisch" },
   { n: "Met brauen", s: "Fermentierer: 1 Met deiner Wahl aufs Charaktertableau", i: "mead", h: 1, req: "fermentierer" },
   { n: "Eine Bombe basteln", s: "Bombentisch: 1 Bombe deiner Wahl aufs Charaktertableau", i: "bomb", h: 1, req: "bombentisch" },
+  { n: "Gartenbeet bestellen", s: "Gartenharke nötig: 1 Holz, Gartenbeet wählen · öffnet den Reiter Bauen", s2: "Gartenharke nötig: 1 Holz, 1 Gartenbeet über die gekochte Nahrung legen", i: "sprout", h: 1, ext: "gf" },
   { n: "Nach den Bienen sehen", s: "Bienenstock: 1 zufällige Honigwabe · 1× pro Zug", i: "bees", h: 1, once: 1, req: "bienenstock" },
   { n: "Verbrauchsgegenstand nutzen", s: "1 Met oder 1 Honigwabe abwerfen, Belohnung erhalten", i: "drop", free: true },
   { n: "Mit Plättchen interagieren", s: "Jederzeit mit Plättchen auf deinem Feld", i: "token", free: true },
@@ -1343,6 +1370,8 @@ function render() {
   $("autoBuildT").checked = st.autoBuild !== false;
   $("extRache").checked = !!(st.ext && st.ext.rache);
   document.querySelectorAll(".ext-rache").forEach(el => { el.hidden = !(st.ext && st.ext.rache); });
+  document.querySelectorAll(".ext-gf").forEach(el => { el.hidden = !(st.ext && st.ext.gf); });
+  $("extGf").checked = !!(st.ext && st.ext.gf);
   if ($("actOpts").open !== !!st.optsOpen) $("actOpts").open = !!st.optsOpen;
   const l0 = st.log[0];
   $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span>${tr("Zuletzt")}: ${esc(logText(l0))}</span>` : "";
@@ -1567,6 +1596,9 @@ const FURN = [
   { k: "fermentierer", n: "Fermentierer", i: "mead", c: { holz: 1, bronze: 1 } },
   { k: "bienenstock", n: "Bienenstock", i: "bees", c: { harz: 1, holz: 1 } },
   { k: "schiff", n: "Schiff", i: "ship", c: { fell: 1, holz: 2 }, ship: true },
+  { k: "beet-lp", n: "Gartenbeet: +1 Lebenspunkt", i: "sprout", c: { holz: 1 }, garden: true, ext: "gf" },
+  { k: "beet-nw", n: "Gartenbeet: +1 Neuwurfplättchen", i: "sprout", c: { holz: 1 }, garden: true, ext: "gf" },
+  { k: "beet-au", n: "Gartenbeet: +1 Ausdauer", i: "sprout", c: { holz: 1 }, garden: true, ext: "gf" },
 ];
 const resIcon = r => `<svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-${r}"/></svg>`;
 const furnName = k => FURN.find(f => f.k === k)?.n || k;
@@ -1575,7 +1607,7 @@ function build(k) {
   const f = FURN.find(x => x.k === k); if (!f) return;
   if (locked() || counted() >= st.per) return;
   if (!f.ship && st.built.includes(k)) return;
-  const a = f.ship ? "Schiff bauen" : "Möbelstück herstellen";
+  const a = f.ship ? "Schiff bauen" : f.garden ? "Gartenbeet bestellen" : "Möbelstück herstellen";
   st.used.push({ n: a, build: f.ship ? null : k });
   if (!f.ship) st.built.push(k);
   log({ k: "build", w: name(), x: f.k, c: counted(), m: st.per }, "");
@@ -1586,15 +1618,15 @@ function renderFurniture() {
   if (!Array.isArray(st.built)) st.built = [];
   const left = st.per - counted();
   $("resKey").innerHTML = Object.entries(RES).map(([r, n]) => `<span>${resIcon(r)}${tr(n)}</span>`).join("");
-  $("furn").innerHTML = FURN.map(f => {
+  $("furn").innerHTML = FURN.filter(f => !f.ext || (st.ext || {})[f.ext]).map(f => {
     const done = !f.ship && st.built.includes(f.k);
     const cost = Object.entries(f.c).map(([r, n]) => `<span title="${n}× ${tr(RES[r])}">${n}× ${resIcon(r)}</span>`).join("");
     return `<div class="fr ${done ? "built" : ""}">
       <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${f.i}"/></svg>
-      <span class="fn">${tr(f.n)}${f.ship ? `<small>${tr("nicht im Haus")}</small>` : ""}</span>
+      <span class="fn">${tr(f.n)}${f.ship ? `<small>${tr("nicht im Haus")}</small>` : ""}${f.ext === "gf" ? ` <span class="ext-tag">Gamefound</span>` : ""}</span>
       ${done
-        ? `<span class="built-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>${tr("Gebaut")}<button data-unbuild="${f.k}" aria-label="${tf("{f} als nicht gebaut markieren", { f: tr(f.n) })}" title="${tr("Korrektur: als nicht gebaut markieren")}">×</button></span>`
-        : `<button class="btn act-btn" data-build="${f.k}" ${left === 0 || locked() ? "disabled" : ""}>${tr("Bauen")}</button>`}
+        ? `<span class="built-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>${tr(f.garden ? "Bestellt" : "Gebaut")}<button data-unbuild="${f.k}" aria-label="${tf("{f} als nicht gebaut markieren", { f: tr(f.n) })}" title="${tr("Korrektur: als nicht gebaut markieren")}">×</button></span>`
+        : `<button class="btn act-btn" data-build="${f.k}" ${left === 0 || locked() ? "disabled" : ""}>${tr(f.garden ? "Bestellen" : "Bauen")}</button>`}
       <span class="cost" aria-label="${tr("Kosten")}">${cost}</span>
     </div>`;
   }).join("");
@@ -1756,7 +1788,7 @@ function cleanState(o) {
     })),
     log: (Array.isArray(o.log) ? o.log : []).slice(0, 120).map(l => cleanLog(l, n)),
     built: (Array.isArray(o.built) ? o.built : []).filter(k => FURN.some(f => f.k === k && !f.ship)),
-    ext: { rache: !!(o.ext && o.ext.rache) },
+    ext: { rache: !!(o.ext && o.ext.rache), gf: !!(o.ext && o.ext.gf) },
     roll: (Array.isArray(o.roll) ? o.roll : []).slice(0, 40)
       .filter(r => r && DICE[r.d] && DICE[r.d].faces && Number.isInteger(r.f) && r.f >= 0 && r.f < DICE[r.d].faces.length)
       .map(r => ({ d: r.d, f: r.f })),
@@ -1905,7 +1937,8 @@ function logText(l) {
     case "round": return tf("Runde {r} beginnt", l);
     case "roll": return tf("{w} würfelt: {i}", { w: l.w, i: (l.i || []).map(s => `${s.c}× ${tr(s.f)} (${tr((DICE[s.d] || {}).short || "")})`).join(", ") });
     case "reroll": return tf("{w} wirft neu ({d}): {a} → {b}", { w: l.w, d: tr((DICE[l.d] || {}).name || ""), a: tr(l.a), b: tr(l.b) });
-    case "build": return l.x === "schiff" ? tf("{w}: Schiff gebaut – {c}/{m}", l) : tf("{w}: {f} gebaut – {c}/{m}", { w: l.w, c: l.c, m: l.m, f: tr(furnName(l.x)) });
+    case "build": if (/^beet-/.test(l.x)) return tf("{w}: {f} bestellt – {c}/{m}", { w: l.w, c: l.c, m: l.m, f: tr(furnName(l.x)) });
+      return l.x === "schiff" ? tf("{w}: Schiff gebaut – {c}/{m}", l) : tf("{w}: {f} gebaut – {c}/{m}", { w: l.w, c: l.c, m: l.m, f: tr(furnName(l.x)) });
     default: return l.text || "";
   }
 }
@@ -1981,11 +2014,12 @@ document.addEventListener("toggle", e => {
 // Erweiterung „Rache des Verlassenen“ (gilt für die ganze Partie, auch online)
 document.addEventListener("change", e => {
   if (e.target && e.target.id === "extRache") { st.ext = Object.assign({}, st.ext, { rache: e.target.checked }); render(); }
+  if (e.target && e.target.id === "extGf") { st.ext = Object.assign({}, st.ext, { gf: e.target.checked }); render(); }
 });
 
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
-const GOES_TO_BUILD = ["Möbelstück herstellen", "Schiff bauen"];
+const GOES_TO_BUILD = ["Möbelstück herstellen", "Schiff bauen", "Gartenbeet bestellen"];
 function renderTabs() {
   if (!TABS.includes(st.tab)) st.tab = "zug";
   document.querySelectorAll("[data-tab]").forEach(el => { el.hidden = el.dataset.tab !== st.tab; });
