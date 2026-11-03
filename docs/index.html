@@ -560,6 +560,7 @@ details.opts summary::-webkit-details-marker { display: none; }
 details.opts .chev3 { color: var(--gold); display: inline-block; transition: transform .2s; }
 details.opts[open] .chev3 { transform: rotate(90deg); }
 .act-opts .desc-t { margin: 0; }
+.setgroup .set-ext { margin: 0 0 14px; color: var(--fg); }
 </style>
 </head>
 <body>
@@ -635,6 +636,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
       <g id="t-wuerfel" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"/></g>
       <g id="t-hilfe" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 6 Q8 3.5 3 4.5 V19 Q8 18 12 20.5 Q16 18 21 19 V4.5 Q16 3.5 12 6 Z"/><path d="M12 6 V20.5"/></g>
       <g id="t-spiel" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20 Q3.5 13.5 9 13.5 Q14.5 13.5 15 20"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 13.6 Q20.5 13.8 21 19"/></g>
+      <g id="i-runecard" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M12 6.5 V17.5 M12 9.5 L15.2 7 M12 9.5 L8.8 7 M12 14 L15 11.5"/></g>
     </defs>
   </svg>
   <button class="status" id="status" data-tab-not="zug" aria-label="Zum Reiter Zug" data-tr-aria="Zum Reiter Zug"></button>
@@ -812,6 +814,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
   <details class="panel legend setgroup" data-tab="spiel" id="settingsBox">
     <summary class="label"><span data-tr>Einstellungen</span> <span class="chev" aria-hidden="true">▶</span></summary>
     <div class="set-sec lang"><div class="set-l">Sprache · Language</div><div class="on-row"><button class="btn" data-lang="de">Deutsch</button><button class="btn" data-lang="en">English</button></div></div>
+  <label class="desc-t set-ext"><input type="checkbox" id="extRache"> <span data-tr>Erweiterung „Rache des Verlassenen“</span></label>
   <section class="settings">
     <span data-tr>Aktionen pro Zug</span>
     <span class="stepper">
@@ -1085,6 +1088,9 @@ const EN = {
 "Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
 "Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
 "Optionen": "Options",
+"Inschriften studieren": "Study inscriptions",
+"Auf einem Altarfeld: 1 Münze, 1 verdeckte Runenkarte aufdecken": "On an altar space: 1 coin, reveal 1 face-down rune card of your choice",
+"Erweiterung „Rache des Verlassenen“": "Expansion “Revenge of the Forsaken”",
 "Ressourcen zahlen, aufs Haustableau": "Pay resources, add it to your house board",
 "Angrenzend zu Wasser: Ressourcen zahlen": "Adjacent to water: pay resources"
 };
@@ -1121,6 +1127,7 @@ const ACTIONS = [
   { n: "Lossegeln", s: "Zu einem Feld am selben Gewässer", i: "sail" },
   { n: "Mit Haldor handeln", s: "Münzen zahlen für Karten oder Ressourcen · vom Haus aus +1 Münze", i: "bag" },
   { n: "Hinterhalt", s: "Fernkampfwaffe gegen angrenzende Kreatur", i: "bow" },
+  { n: "Inschriften studieren", s: "Auf einem Altarfeld: 1 Münze, 1 verdeckte Runenkarte aufdecken", i: "runecard", ext: "rache" },
   { n: "Sonstige", s: "Andere Aktion", i: "dots" },
   { n: "Möbelstück herstellen", s: "Möbelstück wählen · öffnet den Reiter Bauen", s2: "Ressourcen zahlen, aufs Haustableau", i: "hammer", h: 1 },
   { n: "Ausrüstung herstellen", s: "Ressourcen zahlen, aufs Charaktertableau", i: "anvil", h: 1 },
@@ -1250,7 +1257,7 @@ function render() {
   ];
   $("actions").innerHTML = GROUPS.map(([g, label, cls]) => {
     const open = !st.closed[g];
-    const items = ACTIONS.map((a, i) => [a, i]).filter(([a]) => grpOf(a) === g);
+    const items = ACTIONS.map((a, i) => [a, i]).filter(([a]) => grpOf(a) === g && (!a.ext || (st.ext || {})[a.ext]));
     return `<button class="grp grp-btn${cls}" data-grp="${g}" aria-expanded="${open}"><span class="chev2" aria-hidden="true">${open ? "▾" : "▸"}</span><span class="gl">${label}</span><span class="cnt">${items.length}</span></button>` +
       (open ? items.map(([a, i]) => actBtn(a, i)).join("") : "");
   }).join("");
@@ -1258,6 +1265,7 @@ function render() {
   $("descT").checked = !!st.desc;
   $("autoDiceT").checked = st.autoDice !== false;
   $("autoBuildT").checked = st.autoBuild !== false;
+  $("extRache").checked = !!(st.ext && st.ext.rache);
   if ($("actOpts").open !== !!st.optsOpen) $("actOpts").open = !!st.optsOpen;
   const l0 = st.log[0];
   $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span>${tr("Zuletzt")}: ${esc(logText(l0))}</span>` : "";
@@ -1317,7 +1325,8 @@ document.addEventListener("click", e => {
       return;
     case "resetYes": {
       const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen };
-      st = fresh(); st.players = keep; st.colors = cols; st.per = per; Object.assign(st, mine);
+      const ext = st.ext;
+      st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
       return render();
     }
@@ -1670,6 +1679,7 @@ function cleanState(o) {
     })),
     log: (Array.isArray(o.log) ? o.log : []).slice(0, 120).map(l => cleanLog(l, n)),
     built: (Array.isArray(o.built) ? o.built : []).filter(k => FURN.some(f => f.k === k && !f.ship)),
+    ext: { rache: !!(o.ext && o.ext.rache) },
     roll: (Array.isArray(o.roll) ? o.roll : []).slice(0, 40)
       .filter(r => r && DICE[r.d] && DICE[r.d].faces && Number.isInteger(r.f) && r.f >= 0 && r.f < DICE[r.d].faces.length)
       .map(r => ({ d: r.d, f: r.f })),
@@ -1890,6 +1900,11 @@ document.addEventListener("change", e => {
 document.addEventListener("toggle", e => {
   if (e.target && e.target.id === "actOpts" && st.optsOpen !== e.target.open) { st.optsOpen = e.target.open; save(); }
 }, true);
+
+// Erweiterung „Rache des Verlassenen“ (gilt für die ganze Partie, auch online)
+document.addEventListener("change", e => {
+  if (e.target && e.target.id === "extRache") { st.ext = Object.assign({}, st.ext, { rache: e.target.checked }); render(); }
+});
 
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
