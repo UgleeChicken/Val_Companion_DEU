@@ -561,6 +561,11 @@ details.opts .chev3 { color: var(--gold); display: inline-block; transition: tra
 details.opts[open] .chev3 { transform: rotate(90deg); }
 .act-opts .desc-t { margin: 0; }
 .setgroup .set-ext { margin: 0 0 14px; color: var(--fg); }
+.fx.eq { grid-template-columns: 1fr; }
+.fx.eq li { align-items: flex-start; }
+.fx .tok.tok-dark { background: #0d0907; box-shadow: inset 0 0 0 1px #f3e6cf33; }
+.fx .eqd { font-size: .85rem; color: var(--muted); }
+.ext-tag { display: inline-block; margin-left: 6px; font-size: .7rem; letter-spacing: .04em; color: var(--frost); border: 1px solid #9ccfe066; border-radius: 999px; padding: 0 7px; vertical-align: 1px; }
 </style>
 </head>
 <body>
@@ -637,6 +642,22 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
       <g id="t-hilfe" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 6 Q8 3.5 3 4.5 V19 Q8 18 12 20.5 Q16 18 21 19 V4.5 Q16 3.5 12 6 Z"/><path d="M12 6 V20.5"/></g>
       <g id="t-spiel" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20 Q3.5 13.5 9 13.5 Q14.5 13.5 15 20"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 13.6 Q20.5 13.8 21 19"/></g>
       <g id="i-runecard" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M12 6.5 V17.5 M12 9.5 L15.2 7 M12 9.5 L8.8 7 M12 14 L15 11.5"/></g>
+      <g id="eq-ranged" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5 L19.5 4.5 M19.5 4.5 L14 5.5 M19.5 4.5 L18.5 10 M4.5 19.5 V15.5 M4.5 19.5 H8.5 M7 17 V13.5 M7 17 H10.5"/></g>
+      <g id="eq-pierce" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M9 5 Q13 3.5 17 5 V10.5 Q17 15.5 13 17.5 Q9 15.5 9 10.5 Z"/><path d="M3 21 L20 4" stroke-width="2.2"/><path d="M20 4 L15.8 4.8 M20 4 L19.2 8.2" stroke-width="2.2"/></g>
+      <g id="eq-twohand"><use href="#i-hand" transform="translate(-1 4) scale(.56)"/><use href="#i-hand" transform="translate(25 4) scale(-.56 .56)"/></g>
+      <g id="eq-area" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 2 L19.8 6 L21.5 14.5 L16.3 21.3 L7.7 21.3 L2.5 14.5 L4.2 6 Z"/><path d="M12 6.8 L13.5 10.5 L17.3 10.7 L14.4 13.2 L15.4 17 L12 14.8 L8.6 17 L9.6 13.2 L6.7 10.7 L10.5 10.5 Z"/></g>
+      <g id="eq-move"><path d="M4 5 H10 V13.5 L16 15.5 Q19.5 16.8 19.5 19.5 V20.5 H4 Z" fill="currentColor"/><text x="12.5" y="10.5" font-size="8.5" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">+1</text></g>
+      <g id="eq-stam"><text x="0.5" y="16" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">-1</text><use href="#e-st" transform="translate(10 3.5) scale(.72)"/></g>
+      <g id="eq-att"><text x="0.5" y="16" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">+1</text><use href="#i-axe" transform="translate(11 5) scale(.58)"/></g>
+      <g id="eq-def"><text x="0.5" y="16" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">+1</text><use href="#i-shield" transform="translate(11 5.5) scale(.55)"/></g>
+      <g id="eq-crit"><use href="#i-axe" transform="translate(-1 1) scale(.42)"/><use href="#i-axe" transform="translate(3 7) scale(.42)"/><text x="10.5" y="15.5" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">=</text><use href="#i-axe" transform="translate(15 7) scale(.42)"/></g>
+      <g id="eq-frostres"><use href="#e-frost"/><path d="M2.5 15 L21.5 9" stroke="#e0564b" stroke-width="2.6" stroke-linecap="round"/></g>
+      <g id="eq-poisres"><use href="#e-poison" transform="translate(2 2) scale(.83)"/><path d="M2.5 15 L21.5 9" stroke="#e0564b" stroke-width="2.6" stroke-linecap="round"/></g>
+      <g id="eq-pierceres"><use href="#eq-pierce"/><path d="M2.5 15 L21.5 9" stroke="#e0564b" stroke-width="2.6" stroke-linecap="round"/></g>
+      <g id="ex-against"><text x="0.5" y="12" font-size="8.5" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">+1</text><use href="#i-axe" transform="translate(11 1) scale(.45)"/><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="15.5" cy="17" r="4.5"/><path d="M15.5 11.5 V14 M15.5 20 V22.5 M10 17 H12.5 M18.5 17 H21"/></g></g>
+      <g id="ex-blaze"><use href="#i-fire" transform="translate(0 3) scale(.68)" style="color:#f08a3a"/><text x="12" y="16" font-size="7.5" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">=+2</text></g>
+      <g id="ex-bettermead"><use href="#e-flask" style="--fl:#c0392b" transform="translate(-1 3) scale(.78)"/><text x="13.5" y="11" font-size="8.5" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">+1</text></g>
+      <g id="ex-shared" fill="currentColor"><circle cx="12" cy="12" r="4.2"/><path d="M12 2 V5.5 M12 18.5 V22 M2 12 H5.5 M18.5 12 H22 M4.9 4.9 L7.4 7.4 M16.6 16.6 L19.1 19.1 M19.1 4.9 L16.6 7.4 M7.4 16.6 L4.9 19.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
     </defs>
   </svg>
   <button class="status" id="status" data-tab-not="zug" aria-label="Zum Reiter Zug" data-tr-aria="Zum Reiter Zug"></button>
@@ -737,6 +758,27 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
         <li><span class="tok fire"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fire"/></svg></span><span><b>+1</b> <svg class="sym" viewBox="0 0 24 24" style="color:var(--fg)" aria-hidden="true"><use href="#i-axe"/></svg> <span data-tr>bei Treffer</span></span></li>
         <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-frost"/></svg></span><span><b>−1</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Ausdauer"><use href="#e-st"/></svg> <span data-tr>Ausdauer</span></span></li>
         <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-poison"/></svg></span><span><b>−1</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Lebenspunkte"><use href="#e-hp"/></svg> <span data-tr>Lebenspunkte</span></span></li>
+      </ul>
+    </section>
+    <section>
+      <h3 data-tr>Ausrüstungssymbole</h3>
+      <ul class="fx eq">
+        <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-ranged"/></svg></span><span><b data-tr>Fernkampf</b><br><span class="eqd" data-tr>Die Waffe kann bis zu 1 Feld vom Ziel entfernt eingesetzt werden.</span></span></li>
+        <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-pierce"/></svg></span><span><b data-tr>Rüstungsdurchdringend</b><br><span class="eqd" data-tr>Ignoriert alle Verteidigungspunkte des Gegners.</span></span></li>
+        <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-twohand"/></svg></span><span><b data-tr>Zweihändig</b><br><span class="eqd" data-tr>Du kannst keine Rüstungskarten vom Typ Schild nutzen.</span></span></li>
+        <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-area"/></svg></span><span><b data-tr>Flächenwirkung</b><br><span class="eqd" data-tr>Der Angriff trifft alle Kreaturen auf dem Feld des Ziels.</span></span></li>
+        <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-move"/></svg></span><span><b data-tr>Zusätzliche Bewegung</b><br><span class="eqd" data-tr>Bei der Aktion Bewegen darfst du 1 Feld weiter ziehen.</span></span></li>
+        <li><span class="tok tok-dark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-stam"/></svg></span><span><b data-tr>−1 Ausdauer</b><br><span class="eqd" data-tr>Um die Fähigkeit der Ausrüstung zu nutzen, gib 1 Ausdauer aus.</span></span></li>
+        <li><span class="tok tok-dark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-att"/></svg></span><span><b data-tr>+1 Angriff</b><br><span class="eqd" data-tr>+1 Angriffspunkt auf deinen Wurf, nicht wenn nur Leerseiten fallen.</span></span></li>
+        <li><span class="tok tok-dark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-def"/></svg></span><span><b data-tr>+1 Verteidigung</b><br><span class="eqd" data-tr>+1 Verteidigungspunkt auf deinen Wurf, nicht wenn nur Leerseiten fallen.</span></span></li>
+        <li><span class="tok tok-dark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-crit"/></svg></span><span><b data-tr>Kritischer Treffer aufgehoben</b><br><span class="eqd" data-tr>Ein kritischer Treffer mit dieser Waffe zählt nur als 1 Treffer.</span></span></li>
+        <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-frostres"/></svg></span><span><b data-tr>Frostresistent</b><br><span class="eqd" data-tr>Du kannst nicht eingefroren werden.</span></span></li>
+        <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-poisres"/></svg></span><span><b data-tr>Giftresistent</b><br><span class="eqd" data-tr>Du kannst nicht vergiftet werden.</span></span></li>
+        <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-pierceres"/></svg></span><span><b data-tr>Resistent gegen Rüstungsdurchdringung</b><br><span class="eqd" data-tr>Deine Verteidigungsergebnisse können nicht ignoriert werden.</span></span></li>
+        <li class="ext-rache"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ex-against"/></svg></span><span><b data-tr>Wirksam gegen</b> <span class="ext-tag" data-tr>Erweiterung</span><br><span class="eqd" data-tr>Gegen die abgebildete Kreatur erhältst du den angegebenen Angriffsbonus für jeden Wurf, der trifft.</span></span></li>
+        <li class="ext-rache"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ex-blaze"/></svg></span><span><b data-tr>Loderndes Feuer</b> <span class="ext-tag" data-tr>Erweiterung</span><br><span class="eqd" data-tr>Feuer gibt dieser Waffe +2 statt +1 auf den Angriff.</span></span></li>
+        <li class="ext-rache"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ex-bettermead"/></svg></span><span><b data-tr>Besserer Met</b> <span class="ext-tag" data-tr>Erweiterung</span><br><span class="eqd" data-tr>Beim Konsum von Met erhältst du zusätzlich den angegebenen Bonus.</span></span></li>
+        <li class="ext-rache"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ex-shared"/></svg></span><span><b data-tr>Geteilter Met</b> <span class="ext-tag" data-tr>Erweiterung</span><br><span class="eqd" data-tr>Der Effekt deines Mets gilt auch für alle anderen Charaktere. Met anderer Charaktere wirkt dafür nicht bei dir.</span></span></li>
       </ul>
     </section>
     <section>
@@ -1088,6 +1130,40 @@ const EN = {
 "Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
 "Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
 "Optionen": "Options",
+"Ausrüstungssymbole": "Equipment icons",
+"Erweiterung": "Expansion",
+"Fernkampf": "Ranged",
+"Die Waffe kann bis zu 1 Feld vom Ziel entfernt eingesetzt werden.": "The weapon can be used up to 1 space away from the target.",
+"Rüstungsdurchdringend": "Armor piercing",
+"Ignoriert alle Verteidigungspunkte des Gegners.": "Ignores all of the opponent's defense points.",
+"Zweihändig": "Two-handed",
+"Du kannst keine Rüstungskarten vom Typ Schild nutzen.": "You cannot use any shield type armor cards.",
+"Flächenwirkung": "Area of effect",
+"Der Angriff trifft alle Kreaturen auf dem Feld des Ziels.": "The attack affects all creatures on the target's space.",
+"Zusätzliche Bewegung": "Extra move",
+"Bei der Aktion Bewegen darfst du 1 Feld weiter ziehen.": "Move 1 additional space with your movement action.",
+"−1 Ausdauer": "−1 Stamina",
+"Um die Fähigkeit der Ausrüstung zu nutzen, gib 1 Ausdauer aus.": "Spend 1 stamina to use the equipment's ability.",
+"+1 Angriff": "+1 Attack",
+"+1 Angriffspunkt auf deinen Wurf, nicht wenn nur Leerseiten fallen.": "Add 1 attack point to your roll, unless you only roll blanks.",
+"+1 Verteidigung": "+1 Defense",
+"+1 Verteidigungspunkt auf deinen Wurf, nicht wenn nur Leerseiten fallen.": "Add 1 defense point to your roll, unless you only roll blanks.",
+"Kritischer Treffer aufgehoben": "Canceled critical hit",
+"Ein kritischer Treffer mit dieser Waffe zählt nur als 1 Treffer.": "A critical hit with this weapon counts as 1 hit.",
+"Frostresistent": "Frost resistant",
+"Du kannst nicht eingefroren werden.": "You cannot be frozen.",
+"Giftresistent": "Poison resistant",
+"Du kannst nicht vergiftet werden.": "You cannot be poisoned.",
+"Resistent gegen Rüstungsdurchdringung": "Armor piercing resistant",
+"Deine Verteidigungsergebnisse können nicht ignoriert werden.": "Your defense results cannot be ignored.",
+"Wirksam gegen": "Effective against",
+"Gegen die abgebildete Kreatur erhältst du den angegebenen Angriffsbonus für jeden Wurf, der trifft.": "Against the creature shown, gain the indicated attack bonus for every roll that hits.",
+"Loderndes Feuer": "Blazing fire",
+"Feuer gibt dieser Waffe +2 statt +1 auf den Angriff.": "Fire gives this weapon +2 attack instead of +1.",
+"Besserer Met": "Better mead",
+"Beim Konsum von Met erhältst du zusätzlich den angegebenen Bonus.": "When you consume mead, gain the indicated bonus in addition to its effect.",
+"Geteilter Met": "Shared mead",
+"Der Effekt deines Mets gilt auch für alle anderen Charaktere. Met anderer Charaktere wirkt dafür nicht bei dir.": "Your mead's effect also applies to all other characters. You don't receive the effects of mead other characters consume.",
 "Inschriften studieren": "Study inscriptions",
 "Auf einem Altarfeld: 1 Münze, 1 verdeckte Runenkarte aufdecken": "On an altar space: 1 coin, reveal 1 face-down rune card of your choice",
 "Erweiterung „Rache des Verlassenen“": "Expansion “Revenge of the Forsaken”",
@@ -1266,6 +1342,7 @@ function render() {
   $("autoDiceT").checked = st.autoDice !== false;
   $("autoBuildT").checked = st.autoBuild !== false;
   $("extRache").checked = !!(st.ext && st.ext.rache);
+  document.querySelectorAll(".ext-rache").forEach(el => { el.hidden = !(st.ext && st.ext.rache); });
   if ($("actOpts").open !== !!st.optsOpen) $("actOpts").open = !!st.optsOpen;
   const l0 = st.log[0];
   $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span>${tr("Zuletzt")}: ${esc(logText(l0))}</span>` : "";
