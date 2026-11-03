@@ -569,6 +569,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 .dmax { font-size: .7em; color: var(--muted); margin-left: 1px; }
 .settings .set-break { flex-basis: 100%; height: 0; }
 .settings .set-hint { flex-basis: 100%; font-size: .8rem; color: var(--muted); font-style: italic; }
+.players + .set-hint { margin: 10px 0 0; font-size: .8rem; color: var(--muted); font-style: italic; }
 </style>
 </head>
 <body>
@@ -704,6 +705,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
   <section class="panel" data-tab="spiel">
     <div class="label" data-tr>Wikinger am Tisch</div>
     <div class="players" id="players"></div>
+    <p class="set-hint" data-tr>Tipp: Spielernamen antippen, um sie zu ändern. Ein Tipp auf den Farbpunkt wechselt die Farbe.</p>
     <div class="new-game" id="resetArea"><button class="btn" id="reset" data-tr>Neues Spiel</button></div>
   </section>
 
@@ -885,7 +887,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
     </span>
     <span class="set-hint" data-tr>Im Spiel: 2 rote, 2 gelbe, 2 blaue, 3 Schadens- und 1 Sammelwürfel.</span>
   </section>
-  <p class="note" data-tr>Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.</p>
+  <p class="note" data-tr>Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert.</p>
   </details>
   <details class="panel legend about" data-tab="spiel" id="about">
     <summary class="label"><span data-tr>Über die App</span> <span class="chev" aria-hidden="true">▶</span></summary>
@@ -1129,7 +1131,7 @@ const EN = {
 "Weniger Aktionen": "Fewer actions",
 "Mehr Aktionen": "More actions",
 "Protokoll": "Log",
-"Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert. Spielernamen lassen sich direkt ändern.": "Tip: tapping a rune stone also counts an action. Free actions (dashed) cost nothing and are only logged. Player names can be edited directly.",
+"Tipp: Antippen der Runen zählt auch eine Aktion. Freie Aktionen (gestrichelt) verbrauchen nichts und werden nur protokolliert.": "Tip: tapping a rune stone also counts an action. Free actions (dashed) cost nothing and are only logged.",
 "Über die App": "About",
 "Entwickelt von": "Developed by",
 "Kontakt": "Contact",
@@ -1150,6 +1152,7 @@ const EN = {
 "Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
 "Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
 "Optionen": "Options",
+"Tipp: Spielernamen antippen, um sie zu ändern. Ein Tipp auf den Farbpunkt wechselt die Farbe.": "Tip: tap a player name to edit it. Tap the color dot to change the color.",
 "Zusätzliche Würfel je Sorte": "Extra dice per type",
 "Weniger Würfel": "Fewer dice",
 "Mehr Würfel": "More dice",
