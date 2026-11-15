@@ -651,7 +651,12 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 .intro { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px; background: #0a0503cc; }
 .intro-card { width: min(420px, 100%); background: url("img/panel.png") var(--panel); border: 2px solid #120a06; border-radius: 12px; padding: 20px; box-shadow: 0 20px 40px #000c; }
 .intro-card h2 { margin: 8px 0 8px; font-family: var(--head); font-weight: 400; color: var(--gold); font-size: 1.4rem; letter-spacing: .04em; }
-.intro-card p { margin: 0 0 18px; line-height: 1.5; color: var(--fg); }
+.intro-card .intro-lead { margin: 0 0 12px; font-size: 1.05rem; line-height: 1.45; color: var(--fg); }
+.intro-list { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 10px; }
+.intro-list li { position: relative; padding-left: 22px; line-height: 1.45; color: var(--hint); }
+.intro-list li::before { content: "ᚱ"; position: absolute; left: 0; top: 0; color: var(--gold); font-size: .9rem; }
+.intro-list b { color: var(--gold); font-weight: 700; }
+.intro-card .intro-note { margin: 0 0 18px; font-size: .88rem; line-height: 1.45; color: var(--hint); border-top: 1px solid #5c432955; padding-top: 10px; }
 .intro-row { display: flex; justify-content: space-between; gap: 10px; }
 .intro-dots { display: flex; gap: 6px; }
 .intro-dots i { width: 8px; height: 8px; border-radius: 50%; background: #ffffff33; }
@@ -1243,6 +1248,26 @@ const EN = {
 "Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
 "Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
 "Optionen": "Options",
+"Deine Begleit-App für Valheim – Das Brettspiel.": "Your companion app for Valheim: The Board Game.",
+"<b>Aktionen zählen</b>, ohne mitzurechnen": "<b>Count actions</b> without keeping track yourself",
+"<b>Würfeln</b> mit allen Würfeln digital": "<b>Roll</b> all dice digitally",
+"<b>Spielhilfe</b> für Effekte, Symbole und Haldor": "<b>Game aid</b> for effects, icons and Haldor",
+"Das Brettspiel braucht ihr trotzdem.": "You still need the board game.",
+"Jede Aktion verbraucht einen Runenstein.": "Each action uses one rune stone.",
+"<b>Aktion antippen</b> im Reiter „Zug“": "<b>Tap an action</b> in the Turn tab",
+"<b>Freie Aktionen</b> verbrauchen keinen Stein": "<b>Free actions</b> don't use a stone",
+"<b>Zug beenden</b> gibt an den Nächsten weiter, auch früher, wenn du nicht alle Aktionen nutzt": "<b>End turn</b> passes to the next player, also early if you don't use all your actions",
+"<b>↶</b> macht die letzte Aktion rückgängig": "<b>↶</b> undoes your last action",
+"Alles Weitere findest du in der Leiste unten.": "Everything else is in the bar at the bottom.",
+"<b>Würfeln</b>: alle Würfel digital werfen": "<b>Dice</b>: roll all dice digitally",
+"<b>Bauen</b>: Möbelstücke und Schiffe": "<b>Build</b>: furniture and ships",
+"<b>Hilfe</b>: Effekte, Ausrüstung, Ressourcen, Haldor": "<b>Help</b>: effects, equipment, resources, Haldor",
+"<b>Spiel</b>: Spieler, Online-Partie, Einstellungen": "<b>Game</b>: players, online game, settings",
+"Im Reiter „Spiel“ legt ihr los.": "Get started in the Game tab.",
+"<b>Namen eintragen</b> und Farben wählen": "<b>Enter names</b> and pick colors",
+"<b>Online-Partie</b>: auf mehreren Handys zusammen spielen": "<b>Online game</b>: play together on several phones",
+"<b>Einstellungen</b>: Sprache, Erweiterungen und mehr": "<b>Settings</b>: language, expansions and more",
+"Diese Einführung findest du jederzeit unter Spiel → Einstellungen.": "You can open this introduction any time under Game → Settings.",
 "Ganzes Protokoll": "Full log",
 "Überspringen": "Skip",
 "Weiter": "Next",
@@ -2197,10 +2222,10 @@ function feedback(actIdx, free) {
 
 // ---------- Einführung (beim ersten Start, später unter Einstellungen) ----------
 const INTRO = [
-  ["Willkommen bei Val Companion", "Die App zählt eure Aktionen, würfelt für euch und hat die Spielhilfe immer dabei. Das Brettspiel braucht ihr trotzdem."],
-  ["Drei Runensteine pro Zug", "Jede Aktion verbraucht einen Runenstein, freie Aktionen verbrauchen keinen. Tippe im Reiter „Zug“ auf eine Aktion. Mit „Zug beenden“ gibst du an den nächsten Spieler weiter, auch früher, wenn du nicht alle Aktionen nutzen möchtest. Mit ↶ machst du die letzte Aktion rückgängig."],
-  ["Reiter unten", "Würfeln: alle Würfel digital werfen. Bauen: Möbelstücke und Schiffe. Hilfe: Effekte, Ausrüstungssymbole, Ressourcen und Haldor."],
-  ["Spieler und Online-Partie", "Im Reiter „Spiel“ tragt ihr eure Namen ein. Mit einer Online-Partie spielt ihr auf mehreren Handys zusammen. Dort findest du auch Einstellungen und Erweiterungen."],
+  {"t": "Willkommen bei Val Companion", "l": "Deine Begleit-App für Valheim – Das Brettspiel.", "b": ["<b>Aktionen zählen</b>, ohne mitzurechnen", "<b>Würfeln</b> mit allen Würfeln digital", "<b>Spielhilfe</b> für Effekte, Symbole und Haldor"], "n": "Das Brettspiel braucht ihr trotzdem."},
+  {"t": "Drei Runensteine pro Zug", "l": "Jede Aktion verbraucht einen Runenstein.", "b": ["<b>Aktion antippen</b> im Reiter „Zug“", "<b>Freie Aktionen</b> verbrauchen keinen Stein", "<b>Zug beenden</b> gibt an den Nächsten weiter, auch früher, wenn du nicht alle Aktionen nutzt", "<b>↶</b> macht die letzte Aktion rückgängig"], "n": ""},
+  {"t": "Reiter unten", "l": "Alles Weitere findest du in der Leiste unten.", "b": ["<b>Würfeln</b>: alle Würfel digital werfen", "<b>Bauen</b>: Möbelstücke und Schiffe", "<b>Hilfe</b>: Effekte, Ausrüstung, Ressourcen, Haldor", "<b>Spiel</b>: Spieler, Online-Partie, Einstellungen"], "n": ""},
+  {"t": "Spieler und Online-Partie", "l": "Im Reiter „Spiel“ legt ihr los.", "b": ["<b>Namen eintragen</b> und Farben wählen", "<b>Online-Partie</b>: auf mehreren Handys zusammen spielen", "<b>Einstellungen</b>: Sprache, Erweiterungen und mehr"], "n": "Diese Einführung findest du jederzeit unter Spiel → Einstellungen."}
 ];
 let introStep = -1;
 function showIntro(step) {
@@ -2211,12 +2236,15 @@ function showIntro(step) {
     try { localStorage.setItem("valcompanion-intro", "1"); } catch {}
     return;
   }
-  const [t, d] = INTRO[step];
+  const c = INTRO[step];
   box.hidden = false;
   box.innerHTML = `<div class="intro-card" role="dialog" aria-modal="true" aria-labelledby="introT">
     <div class="intro-dots">${INTRO.map((_, i) => `<i class="${i === step ? "on" : ""}"></i>`).join("")}</div>
-    <h2 id="introT">${tr(t)}</h2><p>${tr(d)}</p>
-    <div class="intro-row"><button class="btn" id="introSkip">${tr("Überspringen")}</button>
+    <h2 id="introT">${tr(c.t)}</h2>
+    <p class="intro-lead">${tr(c.l)}</p>
+    <ul class="intro-list">${c.b.map(x => `<li>${tr(x)}</li>`).join("")}</ul>
+    ${c.n ? `<p class="intro-note">${tr(c.n)}</p>` : ""}
+    <div class="intro-row">${step < INTRO.length - 1 ? `<button class="btn" id="introSkip">${tr("Überspringen")}</button>` : "<span></span>"}
     <button class="btn primary" id="introNext">${tr(step === INTRO.length - 1 ? "Los geht's" : "Weiter")}</button></div></div>`;
   $("introNext").focus();
 }
