@@ -654,7 +654,8 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 .intro-card .intro-lead { margin: 0 0 12px; font-size: 1.05rem; line-height: 1.45; color: var(--fg); }
 .intro-list { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 10px; }
 .intro-list li { position: relative; padding-left: 22px; line-height: 1.45; color: var(--hint); }
-.intro-list li::before { content: "ᚱ"; position: absolute; left: 0; top: 0; color: var(--gold); font-size: .9rem; }
+.intro-list li::before { content: ""; position: absolute; left: 2px; top: .38em; width: 10px; height: 12px; background: var(--gold);
+  clip-path: polygon(50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%, 0 20%); box-shadow: 0 0 6px var(--gold); }
 .intro-list b { color: var(--gold); font-weight: 700; }
 .intro-card .intro-note { margin: 0 0 18px; font-size: .88rem; line-height: 1.45; color: var(--hint); border-top: 1px solid #5c432955; padding-top: 10px; }
 .intro-row { display: flex; justify-content: space-between; gap: 10px; }
