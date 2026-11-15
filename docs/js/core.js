@@ -134,6 +134,10 @@ function render() {
     : tf(left === 1 ? "<b>{n}</b> Aktion übrig" : "<b>{n}</b> Aktionen übrig", { n: left });
   $("undo").disabled = st.used.length === 0 || locked();
   $("end").disabled = locked();
+  // Schmale Leiste oben (erscheint, wenn die große Leiste aus dem Bild gescrollt ist)
+  $("mbWho").textContent = name();
+  $("mbPips").innerHTML = Array.from({ length: st.per }, (_, i) => `<i class="${i < c ? "used" : ""}"></i>`).join("");
+  $("mbUndo").disabled = $("undo").disabled; $("mbEnd").disabled = $("end").disabled;
 
   if (!st.closed || typeof st.closed !== "object") st.closed = {};
   const actBtn = (a, i) => `<button class="act ${a.free ? "free" : ""}" data-a="${i}" ${(!a.free && locked()) || (!a.free && left === 0) || (a.once && st.used.some(u => u.n === a.n)) || (a.req && !st.built.includes(a.req)) ? "disabled" : ""} ${a.req && !st.built.includes(a.req) ? `title="${tf("Erst {f} bauen", { f: tr(furnName(a.req)) })}"` : a.h ? `title="${tr("Nur im Haus")}"` : ""}>

@@ -139,11 +139,19 @@ document.addEventListener("click", e => {
   render();
 });
 
-// Zug-Leiste wird beim Scrollen schmal
+// Schmale Leiste: erscheint oben, sobald die große Zug-Leiste aus dem Bild gescrollt ist.
+// Sie schwebt über dem Inhalt, dadurch verschiebt sich beim Ein- und Ausblenden nichts.
 (() => {
-  let ticking = false;
-  const upd = () => { ticking = false; const b = document.querySelector(".board"); if (!b) return; const y = window.scrollY; if (y > 90) b.classList.add("compact"); else if (y < 20) b.classList.remove("compact"); };
-  window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+  const bar = $("miniBar"), board = document.querySelector(".board");
+  if (!bar || !board || !("IntersectionObserver" in window)) return;
+  const show = on => { bar.classList.toggle("show", on); bar.setAttribute("aria-hidden", String(!on));
+    bar.querySelectorAll("button").forEach(b => b.tabIndex = on ? 0 : -1); };
+  new IntersectionObserver(([en]) => show(!en.isIntersecting && !board.hidden && en.boundingClientRect.top < 0),
+    { threshold: 0, rootMargin: "-60px 0px 0px 0px" }).observe(board);
+  document.addEventListener("click", e => {
+    if (e.target.closest("#mbUndo")) return undo();
+    if (e.target.closest("#mbEnd")) return endTurn();
+  });
 })();
 
 // Kurze Rückmeldung nach einer Aktion: Runenstein leuchtet auf, Kachel blinkt, Handy vibriert kurz
@@ -207,6 +215,7 @@ function renderTabs() {
     <span class="sr">${tr("Runde")} <b>${st.round}</b></span>`;
 }
 function goTab(t) {
+  $("miniBar") && $("miniBar").classList.remove("show");
   st.tab = t; render();
   try { window.scrollTo({ top: 0 }); } catch { window.scrollTo(0, 0); }
 }

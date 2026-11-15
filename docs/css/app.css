@@ -616,12 +616,6 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 .b-meta .on-pill { margin: 0; }
 .b-mid .left { margin-right: auto; font-size: .9rem; }
 .board { transition: padding .2s; }
-.board.compact { padding: 8px 12px; gap: 6px; }
-.board.compact .who { font-size: 1.05rem; }
-.board.compact .pip { width: 30px; height: 36px; font-size: 1.05rem; }
-.board.compact .last, .board.compact .last-list, .board.compact .wait, .board.compact .whoami, .board.compact .b-mid .left { display: none; }
-.board.compact .b-mid { flex-wrap: nowrap; }
-.board.compact .row .btn { padding: 6px 10px; font-size: .88rem; }
 /* 4) Rückmeldung */
 @keyframes flashPip { 0% { transform: scale(1.18); filter: brightness(2); } 100% { transform: scale(.9); filter: brightness(.7); } }
 @keyframes flashBtn { 0% { box-shadow: 0 0 0 2px var(--gold), 0 0 18px #f2b53c99; } 100% { box-shadow: inset 0 1px 0 #ffffff0f, inset 0 0 14px #00000088; } }
@@ -665,3 +659,19 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 /* Große Schrift */
 html.big-text { font-size: 18px; }
 html.big-text body { font-size: 18px; }
+
+/* Zug-Leiste scrollt normal mit; oben schwebt bei Bedarf eine schmale Leiste */
+.board { position: relative; top: auto; }
+.board { transition: none; }
+.mini-bar { position: fixed; left: 0; right: 0; top: 0; z-index: 25; display: flex; align-items: center; gap: 10px;
+  padding: calc(8px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(180deg, #2a1f15, #1a120c); border-bottom: 3px solid var(--pc, #120a06); box-shadow: 0 6px 16px #0009;
+  transform: translateY(-110%); transition: transform .2s ease-out; will-change: transform; }
+.mini-bar.show { transform: none; }
+.mb-who { font-weight: 700; color: var(--pc, var(--gold)); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.mb-pips { display: inline-flex; gap: 4px; flex: none; }
+.mb-pips i { width: 14px; height: 17px; clip-path: polygon(50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%, 0 20%); background: var(--pc, var(--gold)); box-shadow: 0 0 6px var(--pc); }
+.mb-pips i.used { background: #3a3d3c; box-shadow: none; }
+.mini-bar .btn { padding: 6px 10px; font-size: .88rem; flex: none; }
+.mini-bar .icon-btn { font-family: var(--font); font-size: 1.15rem; line-height: 1; }
+@media (prefers-reduced-motion: reduce) { .mini-bar { transition: none; } }

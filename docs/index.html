@@ -141,6 +141,12 @@
     <div class="new-game" id="resetArea"><button class="btn" id="reset" data-tr>Neues Spiel</button></div>
   </section>
 
+  <div class="mini-bar" id="miniBar" aria-hidden="true">
+    <span class="mb-who" id="mbWho"></span>
+    <span class="mb-pips" id="mbPips"></span>
+    <button class="btn icon-btn" id="mbUndo" aria-label="Rückgängig" data-tr-aria="Rückgängig" tabindex="-1">↶</button>
+    <button class="btn primary" id="mbEnd" tabindex="-1" data-tr>Zug beenden →</button>
+  </div>
   <section class="board" aria-live="polite" data-tab="zug">
     <div class="whoami" id="whoami" hidden></div>
     <div class="b-top"><p class="who" id="who"></p>
