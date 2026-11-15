@@ -68,7 +68,7 @@ Die App ist in fünf Reiter aufgeteilt (Leiste unten):
 
 | Ordner | Inhalt |
 | --- | --- |
-| `docs/` | Die App selbst (HTML, Schrift, Symbole). Läuft auch direkt im Browser und als installierbare Web-App. |
+| `docs/` | Die App selbst: `index.html` (Aufbau), `css/app.css` (Design), `js/*.js` (Programm, in fester Reihenfolge geladen), Schriften und Symbole. Läuft auch direkt im Browser und als installierbare Web-App. |
 | `firebase/` | Datenbank-Regeln für die Online-Partien. |
 | `android/` | Android-Projekt, das `docs/` als App verpackt und Web-Updates herunterlädt. |
 | `store/` | Texte für den Store-Eintrag auf Deutsch und Englisch und eine Anleitung für die Play Console. |
