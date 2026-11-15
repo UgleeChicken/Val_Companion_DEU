@@ -215,3 +215,22 @@ document.addEventListener("click", e => {
   if (!t) return;
   goTab(t.id === "status" ? "zug" : t.dataset.go);
 });
+
+// Große Schrift (pro Handy)
+document.addEventListener("change", e => {
+  if (e.target && e.target.id === "bigText") { st.bigText = e.target.checked; render(); }
+});
+
+// Bildschirm bleibt während des Spiels an (Browser-Version; die Android-App macht das selbst)
+(() => {
+  if (!("wakeLock" in navigator) || /ValCompanionApp/.test(navigator.userAgent)) return;
+  let lock = null;
+  const request = async () => {
+    if (document.visibilityState !== "visible" || lock) return;
+    try { lock = await navigator.wakeLock.request("screen"); lock.addEventListener("release", () => { lock = null; }); } catch {}
+  };
+  document.addEventListener("visibilitychange", request);
+  // Manche Browser erlauben es erst nach einer Berührung
+  document.addEventListener("pointerdown", request, { passive: true });
+  request();
+})();

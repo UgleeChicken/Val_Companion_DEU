@@ -95,6 +95,7 @@ function renderDice() {
     return `<button class="face ${DICE[r.d].cls}${f.svg ? "" : " blank"}${tumble.has(i) ? " tumble" : ""}" data-rr="${i}" aria-label="${tf("{d}: {f} – neu werfen", { d: tr(DICE[r.d].name), f: tr(f.n) })}" title="${tf("{f} · antippen zum Neuwurf", { f: tr(f.n) })}"><svg viewBox="0 0 24 24" aria-hidden="true">${f.svg}</svg></button>`;
   }).join("");
   tumble = new Set();
+  renderTotals();
   $("summary").innerHTML = rollSummary(st.roll).map(s => `<li><span class="sd ${DICE[s.d].cls}" title="${tr(DICE[s.d].name)}"></span><b>${s.c}×</b> ${tr(s.n)}</li>`).join("");
   $("diceHint").textContent = st.roll.length
     ? tr("Einzelnen Würfel antippen, um ihn neu zu werfen (z. B. mit einem Neuwurfplättchen).")
@@ -131,3 +132,28 @@ document.addEventListener("click", e => {
   if (t.id === "rollBtn") return rollAll();
   if (t.id === "poolClear") { for (const k in st.pool) st.pool[k] = 0; st.roll = []; return render(); }
 });
+
+// Summe des Wurfs. Die einzelnen Würfel und Ergebnisse bleiben darüber und darunter sichtbar.
+// Kritische Ergebnisse zählen 2, wie im Regelheft. Boni von Ausrüstung sind nicht eingerechnet.
+const FACE_VALUE = {
+  "1 Axt": ["att", 1], "2 Äxte": ["att", 2],
+  "1 Schild": ["def", 1], "2 Schilde": ["def", 2],
+  "Treffer": ["dmg", 1], "Kritischer Treffer": ["dmg", 2], "Spezialeffekt": ["spec", 1],
+  "Sammeln": ["col", 1], "Lautes Sammeln": ["col", 1, "noise"], "Lautes kritisches Sammeln": ["col", 2, "noise"], "Kritisches Sammeln": ["col", 2],
+};
+const TOTAL_LABELS = [["att", "Angriff"], ["def", "Verteidigung"], ["dmg", "Schaden"], ["spec", "Spezialeffekt"], ["col", "Sammeln"], ["noise", "Laut (!)"]];
+function renderTotals() {
+  const box = $("totals"); if (!box) return;
+  const sum = {}, kinds = new Set();
+  for (const r of st.roll || []) {
+    const f = DICE[r.d] && DICE[r.d].faces[r.f]; if (!f) continue;
+    const kind = { red: "att", yellow: "att", blue: "def", black: "dmg", green: "col" }[r.d]; kinds.add(kind);
+    const v = FACE_VALUE[f.n]; if (!v) continue;
+    sum[v[0]] = (sum[v[0]] || 0) + v[1];
+    if (v[2]) sum[v[2]] = (sum[v[2]] || 0) + 1;
+  }
+  const items = TOTAL_LABELS.filter(([k]) => kinds.has(k) || sum[k]).map(([k, l]) =>
+    `<span class="tot tot-${k}"><b>${sum[k] || 0}</b> ${tr(l)}</span>`);
+  box.hidden = !items.length;
+  box.innerHTML = items.length ? `<span class="tot-l">${tr("Summe")}</span>${items.join("")}` : "";
+}

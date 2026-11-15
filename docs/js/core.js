@@ -106,6 +106,8 @@ function endTurn() {
 }
 
 function render() {
+  document.documentElement.classList.toggle("big-text", !!st.bigText);
+  if ($("bigText")) $("bigText").checked = !!st.bigText;
   if (!Array.isArray(st.built)) st.built = [];
   if (st.current >= st.players.length) st.current = 0;
   $("round").textContent = st.round;
@@ -225,7 +227,7 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, seg: st.seg, logOpen: st.logOpen };
+      const keep = st.players, cols = st.colors, per = st.per, mine = { bigText: st.bigText, me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, seg: st.seg, logOpen: st.logOpen };
       const ext = st.ext, dx = st.diceExtra | 0;
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; st.diceExtra = dx; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;

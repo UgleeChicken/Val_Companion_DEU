@@ -651,3 +651,17 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 .intro-dots { display: flex; gap: 6px; }
 .intro-dots i { width: 8px; height: 8px; border-radius: 50%; background: #ffffff33; }
 .intro-dots i.on { background: var(--gold); }
+
+/* Würfelsumme */
+.totals { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 14px; padding: 8px 10px; border-radius: 8px; background: #00000055; border: 1px solid #5c432966; }
+.tot-l { font-family: var(--head); color: var(--gold); letter-spacing: .05em; margin-right: 2px; }
+.tot { display: inline-flex; align-items: baseline; gap: 4px; padding: 2px 10px; border-radius: 999px; background: #2a201b; border: 1px solid #120a06; font-size: .9rem; }
+.tot b { font-size: 1.15rem; color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+.tot-att { box-shadow: inset 3px 0 0 #e0564b; }
+.tot-def { box-shadow: inset 3px 0 0 #3f8fc9; }
+.tot-dmg { box-shadow: inset 3px 0 0 #8a8a8a; }
+.tot-col { box-shadow: inset 3px 0 0 #3f9440; }
+.summary { margin-top: 10px; }
+/* Große Schrift */
+html.big-text { font-size: 18px; }
+html.big-text body { font-size: 18px; }
