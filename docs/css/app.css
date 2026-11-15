@@ -680,3 +680,14 @@ html.big-text body { font-size: 18px; }
 
 /* App-Symbol unter Über die App */
 .about-brand .app-icon { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 0 0 2px #120a06, 0 8px 20px #000a, 0 0 24px #f2b53c33; }
+
+/* Schmale Leiste und Statusleiste gleich hoch (eine Zeile, auch bei großer Schrift) */
+.mini-bar .btn, .mini-bar .icon-btn { padding: 2px 10px; font-size: .85rem; line-height: 1.3; box-shadow: inset 0 1px 0 #ffffff33, 0 1px 2px #00000088; }
+.mini-bar .icon-btn { font-size: 1rem; }
+.status { flex-wrap: nowrap; }
+.status .sn { flex: none; }
+.status .sl { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.status .sr { flex: none; white-space: nowrap; }
+.status, .mini-bar { height: 46px; padding-top: 0; padding-bottom: 0; align-items: center; }
+html.big-text .status, html.big-text .mini-bar { height: 50px; }
+.mini-bar .btn, .mini-bar .icon-btn { padding-top: 1px; padding-bottom: 1px; }
