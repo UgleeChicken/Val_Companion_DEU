@@ -570,6 +570,47 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 .settings .set-break { flex-basis: 100%; height: 0; }
 .settings .set-hint { flex-basis: 100%; font-size: .8rem; color: var(--muted); font-style: italic; }
 .players + .set-hint { margin: 10px 0 0; font-size: .8rem; color: var(--muted); font-style: italic; }
+
+/* ===== Kompakter: Unterreiter und dichtere Listen ===== */
+.seg { display: flex; gap: 4px; padding: 4px; margin: 0 0 12px; background: #00000066; border: 1px solid #120a06; border-radius: 10px; grid-column: 1 / -1; }
+.seg-b { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 8px 4px; border: none; border-radius: 7px; background: none;
+  color: var(--muted); font-family: var(--head); font-size: .88rem; letter-spacing: .01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.guide .seg-b { flex: 1 1 auto; padding: 8px 6px; }
+.guide .seg { gap: 2px; }
+.seg-b[aria-pressed="true"] { background: linear-gradient(180deg, #8a4f26, #5e3214); color: var(--gold); box-shadow: inset 0 1px 0 #ffffff33, 0 1px 3px #00000088;
+  text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink); }
+.seg-b .hs { width: 13px; height: 13px; }
+.seg-b .cnt { font-family: var(--font); font-size: .72rem; color: var(--muted); background: #00000055; border-radius: 999px; padding: 0 6px; text-shadow: none; }
+.seg-free[aria-pressed="true"] { color: var(--frost); }
+.seg-hint { grid-column: 1 / -1; margin: -4px 0 4px; font-size: .8rem; color: var(--muted); font-style: italic; }
+.seg-hint.grp-free { color: var(--frost); }
+.guide > section + section { margin-top: 0; }
+.guide h3 { display: none; }
+.fx { gap: 6px 12px; }
+.fx li { font-size: .88rem; }
+.fx .tok { width: 30px; height: 30px; }
+.fx .tok svg { width: 22px; height: 22px; }
+.fx.eq li { line-height: 1.3; }
+.fx .eqd { font-size: .8rem; }
+/* Bauen: niedrigere Zeilen */
+.furn { gap: 5px; }
+.fr { padding: 6px 10px; row-gap: 0; }
+.fr .ic { width: 24px; height: 24px; }
+.fr .fn { font-size: 1rem; line-height: 1.15; }
+.fr .act-btn { padding: 5px 10px; font-size: .88rem; }
+.cost { font-size: .8rem; }
+.cost .res { width: 18px; height: 18px; }
+.res-key { gap: 2px 10px; margin-bottom: 10px; font-size: .78rem; }
+.res-key .res { width: 18px; height: 18px; }
+.furn-hint { font-size: .78rem; }
+/* Würfel-Legende: Seiten nebeneinander */
+#legend .dice { gap: 10px; grid-template-columns: 1fr; }
+#legend .die h3 { margin-bottom: 4px; font-size: 1rem; }
+#legend .faces { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+#legend .faces li { font-size: .82rem; gap: 5px; }
+#legend .faces .face { width: 26px; height: 26px; }
+#legend .faces .face svg { width: 20px; height: 20px; }
+#legend .faces .x { width: auto; }
 </style>
 </head>
 <body>
@@ -748,16 +789,22 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
     <div class="actions" id="actions"></div>
   </section>
 
-  <details class="panel legend" id="furniture" open data-tab="bauen">
-    <summary class="label"><span data-tr>Möbelstücke bauen</span> <span class="chev" aria-hidden="true">▶</span></summary>
+  <section class="panel" id="furniture" data-tab="bauen">
+    <div class="label" data-tr>Möbelstücke bauen</div>
     <div class="res-key" id="resKey"></div>
     <div class="furn" id="furn"></div>
     <p class="furn-hint" data-tr>„Bauen“ verbraucht eine Aktion. Möbelstücke gehören zum gemeinsamen Haus; Fermentierer, Feuertisch, Bombentisch und Bienenstock schalten ihre Aktionen frei.</p>
-  </details>
+  </section>
 
-  <details class="panel legend guide" id="guide" open data-tab="hilfe">
-    <summary class="label"><span data-tr>Spielhilfe</span> <span class="chev" aria-hidden="true">▶</span></summary>
-    <section>
+  <section class="panel guide" id="guide" data-tab="hilfe">
+    <div class="label" data-tr>Spielhilfe</div>
+    <div class="seg" role="tablist">
+      <button class="seg-b" data-seg="help" data-val="eff" role="tab"><span data-tr>Effekte</span></button>
+      <button class="seg-b" data-seg="help" data-val="eq" role="tab"><span data-tr>Ausrüstung</span></button>
+      <button class="seg-b" data-seg="help" data-val="res" role="tab"><span data-tr>Ressourcen</span></button>
+      <button class="seg-b" data-seg="help" data-val="hal" role="tab"><span data-tr>Haldor</span></button>
+    </div>
+    <section data-sub="help:eff">
       <h3 data-tr>Effekte</h3>
       <ul class="fx">
         <li><span class="tok "><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#e-flask" style="--fl:#c0392b"/></svg></span><span><b>+2</b> <svg class="sym" viewBox="0 0 24 24" aria-label="Lebenspunkte"><use href="#e-hp"/></svg> <span data-tr>Lebenspunkte</span></span></li>
@@ -770,7 +817,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
         <li class="ext-gf"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sprout"/></svg></span><span><b data-tr>Gartenbeete</b> <span class="ext-tag">Gamefound</span><br><span class="eqd" data-tr>Jedes bestellte Gartenbeet gibt beim Essen gekochter Nahrung zusätzlich +1 Lebenspunkt, +1 Ausdauer oder +1 Neuwurfplättchen. Jede Gartenbeetart nur 1-mal.</span></span></li>
       </ul>
     </section>
-    <section>
+    <section data-sub="help:eq">
       <h3 data-tr>Ausrüstungssymbole</h3>
       <ul class="fx eq">
         <li><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#eq-ranged"/></svg></span><span><b data-tr>Fernkampf</b><br><span class="eqd" data-tr>Die Waffe kann bis zu 1 Feld vom Ziel entfernt eingesetzt werden.</span></span></li>
@@ -794,14 +841,14 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
         <li class="ext-gf"><span class="tok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gf-garden"/></svg></span><span><b data-tr>Gartenbeet bestellen</b> <span class="ext-tag">Gamefound</span><br><span class="eqd" data-tr>Werkzeug-Fähigkeit der Gartenharke: im Haus 1 Aktion und 1 Holz, um 1 Gartenbeet zu bestellen.</span></span></li>
       </ul>
     </section>
-    <section>
+    <section data-sub="help:res">
       <h3 data-tr>Ressourcen</h3>
       <div class="res-grid">
         <span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><span data-tr>Münze</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-harz"/></svg><span data-tr>Harz</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-holz"/></svg><span data-tr>Holz</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-fell"/></svg><span data-tr>Fell</span></span>
         <div class="grp-min"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-stein"/></svg><span data-tr>Stein</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-bronze"/></svg><span data-tr>Bronze</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-eisen"/></svg><span data-tr>Eisen</span></span><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-silber"/></svg><span data-tr>Silber</span></span></div>
       </div>
     </section>
-    <section>
+    <section data-sub="help:hal">
       <h3 data-tr>Haldor</h3>
       <p class="note-h" data-tr>Für 1 Münze extra kannst du auch von eurem Haus aus mit Haldor handeln.</p>
       <ul class="trade">
@@ -811,7 +858,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
       </ul>
       <p class="note-h" style="margin-top:8px" data-tr>Führst du „Mit Haldor handeln“ aus, decke die 3 obersten Haldorkarten auf.</p>
     </section>
-  </details>
+  </section>
 
   <details class="panel legend" id="legend" open data-tab="wuerfeln">
     <summary class="label"><span data-tr>Würfel-Legende</span> <span class="chev" aria-hidden="true">▶</span></summary>
@@ -1152,6 +1199,10 @@ const EN = {
 "Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
 "Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
 "Optionen": "Options",
+"Ausrüstung": "Equipment",
+"Überall": "Anywhere",
+"Im Haus": "House",
+"Frei": "Free",
 "Tipp: Spielernamen antippen, um sie zu ändern. Ein Tipp auf den Farbpunkt wechselt die Farbe.": "Tip: tap a player name to edit it. Tap the color dot to change the color.",
 "Zusätzliche Würfel je Sorte": "Extra dice per type",
 "Weniger Würfel": "Fewer dice",
@@ -1378,12 +1429,15 @@ function render() {
     ["house", `<svg class="hs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg> ${tr("Nur im eigenen Haus")}`, ""],
     ["free", tf("Freie Aktionen · zählen nicht zu den {n} Aktionen", { n: st.per }), " grp-free"],
   ];
-  $("actions").innerHTML = GROUPS.map(([g, label, cls]) => {
-    const open = !st.closed[g];
-    const items = ACTIONS.map((a, i) => [a, i]).filter(([a]) => grpOf(a) === g && (!a.ext || (st.ext || {})[a.ext]));
-    return `<button class="grp grp-btn${cls}" data-grp="${g}" aria-expanded="${open}"><span class="chev2" aria-hidden="true">${open ? "▾" : "▸"}</span><span class="gl">${label}</span><span class="cnt">${items.length}</span></button>` +
-      (open ? items.map(([a, i]) => actBtn(a, i)).join("") : "");
-  }).join("");
+  if (!st.seg || typeof st.seg !== "object") st.seg = {};
+  const cur = ["any", "house", "free"].includes(st.seg.act) ? st.seg.act : "any";
+  const visible = g => ACTIONS.map((a, i) => [a, i]).filter(([a]) => grpOf(a) === g && (!a.ext || (st.ext || {})[a.ext]));
+  const SEGS = [["any", tr("Überall")], ["house", `<svg class="hs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-house"/></svg>${tr("Im Haus")}`], ["free", tr("Frei")]];
+  const hint = cur === "free" ? tf("Freie Aktionen · zählen nicht zu den {n} Aktionen", { n: st.per }) : cur === "house" ? tr("Nur im eigenen Haus") : "";
+  $("actions").innerHTML = `<div class="seg seg-act" role="tablist">${SEGS.map(([g, l]) =>
+      `<button class="seg-b${g === "free" ? " seg-free" : ""}" data-seg="act" data-val="${g}" role="tab" aria-pressed="${g === cur}">${l}<span class="cnt">${visible(g).length}</span></button>`).join("")}</div>` +
+    (hint ? `<div class="seg-hint${cur === "free" ? " grp-free" : ""}">${hint}</div>` : "") +
+    visible(cur).map(([a, i]) => actBtn(a, i)).join("");
   $("actions").classList.toggle("nodesc", !st.desc);
   $("descT").checked = !!st.desc;
   $("autoDiceT").checked = st.autoDice !== false;
@@ -1403,6 +1457,7 @@ function render() {
   renderDice();
   renderFurniture();
   renderTabs();
+  renderSegs();
   if (typeof renderOnline === "function") { renderOnline(); renderSeat(); }
   save();
 }
@@ -1452,7 +1507,7 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen };
+      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, seg: st.seg };
       const ext = st.ext, dx = st.diceExtra | 0;
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; st.diceExtra = dx; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
@@ -1676,7 +1731,7 @@ const FB = Object.assign({
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
-const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen"];           // bleibt auf jedem Handy für sich
+const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen", "seg"];           // bleibt auf jedem Handy für sich
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
 const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
 
@@ -2041,6 +2096,20 @@ document.addEventListener("toggle", e => {
 document.addEventListener("change", e => {
   if (e.target && e.target.id === "extRache") { st.ext = Object.assign({}, st.ext, { rache: e.target.checked }); render(); }
   if (e.target && e.target.id === "extGf") { st.ext = Object.assign({}, st.ext, { gf: e.target.checked }); render(); }
+});
+
+// ---------- Unterreiter (Hilfe, Aktionen) ----------
+function renderSegs() {
+  if (!st.seg || typeof st.seg !== "object") st.seg = {};
+  if (!["eff", "eq", "res", "hal"].includes(st.seg.help)) st.seg.help = "eff";
+  document.querySelectorAll('[data-seg="help"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.val === st.seg.help)));
+  document.querySelectorAll("[data-sub]").forEach(el => { const [k, v] = el.dataset.sub.split(":"); el.hidden = st.seg[k] !== v; });
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-seg]");
+  if (!b) return;
+  st.seg = Object.assign({}, st.seg, { [b.dataset.seg]: b.dataset.val });
+  render();
 });
 
 // ---------- Reiter ----------
