@@ -611,6 +611,51 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 #legend .faces .face { width: 26px; height: 26px; }
 #legend .faces .face svg { width: 20px; height: 20px; }
 #legend .faces .x { width: auto; }
+
+/* ===== Lesbarkeit und Bedienung ===== */
+:root { --hint: #d6c6aa; }
+/* 1) Aktionskacheln und Bauliste in der gut lesbaren Schrift */
+.act .n, .actions.nodesc .act .n { font-family: var(--font); font-weight: 700; font-size: .93rem; letter-spacing: 0; line-height: 1.2; }
+.fr .fn { font-family: var(--font); font-weight: 700; font-size: 1rem; letter-spacing: 0; }
+/* 2) Hinweise größer, gerade, kontrastreicher */
+.set-hint, .players + .set-hint, .settings .set-hint, .seg-hint, .dice-hint, .furn-hint, .online .on-small, .guide .note-h, .fx .eqd, .note, .legend .hint, .act-hint, .dp .nm small, .fr .fn small {
+  font-style: normal; color: var(--hint); font-size: .86rem; }
+.seg-hint.grp-free { color: var(--frost); }
+/* 3) Zug-Leiste: Runde oben rechts, beim Scrollen schmal */
+.b-meta { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.b-meta .round { margin: 0; padding: 2px 10px; font-size: .85rem; box-shadow: none; }
+.b-meta .on-pill { margin: 0; }
+.b-mid .left { margin-right: auto; font-size: .9rem; }
+.board { transition: padding .2s; }
+.board.compact { padding: 8px 12px; gap: 6px; }
+.board.compact .who { font-size: 1.05rem; }
+.board.compact .pip { width: 30px; height: 36px; font-size: 1.05rem; }
+.board.compact .last, .board.compact .last-list, .board.compact .wait, .board.compact .whoami, .board.compact .b-mid .left { display: none; }
+.board.compact .b-mid { flex-wrap: nowrap; }
+.board.compact .row .btn { padding: 6px 10px; font-size: .88rem; }
+/* 4) Rückmeldung */
+@keyframes flashPip { 0% { transform: scale(1.18); filter: brightness(2); } 100% { transform: scale(.9); filter: brightness(.7); } }
+@keyframes flashBtn { 0% { box-shadow: 0 0 0 2px var(--gold), 0 0 18px #f2b53c99; } 100% { box-shadow: inset 0 1px 0 #ffffff0f, inset 0 0 14px #00000088; } }
+.pip.flash { animation: flashPip .45s ease-out; }
+.act.flash { animation: flashBtn .6s ease-out; }
+@media (prefers-reduced-motion: reduce) { .pip.flash, .act.flash { animation: none; } .board { transition: none; } }
+/* 6) Letzte Einträge */
+.last .lt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.last .chev4 { color: var(--gold); flex: none; }
+.last-list { display: grid; gap: 4px; font-size: .82rem; color: var(--hint); padding-left: 2px; }
+.last-list .ll { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.last-list .ll span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.last-list .pd { width: 8px; height: 8px; border-radius: 50%; background: var(--pc); flex: none; }
+.ll-all { justify-self: start; margin-top: 2px; padding: 2px 0; border: none; background: none; color: var(--gold); font: inherit; font-size: .82rem; cursor: pointer; }
+/* 5) Einführung */
+.intro { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px; background: #0a0503cc; }
+.intro-card { width: min(420px, 100%); background: url("img/panel.png") var(--panel); border: 2px solid #120a06; border-radius: 12px; padding: 20px; box-shadow: 0 20px 40px #000c; }
+.intro-card h2 { margin: 8px 0 8px; font-family: var(--head); font-weight: 400; color: var(--gold); font-size: 1.4rem; letter-spacing: .04em; }
+.intro-card p { margin: 0 0 18px; line-height: 1.5; color: var(--fg); }
+.intro-row { display: flex; justify-content: space-between; gap: 10px; }
+.intro-dots { display: flex; gap: 6px; }
+.intro-dots i { width: 8px; height: 8px; border-radius: 50%; background: #ffffff33; }
+.intro-dots i.on { background: var(--gold); }
 </style>
 </head>
 <body>
@@ -711,14 +756,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
   </svg>
   <button class="status" id="status" data-tab-not="zug" aria-label="Zum Reiter Zug" data-tr-aria="Zum Reiter Zug"></button>
 
-  <header data-tab="zug" class="topbar">
-    <h1 class="brand"><span class="logo">Val</span><span class="sub">Companion</span></h1>
-    <div class="top-r">
-      <button class="on-pill" id="onPill" hidden aria-label="Online-Partie anzeigen" data-tr-aria="Online-Partie anzeigen"></button>
-      <div class="round"><span data-tr>Runde</span> <b id="round">1</b></div>
-    </div>
-    <p class="tagline-s" data-tr>Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
-  </header>
+
 
   <section class="panel online" data-tab="spiel" id="online">
     <div class="label" data-tr>Online-Partie</div>
@@ -752,16 +790,20 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 
   <section class="board" aria-live="polite" data-tab="zug">
     <div class="whoami" id="whoami" hidden></div>
-    <div class="b-top"><p class="who" id="who"></p><div class="left" id="left"></div></div>
+    <div class="b-top"><p class="who" id="who"></p>
+      <div class="b-meta"><button class="on-pill" id="onPill" hidden aria-label="Online-Partie anzeigen" data-tr-aria="Online-Partie anzeigen"></button><span class="round"><span data-tr>Runde</span> <b id="round">1</b></span></div>
+    </div>
     <p class="wait" id="waitMsg" hidden></p>
     <div class="b-mid">
       <div class="pips" id="pips"></div>
+      <div class="left" id="left"></div>
       <div class="row">
         <button class="btn icon-btn" id="undo" aria-label="Rückgängig" data-tr-aria="Rückgängig" data-tr-title="Rückgängig" title="Rückgängig">↶</button>
         <button class="btn primary" id="end" data-tr>Zug beenden →</button>
       </div>
     </div>
-    <button class="last" id="lastLog"></button>
+    <button class="last" id="lastLog" aria-expanded="false"></button>
+    <div class="last-list" id="lastList" hidden></div>
   </section>
 
   <section class="panel" id="diceRoller" data-tab="wuerfeln">
@@ -915,6 +957,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
 
   <details class="panel legend setgroup" data-tab="spiel" id="settingsBox">
     <summary class="label"><span data-tr>Einstellungen</span> <span class="chev" aria-hidden="true">▶</span></summary>
+    <div class="set-sec"><button class="btn" id="introShow" data-tr>Einführung anzeigen</button></div>
     <div class="set-sec lang"><div class="set-l">Sprache · Language</div><div class="on-row"><button class="btn" data-lang="de">Deutsch</button><button class="btn" data-lang="en">English</button></div></div>
   <label class="desc-t set-ext"><input type="checkbox" id="extRache"> <span data-tr>Erweiterung „Rache des Verlassenen“</span></label>
   <label class="desc-t set-ext"><input type="checkbox" id="extGf"> <span data-tr>Gamefound-Inhalte</span></label>
@@ -950,6 +993,7 @@ details.opts[open] .chev3 { transform: rotate(90deg); }
     <p class="small"><a href="datenschutz.html" data-tr>Datenschutzerklärung</a> · <a href="daten-loeschen.html" data-tr>Daten löschen</a></p>
     <p class="small" data-tr>Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.</p>
   </details>
+  <div class="intro" id="intro" hidden></div>
   <nav class="tabbar" id="tabbar" aria-label="Reiter" data-tr-aria="Reiter">
     <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg><span data-tr>Zug</span></button>
     <button data-go="wuerfeln" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-wuerfel"/></svg><span data-tr>Würfeln</span></button>
@@ -1199,6 +1243,19 @@ const EN = {
 "Nach „Ressourcen sammeln“ zum Würfeln": "Go to dice after “Collect resources”",
 "Nach „Möbelstück herstellen“ zum Bauen": "Go to Build after “Craft furniture”",
 "Optionen": "Options",
+"Ganzes Protokoll": "Full log",
+"Überspringen": "Skip",
+"Weiter": "Next",
+"Los geht's": "Let's go",
+"Einführung anzeigen": "Show introduction",
+"Willkommen bei Val Companion": "Welcome to Val Companion",
+"Die App zählt eure Aktionen, würfelt für euch und hat die Spielhilfe immer dabei. Das Brettspiel braucht ihr trotzdem.": "The app counts your actions, rolls the dice for you and keeps the game aid at hand. You still need the board game.",
+"Drei Runensteine pro Zug": "Three rune stones per turn",
+"Jede Aktion verbraucht einen Runenstein. Tippe im Reiter „Zug“ auf eine Aktion. Sind alle Steine dunkel, gibt „Zug beenden“ an den nächsten Spieler weiter. Mit ↶ machst du die letzte Aktion rückgängig.": "Each action uses one rune stone. Tap an action in the Turn tab. When all stones are dark, “End turn” passes to the next player. ↶ undoes your last action.",
+"Reiter unten": "Tabs at the bottom",
+"Würfeln: alle Würfel digital werfen. Bauen: Möbelstücke und Schiffe. Hilfe: Effekte, Ausrüstungssymbole, Ressourcen und Haldor.": "Dice: roll all dice digitally. Build: furniture and ships. Help: effects, equipment icons, resources and Haldor.",
+"Spieler und Online-Partie": "Players and online games",
+"Im Reiter „Spiel“ tragt ihr eure Namen ein. Mit einer Online-Partie spielt ihr auf mehreren Handys zusammen. Dort findest du auch Einstellungen und Erweiterungen.": "Enter your names in the Game tab. With an online game you play together on several phones. You will also find settings and expansions there.",
 "Ausrüstung": "Equipment",
 "Überall": "Anywhere",
 "Im Haus": "House",
@@ -1337,6 +1394,8 @@ const fresh = () => ({
   current: 0, round: 1, per: 3, used: [], log: [],
 });
 let st;
+let FIRST_RUN = false;
+try { FIRST_RUN = !localStorage.getItem(KEY) && !localStorage.getItem("valcompanion-intro"); } catch {}
 try { st = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch { st = fresh(); }
 // Farben-Version 2: Rot, Blau, Grün, Gelb nach Sitzplatz (ältere Spielstände werden umgestellt)
 if (!Array.isArray(st.colors) || st.colorsV !== 2) { st.colors = st.players.map((_, i) => i % COLORS.length); st.colorsV = 2; }
@@ -1363,13 +1422,14 @@ function log(text, cls = "", p = st.current) {
 function doAction(i) {
   const a = ACTIONS[i];
   if (!a.free && locked()) return;
-  if (a.free && isOther()) { log({ k: "act", w: actorName(), x: a.n, f: 1 }, "f", actorIdx()); return render(); }
+  if (a.free && isOther()) { log({ k: "act", w: actorName(), x: a.n, f: 1 }, "f", actorIdx()); render(); return feedback(i, true); }
   if (!a.free && counted() >= st.per) return;
   if (a.once && st.used.some(u => u.n === a.n)) return;
   if (a.req && !(st.built || []).includes(a.req)) return;
   st.used.push({ n: a.n, free: !!a.free });
   log(a.free ? { k: "act", w: name(), x: a.n, f: 1 } : { k: "act", w: name(), x: a.n, c: counted(), m: st.per }, a.free ? "f" : "");
   render();
+  feedback(i, !!a.free);
 }
 
 function undo() {
@@ -1448,7 +1508,11 @@ function render() {
   $("extGf").checked = !!(st.ext && st.ext.gf);
   if ($("actOpts").open !== !!st.optsOpen) $("actOpts").open = !!st.optsOpen;
   const l0 = st.log[0];
-  $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span>${tr("Zuletzt")}: ${esc(logText(l0))}</span>` : "";
+  $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span class="lt">${tr("Zuletzt")}: ${esc(logText(l0))}</span><span class="chev4" aria-hidden="true">${st.logOpen ? "▾" : "▸"}</span>` : "";
+  $("lastLog").setAttribute("aria-expanded", String(!!st.logOpen));
+  $("lastList").hidden = !(l0 && st.logOpen);
+  $("lastList").innerHTML = st.logOpen ? st.log.slice(1, 6).map(l => `<div class="ll"><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span>${esc(logText(l))}</span></div>`).join("") +
+    `<button class="ll-all" id="logAll">${tr("Ganzes Protokoll")} →</button>` : "";
   $("lastLog").hidden = !l0;
 
   $("log").innerHTML = st.log.length
@@ -1507,7 +1571,7 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, seg: st.seg };
+      const keep = st.players, cols = st.colors, per = st.per, mine = { me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, seg: st.seg, logOpen: st.logOpen };
       const ext = st.ext, dx = st.diceExtra | 0;
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; st.diceExtra = dx; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
@@ -1731,7 +1795,7 @@ const FB = Object.assign({
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
-const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen", "seg"];           // bleibt auf jedem Handy für sich
+const LOCAL_ONLY = ["tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen", "seg", "logOpen"];           // bleibt auf jedem Handy für sich
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
 const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
 
@@ -2079,7 +2143,8 @@ function cleanLog(l, n) {
 document.addEventListener("click", e => {
   const g = e.target.closest("[data-grp]");
   if (g) { st.closed = st.closed || {}; st.closed[g.dataset.grp] = !st.closed[g.dataset.grp]; return render(); }
-  if (e.target.closest("#lastLog")) { goTab("spiel"); const lg = $("log"); if (lg) lg.scrollIntoView({ block: "center" }); }
+  if (e.target.closest("#lastLog")) { st.logOpen = !st.logOpen; return render(); }
+  if (e.target.closest("#logAll")) { goTab("spiel"); const lg = $("log"); if (lg) lg.scrollIntoView({ block: "center" }); }
 });
 document.addEventListener("change", e => {
   if (e.target && e.target.id === "descT") { st.desc = e.target.checked; render(); }
@@ -2112,6 +2177,55 @@ document.addEventListener("click", e => {
   render();
 });
 
+// Zug-Leiste wird beim Scrollen schmal
+(() => {
+  let ticking = false;
+  const upd = () => { ticking = false; const b = document.querySelector(".board"); if (!b) return; const y = window.scrollY; if (y > 90) b.classList.add("compact"); else if (y < 20) b.classList.remove("compact"); };
+  window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+})();
+
+// Kurze Rückmeldung nach einer Aktion: Runenstein leuchtet auf, Kachel blinkt, Handy vibriert kurz
+function feedback(actIdx, free) {
+  requestAnimationFrame(() => {
+    const pip = free ? null : document.querySelector(`[data-pip="${counted() - 1}"]`);
+    const btn = actIdx != null ? document.querySelector(`[data-a="${actIdx}"]`) : null;
+    [pip, btn].forEach(el => { if (!el) return; el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); });
+  });
+  try { navigator.vibrate && navigator.vibrate(15); } catch {}
+}
+
+
+// ---------- Einführung (beim ersten Start, später unter Einstellungen) ----------
+const INTRO = [
+  ["Willkommen bei Val Companion", "Die App zählt eure Aktionen, würfelt für euch und hat die Spielhilfe immer dabei. Das Brettspiel braucht ihr trotzdem."],
+  ["Drei Runensteine pro Zug", "Jede Aktion verbraucht einen Runenstein. Tippe im Reiter „Zug“ auf eine Aktion. Sind alle Steine dunkel, gibt „Zug beenden“ an den nächsten Spieler weiter. Mit ↶ machst du die letzte Aktion rückgängig."],
+  ["Reiter unten", "Würfeln: alle Würfel digital werfen. Bauen: Möbelstücke und Schiffe. Hilfe: Effekte, Ausrüstungssymbole, Ressourcen und Haldor."],
+  ["Spieler und Online-Partie", "Im Reiter „Spiel“ tragt ihr eure Namen ein. Mit einer Online-Partie spielt ihr auf mehreren Handys zusammen. Dort findest du auch Einstellungen und Erweiterungen."],
+];
+let introStep = -1;
+function showIntro(step) {
+  introStep = step;
+  const box = $("intro");
+  if (step < 0 || step >= INTRO.length) {
+    box.hidden = true;
+    try { localStorage.setItem("valcompanion-intro", "1"); } catch {}
+    return;
+  }
+  const [t, d] = INTRO[step];
+  box.hidden = false;
+  box.innerHTML = `<div class="intro-card" role="dialog" aria-modal="true" aria-labelledby="introT">
+    <div class="intro-dots">${INTRO.map((_, i) => `<i class="${i === step ? "on" : ""}"></i>`).join("")}</div>
+    <h2 id="introT">${tr(t)}</h2><p>${tr(d)}</p>
+    <div class="intro-row"><button class="btn" id="introSkip">${tr("Überspringen")}</button>
+    <button class="btn primary" id="introNext">${tr(step === INTRO.length - 1 ? "Los geht's" : "Weiter")}</button></div></div>`;
+  $("introNext").focus();
+}
+document.addEventListener("click", e => {
+  if (e.target.closest("#introNext")) return showIntro(introStep + 1);
+  if (e.target.closest("#introSkip")) return showIntro(-1);
+  if (e.target.closest("#introShow")) return showIntro(0);
+});
+
 // ---------- Reiter ----------
 const TABS = ["zug", "wuerfeln", "bauen", "hilfe", "spiel"];
 const GOES_TO_BUILD = ["Möbelstück herstellen", "Schiff bauen", "Gartenbeet bestellen"];
@@ -2140,6 +2254,7 @@ document.addEventListener("click", e => {
 st.log = (Array.isArray(st.log) ? st.log : []).map(l => (l && l.k) ? l : cleanLog(l, st.players.length));
 if (!st.log.length) { log({ k: "act", w: "Ragnhild", x: "Ressourcen sammeln", c: 1, m: 3 }, ""); st.used = [{ n: "Ressourcen sammeln" }]; }
 render();
+if (FIRST_RUN && !window.VAL_NO_INTRO) showIntro(0);
 
 // Gespeicherte Online-Partie wieder aufnehmen
 try { const c = localStorage.getItem(ONLINE_KEY); if (c && !window.VAL_NO_ONLINE) startSync(c); } catch {}
