@@ -677,3 +677,6 @@ html.big-text body { font-size: 18px; }
 .mini-bar .btn { padding: 6px 10px; font-size: .88rem; flex: none; }
 .mini-bar .icon-btn { font-family: var(--font); font-size: 1.15rem; line-height: 1; }
 @media (prefers-reduced-motion: reduce) { .mini-bar { transition: none; } }
+
+/* App-Symbol unter Über die App */
+.about-brand .app-icon { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 0 0 2px #120a06, 0 8px 20px #000a, 0 0 24px #f2b53c33; }
