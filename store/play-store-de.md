@@ -43,7 +43,7 @@ Für die App wird das Brettspiel benötigt. Sie ersetzt weder Spielmaterial noch
 
 - Entwicklername: `UgleeChicken`
 - Website: `https://wonderl.ink/@ugleechicken`
-- E-Mail-Adresse: Google Play verlangt zusätzlich eine E-Mail-Adresse für den Store-Eintrag (sie wird dort öffentlich angezeigt).
+- E-Mail-Adresse: `valcompanion@ugleechicken.de` (wird im Store öffentlich angezeigt)
 
 ## Datenschutzerklärung (URL)
 

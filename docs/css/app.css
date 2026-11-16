@@ -436,8 +436,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .about .disc b { color: var(--gold); }
 .about .small { font-size: .82rem; color: var(--muted); }
 
-.about .contact { font-size: .92rem; }
-.about .contact .k { display: inline-block; min-width: 8.5em; color: var(--muted); font-size: .82rem; }
+.about .contact { font-size: .92rem; display: grid; grid-template-columns: 1fr; gap: 0; }
+.about .contact .k { color: var(--muted); font-size: .78rem; margin-top: 8px; }
+.about .contact .k:first-child { margin-top: 0; }
+.about .contact a { overflow-wrap: anywhere; }
 .about .contact a { color: var(--gold); user-select: all; -webkit-user-select: all; }
 
 /* Online-Partie */
