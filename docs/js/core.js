@@ -64,7 +64,11 @@ const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catc
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const RUNES = ["ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᚱ", "ᚲ", "ᚷ", "ᚹ"];
+// Runen der Aktionssteine als gerade, geritzte Striche (wie im App-Icon): ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ
+const RUNES = ["M9 3V21M9 8.5L16 4.5M9 13.5L16 9.5", "M7.5 21V3L16.5 8.5V21", "M8.5 3V21M8.5 7L15.5 12L8.5 17",
+  "M8.5 3V21M8.5 4L15.5 9M8.5 10L15.5 15", "M8.5 21V3L15.5 7.5L8.5 12L16 21", "M15.5 4L8.5 12L15.5 20",
+  "M6.5 4L17.5 20M17.5 4L6.5 20", "M8.5 21V3L15.5 7.5L8.5 12"];
+const runeSvg = i => `<svg class="rune" viewBox="0 0 24 24" aria-hidden="true"><path d="${RUNES[i % RUNES.length]}"/></svg>`;
 const name = () => st.players[st.current] || "Spieler";
 const counted = () => st.used.filter(a => !a.free).length;
 
@@ -126,7 +130,7 @@ function render() {
   $("who").textContent = net.code && st.me === st.current && !st.allowAll ? tf("Du bist am Zug, {n}!", { n: name() }) : tf("{n} ist am Zug", { n: name() });
   const c = counted();
   $("pips").innerHTML = Array.from({ length: st.per }, (_, i) =>
-    `<div class="pip ${i < c ? "used" : ""}" role="button" tabindex="0" data-pip="${i}" aria-label="${tf("Aktion {n}", { n: i + 1 })}">${RUNES[i % RUNES.length]}</div>`).join("");
+    `<div class="pip ${i < c ? "used" : ""}" role="button" tabindex="0" data-pip="${i}" aria-label="${tf("Aktion {n}", { n: i + 1 })}">${runeSvg(i)}</div>`).join("");
   const left = st.per - c;
   $("left").className = "left" + (left === 0 ? " zero" : "");
   $("left").innerHTML = left === 0

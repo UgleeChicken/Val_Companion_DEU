@@ -716,3 +716,8 @@ html.big-text .status, html.big-text .mini-bar { height: 50px; }
 .setgroup .set-sub { margin: 0 0 12px; font-size: .8rem; color: var(--muted); font-style: italic; }
 .setgroup .set-h + .set-sec { margin-top: 10px; }
 .act-desc { margin: -4px 0 12px; }
+
+/* Runen auf den Aktionssteinen: gezeichnete Striche statt Schriftzeichen, gleiches Leuchten */
+.pip .rune { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 0 2px var(--pc, var(--gold))) drop-shadow(0 0 6px var(--pc, var(--gold))) drop-shadow(0 0 12px var(--pc, var(--gold))); transition: filter .3s; }
+.pip.used .rune { filter: drop-shadow(0 1px 0 #5a5f5c); }
