@@ -697,3 +697,15 @@ html.big-text .status, html.big-text .mini-bar { height: 50px; }
 .mb-who { flex: none; }
 .mb-pips { margin-right: auto; }
 .mb-pips i { width: 12px; height: 14px; }
+
+/* Würfel: größere Symbole und sanftes Einrollen */
+.result .face svg { width: 46px; height: 46px; }
+.result .face.roll-in { animation: diceIn .6s cubic-bezier(.22, 1, .36, 1) both; animation-delay: var(--delay, 0ms); }
+@keyframes diceIn {
+  0% { opacity: 0; transform: translateY(-18px) rotate(var(--rot, 120deg)) scale(.75); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+.totals.pending { opacity: 0; }
+.totals { transition: opacity .25s ease; }
+@media (prefers-reduced-motion: reduce) { .result .face.roll-in { animation: none; opacity: 1; transform: none; } }

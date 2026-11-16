@@ -92,10 +92,12 @@ function renderDice() {
   $("poolClear").disabled = total === 0 && st.roll.length === 0;
   $("result").innerHTML = st.roll.map((r, i) => {
     const f = DICE[r.d].faces[r.f];
-    return `<button class="face ${DICE[r.d].cls}${f.svg ? "" : " blank"}${tumble.has(i) ? " tumble" : ""}" data-rr="${i}" aria-label="${tf("{d}: {f} – neu werfen", { d: tr(DICE[r.d].name), f: tr(f.n) })}" title="${tf("{f} · antippen zum Neuwurf", { f: tr(f.n) })}"><svg viewBox="0 0 24 24" aria-hidden="true">${f.svg}</svg></button>`;
+    return `<button class="face ${DICE[r.d].cls}${f.svg ? "" : " blank"}" data-rr="${i}" aria-label="${tf("{d}: {f} – neu werfen", { d: tr(DICE[r.d].name), f: tr(f.n) })}" title="${tf("{f} · antippen zum Neuwurf", { f: tr(f.n) })}"><svg viewBox="0 0 24 24" aria-hidden="true">${f.svg}</svg></button>`;
   }).join("");
+  const anim = [...tumble];
   tumble = new Set();
   renderTotals();
+  if (anim.length) requestAnimationFrame(() => animateRoll(anim));
   $("summary").innerHTML = rollSummary(st.roll).map(s => `<li><span class="sd ${DICE[s.d].cls}" title="${tr(DICE[s.d].name)}"></span><b>${s.c}×</b> ${tr(s.n)}</li>`).join("");
   $("diceHint").textContent = st.roll.length
     ? tr("Einzelnen Würfel antippen, um ihn neu zu werfen (z. B. mit einem Neuwurfplättchen).")
@@ -156,4 +158,25 @@ function renderTotals() {
     `<span class="tot tot-${k}"><b>${sum[k] || 0}</b> ${tr(l)}</span>`);
   box.hidden = !items.length;
   box.innerHTML = items.length ? `<span class="tot-l">${tr("Summe")}</span>${items.join("")}` : "";
+}
+
+// Würfel-Animation: Jeder Würfel rollt sanft mit einer leichten Drehung ein, leicht versetzt nacheinander.
+// Die Summe blendet erst ein, wenn alle liegen. Bei „Bewegung reduzieren“ steht das Ergebnis sofort da.
+function animateRoll(idx) {
+  const tot = $("totals");
+  if (!idx.length || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+  tot.classList.add("pending");
+  let done = 0;
+  const finish = () => { if (++done === idx.length) { tot.classList.remove("pending"); try { navigator.vibrate && navigator.vibrate(15); } catch {} } };
+  idx.forEach((i, n) => {
+    const el = document.querySelector(`#result [data-rr="${i}"]`);
+    if (!el) return finish();
+    el.style.setProperty("--rot", (rnd(2) ? 1 : -1) * (60 + rnd(60)) + "deg");
+    el.style.setProperty("--delay", n * 90 + "ms");
+    let ended = false;
+    const end = () => { if (ended) return; ended = true; el.classList.remove("roll-in"); finish(); };
+    el.addEventListener("animationend", end, { once: true });
+    setTimeout(end, 600 + n * 90 + 200);
+    el.classList.add("roll-in");
+  });
 }
