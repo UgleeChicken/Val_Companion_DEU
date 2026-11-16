@@ -166,7 +166,6 @@ function render() {
   document.querySelectorAll(".ext-rache").forEach(el => { el.hidden = !(st.ext && st.ext.rache); });
   document.querySelectorAll(".ext-gf").forEach(el => { el.hidden = !(st.ext && st.ext.gf); });
   $("extGf").checked = !!(st.ext && st.ext.gf);
-  if ($("actOpts").open !== !!st.optsOpen) $("actOpts").open = !!st.optsOpen;
   const l0 = st.log[0];
   $("lastLog").innerHTML = l0 ? `<span class="pd" style="--pc:${pc(l0.p ?? 0)}"></span><span class="lt">${tr("Zuletzt")}: ${esc(logText(l0))}</span><span class="chev4" aria-hidden="true">${st.logOpen ? "▾" : "▸"}</span>` : "";
   $("lastLog").setAttribute("aria-expanded", String(!!st.logOpen));

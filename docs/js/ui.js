@@ -116,7 +116,6 @@ document.addEventListener("change", e => {
 
 // Bereich „Optionen“ auf- und zuklappen und merken
 document.addEventListener("toggle", e => {
-  if (e.target && e.target.id === "actOpts" && st.optsOpen !== e.target.open) { st.optsOpen = e.target.open; save(); }
 }, true);
 
 // Erweiterung „Rache des Verlassenen“ (gilt für die ganze Partie, auch online)
