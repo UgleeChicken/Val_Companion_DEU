@@ -723,3 +723,6 @@ html.big-text .status, html.big-text .mini-bar { height: 50px; }
 .pip .rune { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round;
   filter: drop-shadow(0 0 2px var(--pc, var(--gold))) drop-shadow(0 0 6px var(--pc, var(--gold))) drop-shadow(0 0 12px var(--pc, var(--gold))); transition: filter .3s; }
 .pip.used .rune { filter: drop-shadow(0 1px 0 #5a5f5c); }
+
+/* reCAPTCHA-Hinweis steht als Text bei der Online-Partie, das schwebende Abzeichen würde die Reiterleiste verdecken */
+.grecaptcha-badge { visibility: hidden !important; }

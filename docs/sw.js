@@ -1,6 +1,6 @@
 // Offline-Speicher: legt alle Dateien beim ersten Besuch ab.
 // Bei Änderungen an der App die Versionsnummer erhöhen.
-const CACHE = "valcompanion-v50";
+const CACHE = "valcompanion-v51";
 const FILES = [
   "./",
   "index.html",
@@ -37,7 +37,8 @@ self.addEventListener("activate", e => {
 
 // Erst das Netz fragen (für Updates), sonst den Offline-Speicher nehmen.
 self.addEventListener("fetch", e => {
-  if (e.request.method !== "GET") return;
+  // Nur eigene Dateien der App offline speichern. Anfragen an Firebase, Google usw. gehen unverändert ins Netz.
+  if (e.request.method !== "GET" || new URL(e.request.url).origin !== self.location.origin) return;
   e.respondWith(
     fetch(e.request)
       .then(res => {

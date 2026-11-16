@@ -7,6 +7,11 @@ const FB = Object.assign({
   db: "https://val-companion-default-rtdb.europe-west1.firebasedatabase.app",
   idt: "https://identitytoolkit.googleapis.com",
   secure: "https://securetoken.googleapis.com",
+  // App Check: Nachweis, dass Anfragen aus der echten App kommen (reCAPTCHA v3, unsichtbar)
+  project: "val-companion",
+  appId: "1:63772632573:web:018ec7687ee50f9a426594",
+  recaptcha: "6LequCMuAAAAAH3hm8FOJymYdNMuIZjCIcN7Imui",
+  appCheck: "https://content-firebaseappcheck.googleapis.com/v1",
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
@@ -39,14 +44,68 @@ async function authToken() {
   if (!r.ok) throw new Error(tr("Anmeldung beim Server fehlgeschlagen."));
   const d = await r.json(); setAuth(d.idToken, d.refreshToken, d.localId, d.expiresIn); return net.token;
 }
+// ---------- App Check ----------
+// reCAPTCHA wird erst geladen, wenn jemand online spielt. Schlägt es fehl (z. B. durch einen Blocker),
+// geht die Anfrage ohne Nachweis raus; solange App Check in Firebase nicht erzwungen wird, klappt sie trotzdem.
+const ac = { token: null, exp: 0, failedAt: 0, missing: false, loading: null, noHeader: false };
+function loadRecaptcha() {
+  if (window.grecaptcha && grecaptcha.execute) return Promise.resolve();
+  if (ac.loading) return ac.loading;
+  ac.loading = new Promise((ok, fail) => {
+    const sc = document.createElement("script");
+    sc.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(FB.recaptcha)}`;
+    sc.async = true; sc.onload = ok; sc.onerror = () => { ac.loading = null; sc.remove(); fail(new Error("recaptcha")); };
+    document.head.appendChild(sc);
+  });
+  return ac.loading;
+}
+const withTimeout = (p, ms) => Promise.race([p, new Promise((_, no) => setTimeout(() => no(new Error("timeout")), ms))]);
+async function appCheckToken() {
+  if (!FB.recaptcha) return null;
+  if (ac.token && Date.now() < ac.exp - 300000) return ac.token;
+  if (Date.now() - ac.failedAt < 60000) return null;               // nach einem Fehlschlag kurz nicht erneut versuchen
+  try {
+    await withTimeout(loadRecaptcha(), 8000);
+    const rc = await withTimeout(new Promise((ok, no) => grecaptcha.ready(() => grecaptcha.execute(FB.recaptcha, { action: "fire_app_check" }).then(ok, no))), 8000);
+    const r = await fetch(`${FB.appCheck}/projects/${FB.project}/apps/${FB.appId}:exchangeRecaptchaV3Token?key=${FB.key}`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ recaptcha_v3_token: rc }),
+    });
+    if (!r.ok) throw new Error("exchange " + r.status);
+    const d = await r.json();
+    ac.token = d.token; ac.exp = Date.now() + (parseFloat(d.ttl) || 3600) * 1000; ac.missing = false;
+    return ac.token;
+  } catch (e) {
+    ac.failedAt = Date.now(); ac.missing = true;
+    try { console.warn("App Check:", e && e.message); } catch {}
+    return null;
+  }
+}
+async function dbHeaders(extra) {
+  const h = Object.assign({}, extra);
+  const t = ac.noHeader ? null : await appCheckToken(); if (t) h["X-Firebase-AppCheck"] = t;
+  return h;
+}
+const deniedMsg = () => ac.missing
+  ? tr("Online-Partie nicht möglich: Die App konnte nicht bestätigen, dass sie echt ist. Bitte einen Werbe- oder Tracking-Blocker für diese Seite ausschalten und erneut versuchen.")
+  : tr("Der Server verweigert den Zugriff. Sind die Datenbank-Regeln eingetragen?");
+
 const roomUrl = (code, token) => `${FB.db}/rooms/${code}.json?auth=${encodeURIComponent(token)}`;
 async function dbReq(method, code, body) {
   const t = await authToken();
   let r;
   try {
-    r = await fetch(roomUrl(code, t), { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
+    const opts = h => ({ method, headers: h, body: body === undefined ? undefined : JSON.stringify(body) });
+    const h = await dbHeaders({ "Content-Type": "application/json" });
+    try { r = await fetch(roomUrl(code, t), opts(h)); }
+    catch (e) {
+      // Lehnt der Browser den Zusatz-Header ab, ohne ihn erneut versuchen und für diese Sitzung weglassen.
+      if (!h["X-Firebase-AppCheck"]) throw e;
+      delete h["X-Firebase-AppCheck"];
+      r = await fetch(roomUrl(code, t), opts(h));
+      ac.noHeader = true; try { console.warn("App Check: Header abgelehnt, ohne Nachweis weiter"); } catch {}
+    }
   } catch { throw new Error(tr("Keine Verbindung zum Server. Ist das Handy online?")); }
-  if (r.status === 401 || r.status === 403) throw new Error(tr("Der Server verweigert den Zugriff. Sind die Datenbank-Regeln eingetragen?"));
+  if (r.status === 401 || r.status === 403) throw new Error(deniedMsg());
   if (!r.ok) throw new Error(tf("Der Server meldet einen Fehler ({s}).", { s: r.status }));
   return r.json();
 }
@@ -89,6 +148,40 @@ function startSync(code) {
   render();
 }
 
+// Live-Verbindung als Server-Sent-Events über fetch, damit der App-Check-Nachweis als Header mitgehen kann.
+function sseStream(url, headers, on) {
+  const ctl = new AbortController();
+  const h = { close: () => ctl.abort() };
+  (async () => {
+    let r;
+    try { r = await fetch(url, { headers: Object.assign({ Accept: "text/event-stream" }, headers), signal: ctl.signal, cache: "no-store" }); }
+    catch (e) { if (!ctl.signal.aborted) on.error(0); return; }
+    if (!r.ok || !r.body) { if (!ctl.signal.aborted) on.error(r.status); return; }
+    on.open();
+    const rd = r.body.getReader(), dec = new TextDecoder();
+    let buf = "";
+    try {
+      for (;;) {
+        const { value, done } = await rd.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true }).replace(/\r\n?/g, "\n");
+        let i;
+        while ((i = buf.indexOf("\n\n")) >= 0) {
+          const block = buf.slice(0, i); buf = buf.slice(i + 2);
+          let ev = "message", data = "";
+          block.split("\n").forEach(l => {
+            if (l.startsWith("event:")) ev = l.slice(6).trim();
+            else if (l.startsWith("data:")) data += (data ? "\n" : "") + l.slice(5).replace(/^ /, "");
+          });
+          on.event(ev, data);
+        }
+      }
+    } catch {}
+    if (!ctl.signal.aborted) on.error(0);
+  })();
+  return h;
+}
+
 function closeStream() {
   if (net.es) { net.es.close(); net.es = null; }
   clearTimeout(net.renew); clearTimeout(net.reconnect);
@@ -102,18 +195,30 @@ async function openStream() {
   const code = net.code; if (!code) return;
   let t;
   try { t = await authToken(); } catch (e) { setNet("verbinde", tr("Keine Verbindung zum Server. Neuer Versuch läuft …")); return reconnectSoon(5000); }
+  const headers = await dbHeaders();
   if (net.code !== code) return;
-  const es = new EventSource(roomUrl(code, t));
+  const es = sseStream(roomUrl(code, t), headers, {
+    open: () => { if (net.es !== es) return; if (net.status !== "verbunden") setNet("verbunden"); if (net.lastShared === null) pushNow(); },
+    event: (ev, data) => {
+      if (net.es !== es) return;
+      if (ev === "put" || ev === "patch") { try { onStream(JSON.parse(data)); } catch {} }
+      else if (ev === "auth_revoked") { net.token = null; reconnectSoon(0); }
+      else if (ev === "cancel") { closeStream(); setNet("fehler", tr("Der Server verweigert den Zugriff auf diese Partie.")); }
+    },
+    error: status => {
+      if (net.es !== es) return;
+      es.close(); net.es = null;
+      if (status === 401 || status === 403) { setNet("fehler", deniedMsg()); return reconnectSoon(30000); }
+      setNet("verbinde", "");
+      // Einmal prüfen, ob nur der App-Check-Header abgelehnt wurde (dbReq lässt ihn dann weg).
+      if (!status && headers["X-Firebase-AppCheck"] && !ac.probed) { ac.probed = true; return dbReq("GET", code).catch(() => {}).finally(() => reconnectSoon(0)); }
+      reconnectSoon(4000);
+    },
+  });
   net.es = es;
-  const onData = e => { try { onStream(JSON.parse(e.data)); } catch {} };
-  es.addEventListener("put", onData);
-  es.addEventListener("patch", onData);
-  es.addEventListener("auth_revoked", () => { net.token = null; reconnectSoon(0); });
-  es.addEventListener("cancel", () => { closeStream(); setNet("fehler", tr("Der Server verweigert den Zugriff auf diese Partie.")); });
-  es.onopen = () => { if (net.status !== "verbunden") setNet("verbunden"); if (net.lastShared === null) pushNow(); };
-  es.onerror = () => { if (net.es !== es) return; setNet("verbinde", ""); es.close(); reconnectSoon(4000); };
-  // Das Anmelde-Token läuft nach einer Stunde ab: rechtzeitig neu verbinden.
-  net.renew = setTimeout(() => { net.token = null; openStream(); }, Math.max(60000, net.tokenExp - Date.now() - 180000));
+  // Anmelde-Token und App-Check-Nachweis laufen nach etwa einer Stunde ab: rechtzeitig neu verbinden.
+  const until = Math.min(net.tokenExp, ac.token ? ac.exp : Infinity);
+  net.renew = setTimeout(() => { net.token = null; openStream(); }, Math.max(60000, until - Date.now() - 180000));
 }
 
 function onStream(msg) {
