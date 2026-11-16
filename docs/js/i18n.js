@@ -224,6 +224,7 @@ const EN = {
 "Entwickelt von": "Developed by",
 "Kontakt": "Contact",
 "Mehr von mir": "More from me",
+"Impressum": "Imprint",
 "Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.": "Without an online game, everything is stored only on this device. In an online game, the game state and player names are stored via Google Firebase (servers in Belgium) and can only be accessed with the game code. For this, the app creates an anonymous ID – no account and no personal data.",
 "Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.": "Fonts: Averia Serif Libre and Germania One (SIL Open Font License). Icons, app icon and wood texture are original drawings.",
 "Zug": "Turn",
@@ -355,6 +356,8 @@ const tr = s => (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, s)) ?
 const tf = (s, v) => tr(s).replace(/\{(\w+)\}/g, (_, k) => (v && v[k] !== undefined ? v[k] : ""));
 function applyStatic() {
   document.documentElement.lang = LANG;
+  const imp = document.getElementById("impLink");
+  if (imp) { const u = LANG === "en" ? "ugleechicken.de/imprint" : "ugleechicken.de/de/impressum"; imp.href = "https://" + u + "/"; imp.textContent = u; }
   const w = document.querySelector(".wrap"); if (w) w.lang = LANG;
   document.querySelectorAll("[data-tr]").forEach(el => {
     if (el.dataset.de === undefined) el.dataset.de = el.textContent.replace(/\s+/g, " ").trim();
