@@ -1,0 +1,36 @@
+name: Alte Online-Partien aufräumen
+
+# Löscht einmal täglich alle Online-Partien, die länger als 30 Tage nicht benutzt wurden.
+# Braucht das Secret FIREBASE_SERVICE_ACCOUNT (Dienstkonto-Schlüssel aus Firebase, siehe README).
+# Von Hand starten: Reiter „Actions“ → „Alte Online-Partien aufräumen“ → „Run workflow“,
+# dort kann man auch einen Probelauf wählen, der nur anzeigt und nichts löscht.
+on:
+  schedule:
+    - cron: "17 3 * * *"   # täglich um 03:17 UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Probelauf: nur anzeigen, nichts löschen"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Alte Partien löschen
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          DATABASE_URL: https://val-companion-default-rtdb.europe-west1.firebasedatabase.app
+          MAX_DAYS: "30"
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+        run: node tools/cleanup-rooms.mjs

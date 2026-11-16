@@ -38,6 +38,10 @@ Jedes Handy wählt einmal, welcher Spieler es ist (**Ich spiele als …**). Akti
 
 Technik: Firebase (anonyme Anmeldung + Realtime Database in `europe-west1`), angesprochen über die REST-Schnittstelle ohne zusätzliche Bibliothek. Die Datenbank-Regeln liegen in `firebase/database.rules.json` und werden in der Firebase-Konsole unter **Realtime Database → Regeln** eingefügt und veröffentlicht.
 
+Online-Partien sind mit Firebase App Check (reCAPTCHA Enterprise / Fraud Defense) geschützt.
+
+**Aufräumen:** Die GitHub Action `.github/workflows/cleanup.yml` löscht täglich alle Partien, die 30 Tage nicht benutzt wurden (`tools/cleanup-rooms.mjs`). Sie braucht das Repository-Secret `FIREBASE_SERVICE_ACCOUNT` mit dem Inhalt eines Dienstkonto-Schlüssels (Firebase-Konsole → Projekteinstellungen → Dienstkonten → Neuen privaten Schlüssel generieren). Von Hand lässt sie sich unter **Actions → Alte Online-Partien aufräumen → Run workflow** starten, standardmäßig als Probelauf.
+
 ## Funktionen
 
 Die App ist in fünf Reiter aufgeteilt (Leiste unten):
