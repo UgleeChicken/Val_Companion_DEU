@@ -53,7 +53,8 @@ Unter **Play App-Signatur** die von Google verwaltete Signatur verwenden (Standa
 - Werden Daten erhoben oder geteilt? **Ja** (nur bei Online-Partien)
 - Erhobene Datentypen:
   - **App-Aktivitäten → Sonstige nutzergenerierte Inhalte** (Spielstand mit Spielernamen) – Zweck: App-Funktionen – optional
-  - **Geräte- oder sonstige IDs** (anonyme Nutzerkennung von Firebase) – Zweck: App-Funktionen – optional
+  - **App-Aktivitäten → App-Interaktionen** (reCAPTCHA wertet die Nutzung der Seite aus) – Zweck: Betrugsprävention, Sicherheit und Compliance – optional
+  - **Geräte- oder sonstige IDs** (anonyme Nutzerkennung von Firebase, Geräte- und Browserdaten für reCAPTCHA) – Zweck: App-Funktionen sowie Betrugsprävention, Sicherheit und Compliance – optional
 - Daten werden **nicht** an Dritte weitergegeben (Firebase verarbeitet sie im Auftrag)
 - Daten werden bei der Übertragung **verschlüsselt** (HTTPS): Ja
 - Nutzer können die **Löschung** ihrer Daten beantragen: Ja, über den Kontakt in der Datenschutzerklärung
@@ -77,6 +78,7 @@ Außerdem nötig:
 
 ## Vor der öffentlichen Veröffentlichung noch offen
 
-- Impressum mit echtem Namen und Anschrift
-- Erlaubnis von MOOD Publishing für Inhalte aus dem Regelheft
-- Firebase App Check einrichten (erst „Nur beobachten“, später „Erzwingen“)
+- Impressum: erledigt (ugleechicken.de/de/impressum, gilt auch für die App)
+- MOOD Publishing: mehrfach über Discord angefragt, keine Antwort. Die App ist als inoffizielles Fan-Projekt gekennzeichnet und nutzt kein offizielles Material.
+- Firebase App Check: eingerichtet (reCAPTCHA Enterprise / Fraud Defense), läuft im Beobachtungsmodus. „Erzwingen“, sobald kaum noch Anfragen ohne Nachweis kommen.
+- Alte Online-Partien: werden täglich nach 30 Tagen ohne Benutzung gelöscht (GitHub Action)
