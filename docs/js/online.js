@@ -7,7 +7,7 @@ const FB = Object.assign({
   db: "https://val-companion-default-rtdb.europe-west1.firebasedatabase.app",
   idt: "https://identitytoolkit.googleapis.com",
   secure: "https://securetoken.googleapis.com",
-  // App Check: Nachweis, dass Anfragen aus der echten App kommen (reCAPTCHA v3, unsichtbar)
+  // App Check: Nachweis, dass Anfragen aus der echten App kommen (reCAPTCHA Enterprise / Fraud Defense, unsichtbar)
   project: "val-companion",
   appId: "1:63772632573:web:018ec7687ee50f9a426594",
   recaptcha: "6LequCMuAAAAAH3hm8FOJymYdNMuIZjCIcN7Imui",
@@ -47,13 +47,16 @@ async function authToken() {
 // ---------- App Check ----------
 // reCAPTCHA wird erst geladen, wenn jemand online spielt. Schlägt es fehl (z. B. durch einen Blocker),
 // geht die Anfrage ohne Nachweis raus; solange App Check in Firebase nicht erzwungen wird, klappt sie trotzdem.
+const AC_KEY = "valcompanion-appcheck";
 const ac = { token: null, exp: 0, failedAt: 0, missing: false, loading: null, noHeader: false };
+// Nachweis gilt etwa einen Tag: auf dem Gerät merken, damit nicht bei jedem Start neu bei Google angefragt wird.
+try { const sv = JSON.parse(localStorage.getItem(AC_KEY)); if (sv && sv.token && sv.exp > Date.now()) { ac.token = sv.token; ac.exp = sv.exp; } } catch {}
 function loadRecaptcha() {
-  if (window.grecaptcha && grecaptcha.execute) return Promise.resolve();
+  if (window.grecaptcha && grecaptcha.enterprise && grecaptcha.enterprise.execute) return Promise.resolve();
   if (ac.loading) return ac.loading;
   ac.loading = new Promise((ok, fail) => {
     const sc = document.createElement("script");
-    sc.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(FB.recaptcha)}`;
+    sc.src = `https://www.google.com/recaptcha/enterprise.js?render=${encodeURIComponent(FB.recaptcha)}`;
     sc.async = true; sc.onload = ok; sc.onerror = () => { ac.loading = null; sc.remove(); fail(new Error("recaptcha")); };
     document.head.appendChild(sc);
   });
@@ -66,13 +69,15 @@ async function appCheckToken() {
   if (Date.now() - ac.failedAt < 60000) return null;               // nach einem Fehlschlag kurz nicht erneut versuchen
   try {
     await withTimeout(loadRecaptcha(), 8000);
-    const rc = await withTimeout(new Promise((ok, no) => grecaptcha.ready(() => grecaptcha.execute(FB.recaptcha, { action: "fire_app_check" }).then(ok, no))), 8000);
-    const r = await fetch(`${FB.appCheck}/projects/${FB.project}/apps/${FB.appId}:exchangeRecaptchaV3Token?key=${FB.key}`, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ recaptcha_v3_token: rc }),
+    const g = grecaptcha.enterprise;
+    const rc = await withTimeout(new Promise((ok, no) => g.ready(() => g.execute(FB.recaptcha, { action: "fire_app_check" }).then(ok, no))), 8000);
+    const r = await fetch(`${FB.appCheck}/projects/${FB.project}/apps/${FB.appId}:exchangeRecaptchaEnterpriseToken?key=${FB.key}`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ recaptcha_enterprise_token: rc }),
     });
     if (!r.ok) throw new Error("exchange " + r.status);
     const d = await r.json();
     ac.token = d.token; ac.exp = Date.now() + (parseFloat(d.ttl) || 3600) * 1000; ac.missing = false;
+    try { localStorage.setItem(AC_KEY, JSON.stringify({ token: ac.token, exp: ac.exp })); } catch {}
     return ac.token;
   } catch (e) {
     ac.failedAt = Date.now(); ac.missing = true;
