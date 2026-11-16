@@ -691,3 +691,9 @@ html.big-text body { font-size: 18px; }
 .status, .mini-bar { height: 46px; padding-top: 0; padding-bottom: 0; align-items: center; }
 html.big-text .status, html.big-text .mini-bar { height: 50px; }
 .mini-bar .btn, .mini-bar .icon-btn { padding-top: 1px; padding-bottom: 1px; }
+
+/* Schmale Leiste: Position kommt aus der großen Zug-Leiste; Aufbau wie die Statusleiste */
+.mini-bar { right: auto; margin: 0; }
+.mb-who { flex: none; }
+.mb-pips { margin-right: auto; }
+.mb-pips i { width: 12px; height: 14px; }

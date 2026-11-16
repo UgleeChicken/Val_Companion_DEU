@@ -144,7 +144,12 @@ document.addEventListener("click", e => {
 (() => {
   const bar = $("miniBar"), board = document.querySelector(".board");
   if (!bar || !board || !("IntersectionObserver" in window)) return;
-  const show = on => { bar.classList.toggle("show", on); bar.setAttribute("aria-hidden", String(!on));
+  // Gleiche Breite und Position wie die große Zug-Leiste (und damit wie die Statusleiste der anderen Reiter)
+  const align = () => { const r = board.getBoundingClientRect(); if (!r.width) return;
+    bar.style.left = Math.round(r.left) + "px"; bar.style.width = Math.round(r.width) + "px"; };
+  window.addEventListener("resize", align, { passive: true });
+  align();
+  const show = on => { if (on) align(); bar.classList.toggle("show", on); bar.setAttribute("aria-hidden", String(!on));
     bar.querySelectorAll("button").forEach(b => b.tabIndex = on ? 0 : -1); };
   new IntersectionObserver(([en]) => show(!en.isIntersecting && !board.hidden && en.boundingClientRect.top < 0),
     { threshold: 0, rootMargin: "-60px 0px 0px 0px" }).observe(board);
