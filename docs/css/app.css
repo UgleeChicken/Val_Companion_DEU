@@ -427,7 +427,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   margin: 8px 0 0; font-size: .82rem; font-style: italic; color: var(--fg); letter-spacing: .02em;
   background: #2a201bcc; border: 1px solid #120a06; border-radius: 999px; padding: 3px 12px;
 }
-.disclaimer { margin: 0; text-align: center; font-size: .75rem; color: #f0e4cdcc; text-shadow: 0 1px 2px #000; }
+.disclaimer { margin: 4px 16px 0; text-align: center; font-size: .75rem; color: #f0e4cdcc; text-shadow: 0 1px 2px #000; }
 
 /* Über die App */
 .about p { margin: 0 0 10px; line-height: 1.5; }
