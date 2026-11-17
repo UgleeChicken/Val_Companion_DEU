@@ -85,14 +85,18 @@ function achTick() {
 }
 
 // ---------- Anzeige ----------
-let achToastTimer = null;
-function achToast(a) {
-  const el = $("achToast"); if (!el) return;
+// Meldungen nacheinander zeigen, wenn mehrere Erfolge auf einmal freigeschaltet werden
+const achQueue = [];
+let achShowing = false;
+function achToast(a) { achQueue.push(a); if (!achShowing) achNext(); }
+function achNext() {
+  const el = $("achToast"), a = achQueue.shift();
+  if (!el || !a) { achShowing = false; return; }
+  achShowing = true;
   el.innerHTML = `<span class="ach-tk">${tr("Erfolg freigeschaltet")}</span><b>${tr(a.t)}</b><span class="ach-td">${tr(a.d)}</span>`;
   el.hidden = false; void el.offsetWidth; el.classList.add("show");
   try { navigator.vibrate && navigator.vibrate(30); } catch {}
-  clearTimeout(achToastTimer);
-  achToastTimer = setTimeout(() => { el.classList.remove("show"); setTimeout(() => { el.hidden = true; }, 300); }, 4200);
+  setTimeout(() => { el.classList.remove("show"); setTimeout(() => { el.hidden = true; achNext(); }, 350); }, 4200);
 }
 function renderAch() {
   const box = $("achBox"); if (!box) return;
