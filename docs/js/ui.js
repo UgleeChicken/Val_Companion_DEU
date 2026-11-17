@@ -173,7 +173,7 @@ function feedback(actIdx, free) {
 const INTRO = [
   {"t": "Willkommen bei Val Companion", "l": "Deine inoffizielle Begleit-App für Valheim – Das Brettspiel.", "b": ["<b>Aktionen zählen</b>, ohne mitzurechnen", "<b>Würfeln</b> mit allen Würfeln digital", "<b>Spielhilfe</b> für Effekte, Symbole und Haldor"], "n": "Das Brettspiel braucht ihr trotzdem."},
   {"t": "Drei Runensteine pro Zug", "l": "Jede Aktion verbraucht einen Runenstein.", "b": ["<b>Aktion antippen</b> im Reiter „Zug“", "<b>Freie Aktionen</b> verbrauchen keinen Stein", "<b>Zug beenden</b> gibt an den Nächsten weiter, auch früher, wenn du nicht alle Aktionen nutzt", "<b>↶</b> macht die letzte Aktion rückgängig"], "n": ""},
-  {"t": "Reiter unten", "l": "Alles Weitere findest du in der Leiste unten.", "b": ["<b>Würfeln</b>: alle Würfel digital werfen", "<b>Bauen</b>: Möbelstücke und Schiffe", "<b>Hilfe</b>: Effekte, Ausrüstung, Ressourcen, Haldor", "<b>Spiel</b>: Spieler, Online-Partie, Einstellungen"], "n": ""},
+  {"t": "Reiter unten", "l": "Alles Weitere findest du in der Leiste unten. Du kannst auch nach links und rechts wischen.", "b": ["<b>Würfeln</b>: alle Würfel digital werfen", "<b>Bauen</b>: Möbelstücke und Schiffe", "<b>Hilfe</b>: Effekte, Ausrüstung, Ressourcen, Haldor", "<b>Spiel</b>: Spieler, Online-Partie, Einstellungen"], "n": ""},
   {"t": "Spieler und Online-Partie", "l": "Im Reiter „Spiel“ legt ihr los.", "b": ["<b>Namen eintragen</b> und Farben wählen", "<b>Online-Partie</b>: auf mehreren Handys zusammen spielen", "<b>Einstellungen</b>: Sprache, Erweiterungen und mehr"], "n": "Diese Einführung findest du jederzeit unter Spiel → Einstellungen."}
 ];
 let introStep = -1;
@@ -228,6 +228,41 @@ document.addEventListener("click", e => {
   if (!t) return;
   goTab(t.id === "status" ? "zug" : t.dataset.go);
 });
+
+// Wischen zwischen den Reitern: nach links = nächster Reiter, nach rechts = vorheriger.
+// Nur klare waagerechte Bewegungen zählen; am Bildschirmrand (Zurück-Geste), in Eingabefeldern
+// und bei offener Einführung wird nicht gewechselt.
+(() => {
+  const order = [...document.querySelectorAll("[data-go]")].map(b => b.dataset.go);
+  let sx = 0, sy = 0, st0 = 0, on = false;
+  document.addEventListener("touchstart", e => {
+    on = false;
+    if (e.touches.length !== 1 || !$("intro").hidden) return;
+    const t = e.touches[0];
+    if (t.clientX < 28 || t.clientX > window.innerWidth - 28) return;
+    if (e.target.closest("input, textarea, select, [contenteditable]")) return;
+    sx = t.clientX; sy = t.clientY; st0 = Date.now(); on = true;
+  }, { passive: true });
+  document.addEventListener("touchmove", e => {
+    if (on && e.touches.length !== 1) on = false;
+  }, { passive: true });
+  document.addEventListener("touchend", e => {
+    if (!on) return; on = false;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Date.now() - st0 > 700 || Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 2) return;
+    const sel = window.getSelection && String(window.getSelection()); if (sel) return;
+    const i = order.indexOf(st.tab), j = i + (dx < 0 ? 1 : -1);
+    if (i < 0 || j < 0 || j >= order.length) return;
+    goTab(order[j]);
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const cls = dx < 0 ? "swipe-from-right" : "swipe-from-left";
+    document.querySelectorAll(".wrap > [data-tab]:not([hidden])").forEach(el => {
+      el.classList.remove("swipe-from-right", "swipe-from-left"); void el.offsetWidth;
+      el.classList.add(cls);
+      el.addEventListener("animationend", () => el.classList.remove(cls), { once: true });
+    });
+  }, { passive: true });
+})();
 
 // Große Schrift (pro Handy)
 document.addEventListener("change", e => {

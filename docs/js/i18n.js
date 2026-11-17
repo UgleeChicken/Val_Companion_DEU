@@ -264,7 +264,7 @@ const EN = {
 "<b>Freie Aktionen</b> verbrauchen keinen Stein": "<b>Free actions</b> don't use a stone",
 "<b>Zug beenden</b> gibt an den Nächsten weiter, auch früher, wenn du nicht alle Aktionen nutzt": "<b>End turn</b> passes to the next player, also early if you don't use all your actions",
 "<b>↶</b> macht die letzte Aktion rückgängig": "<b>↶</b> undoes your last action",
-"Alles Weitere findest du in der Leiste unten.": "Everything else is in the bar at the bottom.",
+"Alles Weitere findest du in der Leiste unten. Du kannst auch nach links und rechts wischen.": "Everything else is in the bar at the bottom. You can also swipe left and right.",
 "<b>Würfeln</b>: alle Würfel digital werfen": "<b>Dice</b>: roll all dice digitally",
 "<b>Bauen</b>: Möbelstücke und Schiffe": "<b>Build</b>: furniture and ships",
 "<b>Hilfe</b>: Effekte, Ausrüstung, Ressourcen, Haldor": "<b>Help</b>: effects, equipment, resources, Haldor",

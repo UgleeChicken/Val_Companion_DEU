@@ -726,3 +726,10 @@ html.big-text .status, html.big-text .mini-bar { height: 50px; }
 
 /* reCAPTCHA-Hinweis steht als Text bei der Online-Partie, das schwebende Abzeichen würde die Reiterleiste verdecken */
 .grecaptcha-badge { visibility: hidden !important; }
+
+/* Wischen zwischen den Reitern: neue Seite gleitet kurz aus der Wischrichtung herein */
+.swipe-from-right { animation: swipeInR .22s cubic-bezier(.22, 1, .36, 1); }
+.swipe-from-left { animation: swipeInL .22s cubic-bezier(.22, 1, .36, 1); }
+@keyframes swipeInR { from { transform: translateX(36px); opacity: .4; } to { transform: none; opacity: 1; } }
+@keyframes swipeInL { from { transform: translateX(-36px); opacity: .4; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .swipe-from-right, .swipe-from-left { animation: none; } }
