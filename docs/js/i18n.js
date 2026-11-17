@@ -258,6 +258,8 @@ const EN = {
 "Bestelle 3-mal ein Gartenbeet.": "Add a garden bed 3 times.",
 "Kurze Rast": "A Short Rest",
 "Beende einen Zug, ohne alle Runensteine zu verbrauchen.": "End a turn without using all rune stones.",
+"Fundbüro Walhall": "Valhalla Lost & Found",
+"Hol deine Sachen vom Grabstein zurück. Walhall war wohl noch nicht bereit für dich.": "Get your gear back from a gravestone. Valhalla wasn't ready for you yet.",
 "Küchenjarl": "Kitchen Jarl",
 "Koche 5-mal Nahrung.": "Cook food 5 times.",
 "Veteran": "Veteran",

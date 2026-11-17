@@ -23,6 +23,7 @@ const ACH = [
   { id: "gourmet", t: "Der Gourmet", d: "Iss 2-mal gekochte Nahrung.", c: "Gekochte Nahrung essen", n: 2 },
   { id: "haldor", t: "Haldors Stammkunde", d: "Handle 10-mal mit Haldor.", c: "Mit Haldor handeln", n: 10 },
   { id: "hinterhalt", t: "Aus dem Hinterhalt", d: "Führe 5-mal einen Hinterhalt aus.", c: "Hinterhalt", n: 5 },
+  { id: "fundbuero", t: "Fundbüro Walhall", d: "Hol deine Sachen vom Grabstein zurück. Walhall war wohl noch nicht bereit für dich.", on: "Gegenstand vom Grabstein aufsammeln" },
   { id: "runenleser", t: "Runenleser", d: "Studiere Inschriften.", ext: "rache" },
   { id: "nacht", t: "Lange Nacht", d: "Erreiche Runde 20 in einer Partie." },
   { id: "feuer", t: "Gemeinsam am Feuer", d: "Spiele eine Online-Partie mit 4 Spielern." },
@@ -53,6 +54,7 @@ function achAction(n, free, idx) {
   if (free) achGame("free");
   else if (counted() >= st.per) achUnlock("runenkundig");
   if (n === "Inschriften studieren") achUnlock("runenleser");
+  ACH.filter(a => a.on === n).forEach(a => achUnlock(a.id));
   if (ACH.some(a => a.c === n)) achCount(n);
 }
 function achBuild(f, idx) {
