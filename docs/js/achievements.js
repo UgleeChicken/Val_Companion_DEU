@@ -101,9 +101,25 @@ function renderAch() {
   const list = ACH.filter(a => !a.ext || ext[a.ext] || ach.u[a.id]);
   const got = list.filter(a => ach.u[a.id]).length;
   $("achCount").textContent = `${got}/${list.length}`;
+  if ($("achResetArea") && !$("achResetArea").firstChild) renderAchReset(false);
   $("achList").innerHTML = list.map(a => {
     const on = !!ach.u[a.id], i = ACH.indexOf(a);
     const prog = !on && a.n ? ` <span class="ach-prog">${Math.min(a.n, (a.c ? ach.c[a.c] : ach.g[a.g]) || 0)}/${a.n}</span>` : "";
     return `<li class="ach${on ? " on" : ""}"><div class="ach-stone"><div class="ach-rim">${runeSvg(i)}</div></div><div class="ach-tx"><b>${tr(a.t)}</b><span>${tr(a.d)}${prog}</span></div></li>`;
   }).join("");
 }
+
+// Alle Erfolge auf diesem Handy zurücksetzen (mit Rückfrage). Spielstand und Einstellungen bleiben.
+function renderAchReset(confirm) {
+  const box = $("achResetArea"); if (!box) return;
+  box.innerHTML = confirm
+    ? `<span class="confirm">${tr("Alle Erfolge auf diesem Handy zurücksetzen?")} <button class="btn danger" id="achResetYes">${tr("Ja, zurücksetzen")}</button><button class="btn" id="achResetNo">${tr("Abbrechen")}</button></span>`
+    : `<button class="btn ach-reset-btn" id="achReset">${tr("Erfolge zurücksetzen")}</button>`;
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("#achReset,#achResetYes,#achResetNo");
+  if (!t) return;
+  if (t.id === "achReset") return renderAchReset(true);
+  if (t.id === "achResetYes") { ach = { u: {}, c: {}, g: {} }; achSave(); }
+  renderAchReset(false); renderAch();
+});

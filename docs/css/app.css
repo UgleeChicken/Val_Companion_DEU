@@ -768,3 +768,6 @@ html, body { overflow-x: clip; }
 .ach-toast .ach-tk { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .ach-toast b { font-family: var(--head); font-weight: 400; font-size: 1.15rem; letter-spacing: .05em; color: var(--gold-hi); }
 @media (prefers-reduced-motion: reduce) { .ach-toast { transition: none; } }
+.ach-reset { margin-top: 16px; padding-top: 12px; border-top: 1px solid #ffffff14; }
+.ach-reset .ach-reset-btn { font-size: .8rem; padding: 6px 12px; opacity: .75; }
+.ach-reset .confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); }
