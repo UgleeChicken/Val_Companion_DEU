@@ -774,3 +774,5 @@ html, body { overflow-x: clip; }
 /* Unterreiter im Reiter Spiel: Zähler bei „Erfolge“ kleiner, damit „Einstellungen“ daneben Platz hat */
 .seg-game .seg-b { gap: 4px; flex: 1 1 auto; padding: 8px 6px; }
 .seg-game .cnt { font-size: .62rem; padding: 1px 5px; min-width: 0; }
+/* Meldung: darunter klein, wofür es den Erfolg gab */
+.ach-toast .ach-td { margin-top: 2px; max-width: 30ch; font-size: .78rem; line-height: 1.35; color: var(--fg); opacity: .8; font-style: italic; }
