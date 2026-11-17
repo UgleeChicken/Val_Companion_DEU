@@ -130,6 +130,11 @@ function renderSegs() {
   if (!["eff", "eq", "res", "hal"].includes(st.seg.help)) st.seg.help = "eff";
   document.querySelectorAll('[data-seg="help"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.val === st.seg.help)));
   document.querySelectorAll("[data-sub]").forEach(el => { const [k, v] = el.dataset.sub.split(":"); el.hidden = st.seg[k] !== v; });
+  // Reiter Spiel: Partie / Erfolge / App (Erfolge entfallen, wenn sie ausgeschaltet sind)
+  if (!["party", "ach", "app"].includes(st.seg.game) || (st.achOff && st.seg.game === "ach")) st.seg.game = "party";
+  document.querySelectorAll('[data-seg="game"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.val === st.seg.game)));
+  if ($("segAch")) $("segAch").hidden = !!st.achOff;
+  if (st.tab === "spiel") document.querySelectorAll("[data-game]").forEach(el => { el.hidden = el.dataset.game !== st.seg.game; });
 }
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-seg]");
@@ -256,7 +261,7 @@ document.addEventListener("click", e => {
     goTab(order[j]);
     if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const cls = dx < 0 ? "swipe-from-right" : "swipe-from-left";
-    document.querySelectorAll(".wrap > [data-tab]:not([hidden]), .wrap > #achBox:not([hidden])").forEach(el => {
+    document.querySelectorAll(".wrap > [data-tab]:not([hidden])").forEach(el => {
       el.classList.remove("swipe-from-right", "swipe-from-left"); void el.offsetWidth;
       el.classList.add(cls);
       el.addEventListener("animationend", () => el.classList.remove(cls), { once: true });

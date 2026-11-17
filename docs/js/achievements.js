@@ -96,11 +96,11 @@ function achToast(a) {
 }
 function renderAch() {
   const box = $("achBox"); if (!box) return;
-  box.hidden = !!st.achOff || st.tab !== "spiel";
   const ext = st.ext || {};
   const list = ACH.filter(a => !a.ext || ext[a.ext] || ach.u[a.id]);
   const got = list.filter(a => ach.u[a.id]).length;
   $("achCount").textContent = `${got}/${list.length}`;
+  if ($("segAchCnt")) $("segAchCnt").textContent = `${got}/${list.length}`;
   if ($("achResetArea") && !$("achResetArea").firstChild) renderAchReset(false);
   $("achList").innerHTML = list.map(a => {
     const on = !!ach.u[a.id], i = ACH.indexOf(a);

@@ -111,36 +111,7 @@
 
 
 
-  <section class="panel online" data-tab="spiel" id="online">
-    <div class="label" data-tr>Online-Partie</div>
-    <div id="onOff">
-      <p class="on-p" data-tr>Spielt gemeinsam auf mehreren Handys: Alle sehen live denselben Spielstand. Einer erstellt die Partie, die anderen treten mit dem Code bei.</p>
-      <div class="on-row"><button class="btn primary" id="onCreate" data-tr>Partie erstellen</button></div>
-      <div class="on-row">
-        <input id="joinCode" class="code-in" maxlength="8" placeholder="Code, z. B. K7M-Q2X" data-tr-ph="Code, z. B. K7M-Q2X" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Partie-Code" data-tr-aria="Partie-Code">
-        <button class="btn" id="onJoin" data-tr>Beitreten</button>
-      </div>
-      <p class="on-small" data-tr>Beim Beitreten wird der Spielstand auf diesem Handy durch den der Partie ersetzt.</p>
-      <p class="on-small" data-trh="recap">Online-Partien sind durch reCAPTCHA geschützt. Es gelten die <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung</a> und die <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Nutzungsbedingungen</a> von Google.</p>
-    </div>
-    <div id="onOn" hidden>
-      <p class="on-status"><span class="dot" id="onDot"></span><span id="onStatusText">Verbinde …</span></p>
-      <div class="seat-box"><span class="code-l" data-tr>Ich spiele als</span><div class="seat-row" id="seatPick"></div></div>
-      <label class="allow"><input type="checkbox" id="allowAll"> <span data-trh="allowAll">Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small></span></label>
-      <div class="code-box"><span class="code-l" data-tr>Partie-Code</span><span class="code" id="onCode"></span></div>
-      <div class="on-row"><button class="btn" id="onCopy" data-tr>Code kopieren</button><button class="btn" id="onLeave" data-tr>Partie verlassen</button></div>
-      <div class="on-row" id="delArea"><button class="btn danger" id="onDelete" data-tr>Partie für alle löschen</button></div>
-      <p class="on-small" data-tr>Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.</p>
-    </div>
-    <p class="on-err" id="onErr" role="alert" hidden></p>
-  </section>
 
-  <section class="panel" data-tab="spiel">
-    <div class="label" data-tr>Wikinger am Tisch</div>
-    <div class="players" id="players"></div>
-    <p class="set-hint" data-tr>Tipp: Spielernamen antippen, um sie zu ändern. Ein Tipp auf den Farbpunkt wechselt die Farbe.</p>
-    <div class="new-game" id="resetArea"><button class="btn" id="reset" data-tr>Neues Spiel</button></div>
-  </section>
 
   <div class="mini-bar" id="miniBar" aria-hidden="true">
     <span class="mb-who" id="mbWho"></span>
@@ -304,19 +275,53 @@
     </div>
   </details>
 
-  <section class="panel" data-tab="spiel">
+
+  <div class="seg seg-game" data-tab="spiel" role="tablist">
+    <button class="seg-b" data-seg="game" data-val="party" role="tab"><span data-tr>Partie</span></button>
+    <button class="seg-b" data-seg="game" data-val="ach" role="tab" id="segAch"><span data-tr>Erfolge</span><span class="cnt" id="segAchCnt"></span></button>
+    <button class="seg-b" data-seg="game" data-val="app" role="tab"><span data-tr>App</span></button>
+  </div>
+  <section class="panel" data-tab="spiel" data-game="party">
+    <div class="label" data-tr>Wikinger am Tisch</div>
+    <div class="players" id="players"></div>
+    <p class="set-hint" data-tr>Tipp: Spielernamen antippen, um sie zu ändern. Ein Tipp auf den Farbpunkt wechselt die Farbe.</p>
+    <div class="new-game" id="resetArea"><button class="btn" id="reset" data-tr>Neues Spiel</button></div>
+  </section>
+  <section class="panel online" data-tab="spiel" data-game="party" id="online">
+    <div class="label" data-tr>Online-Partie</div>
+    <div id="onOff">
+      <p class="on-p" data-tr>Spielt gemeinsam auf mehreren Handys: Alle sehen live denselben Spielstand. Einer erstellt die Partie, die anderen treten mit dem Code bei.</p>
+      <div class="on-row"><button class="btn primary" id="onCreate" data-tr>Partie erstellen</button></div>
+      <div class="on-row">
+        <input id="joinCode" class="code-in" maxlength="8" placeholder="Code, z. B. K7M-Q2X" data-tr-ph="Code, z. B. K7M-Q2X" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Partie-Code" data-tr-aria="Partie-Code">
+        <button class="btn" id="onJoin" data-tr>Beitreten</button>
+      </div>
+      <p class="on-small" data-tr>Beim Beitreten wird der Spielstand auf diesem Handy durch den der Partie ersetzt.</p>
+      <p class="on-small" data-trh="recap">Online-Partien sind durch reCAPTCHA geschützt. Es gelten die <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung</a> und die <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Nutzungsbedingungen</a> von Google.</p>
+    </div>
+    <div id="onOn" hidden>
+      <p class="on-status"><span class="dot" id="onDot"></span><span id="onStatusText">Verbinde …</span></p>
+      <div class="seat-box"><span class="code-l" data-tr>Ich spiele als</span><div class="seat-row" id="seatPick"></div></div>
+      <label class="allow"><input type="checkbox" id="allowAll"> <span data-trh="allowAll">Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small></span></label>
+      <div class="code-box"><span class="code-l" data-tr>Partie-Code</span><span class="code" id="onCode"></span></div>
+      <div class="on-row"><button class="btn" id="onCopy" data-tr>Code kopieren</button><button class="btn" id="onLeave" data-tr>Partie verlassen</button></div>
+      <div class="on-row" id="delArea"><button class="btn danger" id="onDelete" data-tr>Partie für alle löschen</button></div>
+      <p class="on-small" data-tr>Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.</p>
+    </div>
+    <p class="on-err" id="onErr" role="alert" hidden></p>
+  </section>
+  <section class="panel" data-tab="spiel" data-game="party">
     <div class="label" data-tr>Protokoll</div>
     <ul class="log" id="log"></ul>
   </section>
-
-  <details class="panel legend ach-box" id="achBox" hidden>
-    <summary class="label"><span data-tr>Erfolge</span> <span class="ach-count" id="achCount"></span> <span class="chev" aria-hidden="true">▶</span></summary>
+  <section class="panel ach-box" id="achBox" data-tab="spiel" data-game="ach">
+    <div class="label"><span data-tr>Erfolge</span> <span class="ach-count" id="achCount"></span></div>
     <p class="ach-hint" data-tr>Erfolge werden nur auf diesem Handy gespeichert. In Online-Partien zählt nur dein eigener Spieler.</p>
     <ul class="ach-list" id="achList"></ul>
     <div class="ach-reset" id="achResetArea"></div>
-  </details>
-  <details class="panel legend setgroup" data-tab="spiel" id="settingsBox">
-    <summary class="label"><span data-tr>Einstellungen</span> <span class="chev" aria-hidden="true">▶</span></summary>
+  </section>
+  <section class="panel setgroup" data-tab="spiel" data-game="app" id="settingsBox">
+    <div class="label" data-tr>Einstellungen</div>
     <h3 class="set-h" data-tr>Spielregeln</h3>
     <p class="set-sub" data-tr>Gilt in Online-Partien für alle.</p>
     <label class="desc-t set-ext"><input type="checkbox" id="extRache"> <span data-tr>Erweiterung „Rache des Verlassenen“</span></label>
@@ -346,9 +351,9 @@
     <label class="desc-t set-ext"><input type="checkbox" id="autoBuildT"> <span data-tr>Nach „Möbelstück herstellen“ zum Bauen</span></label>
     <h3 class="set-h" data-tr>Hilfe</h3>
     <div class="set-sec"><button class="btn" id="introShow" data-tr>Einführung anzeigen</button></div>
-  </details>
-  <details class="panel legend about" data-tab="spiel" id="about">
-    <summary class="label"><span data-tr>Über die App</span> <span class="chev" aria-hidden="true">▶</span></summary>
+  </section>
+  <section class="panel about" data-tab="spiel" data-game="app" id="about">
+    <div class="label" data-tr>Über die App</div>
     <div class="about-brand">
       <img class="app-icon" src="icons/icon-192.png" width="96" height="96" alt="Val Companion">
       <p class="tagline" data-tr>Inoffizielle Begleit-App für Valheim – Das Brettspiel</p>
@@ -360,8 +365,8 @@
     <p class="small" data-tr>Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.</p>
     <p class="small"><a href="datenschutz.html" data-tr>Datenschutzerklärung</a> · <a href="daten-loeschen.html" data-tr>Daten löschen</a></p>
     <p class="small" data-tr>Schriften: Averia Serif Libre und Germania One (SIL Open Font License). Symbole, App-Symbol und Holztextur sind eigene Zeichnungen.</p>
-  </details>
-  <p class="disclaimer" data-tab="spiel" data-tr>Inoffizielles Fan-Projekt, nicht verbunden mit Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing.</p>
+  </section>
+  <p class="disclaimer" data-tab="spiel" data-game="app" data-tr>Inoffizielles Fan-Projekt, nicht verbunden mit Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing.</p>
   <div class="intro" id="intro" hidden></div>
   <div class="ach-toast" id="achToast" role="status" aria-live="polite" hidden></div>
   <nav class="tabbar" id="tabbar" aria-label="Reiter" data-tr-aria="Reiter">

@@ -263,6 +263,8 @@ const EN = {
 "Erfolge zurücksetzen": "Reset achievements",
 "Alle Erfolge auf diesem Handy zurücksetzen?": "Reset all achievements on this phone?",
 "Ja, zurücksetzen": "Yes, reset",
+"Partie": "Game",
+"App": "App",
 "Küchenjarl": "Kitchen Jarl",
 "Koche 5-mal Nahrung.": "Cook food 5 times.",
 "Veteran": "Veteran",
