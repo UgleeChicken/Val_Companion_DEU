@@ -28,6 +28,7 @@ const ACH = [
   { id: "nacht", t: "Lange Nacht", d: "Erreiche Runde 20 in einer Partie." },
   { id: "feuer", t: "Gemeinsam am Feuer", d: "Spiele eine Online-Partie mit 4 Spielern." },
   { id: "veteran", t: "Veteran", d: "Starte 10 neue Partien.", c: "neuePartie", n: 10 },
+  { id: "legende", t: "Lebende Legende", d: "Starte 50 neue Partien. Die Skalden singen schon von dir.", c: "neuePartie", n: 50 },
 ];
 
 let ach = { u: {}, c: {}, g: {} };   // u: freigeschaltet (Zeitpunkt), c: Zähler über alle Partien, g: Zähler dieser Partie

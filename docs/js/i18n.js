@@ -265,6 +265,8 @@ const EN = {
 "Ja, zurücksetzen": "Yes, reset",
 "Partie": "Game",
 "App": "App",
+"Lebende Legende": "Living Legend",
+"Starte 50 neue Partien. Die Skalden singen schon von dir.": "Start 50 new games. The skalds already sing of you.",
 "Küchenjarl": "Kitchen Jarl",
 "Koche 5-mal Nahrung.": "Cook food 5 times.",
 "Veteran": "Veteran",
