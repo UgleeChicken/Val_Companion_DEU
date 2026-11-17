@@ -733,3 +733,5 @@ html.big-text .status, html.big-text .mini-bar { height: 50px; }
 @keyframes swipeInR { from { transform: translateX(36px); opacity: .4; } to { transform: none; opacity: 1; } }
 @keyframes swipeInL { from { transform: translateX(-36px); opacity: .4; } to { transform: none; opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .swipe-from-right, .swipe-from-left { animation: none; } }
+/* Beim Hereingleiten darf nichts seitlich überstehen, sonst zoomt das Handy kurz heraus */
+html, body { overflow-x: clip; }
