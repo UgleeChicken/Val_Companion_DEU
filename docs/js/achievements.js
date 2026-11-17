@@ -18,12 +18,14 @@ const ACH = [
   { id: "ufer", t: "Auf zu neuen Ufern", d: "Segle 5-mal los.", c: "Lossegeln", n: 5 },
   { id: "met", t: "Metmeister", d: "Braue 5-mal Met.", c: "Met brauen", n: 5 },
   { id: "daumen", t: "Der grüne Daumen", d: "Bestelle 3-mal ein Gartenbeet.", c: "Gartenbeet", n: 3, ext: "gf" },
+  { id: "koch", t: "Küchenjarl", d: "Koche 5-mal Nahrung.", c: "Nahrung kochen", n: 5 },
   { id: "gourmet", t: "Der Gourmet", d: "Iss 2-mal gekochte Nahrung.", c: "Gekochte Nahrung essen", n: 2 },
   { id: "haldor", t: "Haldors Stammkunde", d: "Handle 10-mal mit Haldor.", c: "Mit Haldor handeln", n: 10 },
   { id: "hinterhalt", t: "Aus dem Hinterhalt", d: "Führe 5-mal einen Hinterhalt aus.", c: "Hinterhalt", n: 5 },
   { id: "runenleser", t: "Runenleser", d: "Studiere Inschriften.", ext: "rache" },
   { id: "nacht", t: "Lange Nacht", d: "Erreiche Runde 20 in einer Partie." },
   { id: "feuer", t: "Gemeinsam am Feuer", d: "Spiele eine Online-Partie mit 4 Spielern." },
+  { id: "veteran", t: "Veteran", d: "Starte 10 neue Partien.", c: "neuePartie", n: 10 },
 ];
 
 let ach = { u: {}, c: {}, g: {} };   // u: freigeschaltet (Zeitpunkt), c: Zähler über alle Partien, g: Zähler dieser Partie

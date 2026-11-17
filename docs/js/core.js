@@ -240,7 +240,7 @@ document.addEventListener("click", e => {
     case "resetYes": {
       const keep = st.players, cols = st.colors, per = st.per, mine = { bigText: st.bigText, me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, achOff: st.achOff, seg: st.seg, logOpen: st.logOpen };
       const ext = st.ext, dx = st.diceExtra | 0;
-      achNewGame();
+      achNewGame(); achCount("neuePartie");
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; st.diceExtra = dx; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
       return render();
