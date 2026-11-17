@@ -30,6 +30,7 @@ function build(k) {
   const a = f.ship ? "Schiff bauen" : f.garden ? "Gartenbeet bestellen" : "Möbelstück herstellen";
   st.used.push({ n: a, build: f.ship ? null : k });
   if (!f.ship) st.built.push(k);
+  achBuild(f, st.current);
   log({ k: "build", w: name(), x: f.k, c: counted(), m: st.per }, "");
   render();
 }

@@ -256,7 +256,7 @@ document.addEventListener("click", e => {
     goTab(order[j]);
     if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const cls = dx < 0 ? "swipe-from-right" : "swipe-from-left";
-    document.querySelectorAll(".wrap > [data-tab]:not([hidden])").forEach(el => {
+    document.querySelectorAll(".wrap > [data-tab]:not([hidden]), .wrap > #achBox:not([hidden])").forEach(el => {
       el.classList.remove("swipe-from-right", "swipe-from-left"); void el.offsetWidth;
       el.classList.add(cls);
       el.addEventListener("animationend", () => el.classList.remove(cls), { once: true });
@@ -267,6 +267,7 @@ document.addEventListener("click", e => {
 // Große Schrift (pro Handy)
 document.addEventListener("change", e => {
   if (e.target && e.target.id === "bigText") { st.bigText = e.target.checked; render(); }
+  if (e.target && e.target.id === "achShow") { st.achOff = !e.target.checked; render(); }
 });
 
 // Bildschirm bleibt während des Spiels an (Browser-Version; die Android-App macht das selbst)

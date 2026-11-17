@@ -735,3 +735,30 @@ html.big-text .status, html.big-text .mini-bar { height: 50px; }
 @media (prefers-reduced-motion: reduce) { .swipe-from-right, .swipe-from-left { animation: none; } }
 /* Beim Hereingleiten darf nichts seitlich überstehen, sonst zoomt das Handy kurz heraus */
 html, body { overflow-x: clip; }
+
+/* Erfolge: Liste mit kleinen Runensteinen; freigeschaltete leuchten, gesperrte bleiben dunkel */
+.ach-box .ach-count { margin-left: 8px; font-family: var(--font); font-size: .85rem; letter-spacing: 0; color: var(--muted); }
+.ach-hint { margin: 0 0 12px; font-size: .8rem; color: var(--muted); font-style: italic; }
+.ach-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ach { display: flex; align-items: center; gap: 12px; }
+.ach-stone { flex: none; width: 34px; height: 40px; display: grid; place-items: center; color: #1a1c1b;
+  clip-path: polygon(50% 0, 96% 14%, 100% 80%, 52% 100%, 4% 86%, 0 18%);
+  background: linear-gradient(160deg, #4a4f4c, var(--stone) 45%, var(--stone-2)); filter: brightness(.7); }
+.ach-stone .rune { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ach.on .ach-stone { color: var(--gold); filter: none; }
+.ach.on .ach-stone .rune { filter: drop-shadow(0 0 2px var(--gold)) drop-shadow(0 0 6px var(--gold)); }
+.ach-tx { display: flex; flex-direction: column; min-width: 0; }
+.ach-tx b { font-size: .95rem; color: var(--muted); }
+.ach.on .ach-tx b { color: var(--gold-hi); }
+.ach-tx span { font-size: .8rem; color: var(--muted); }
+.ach-prog { color: var(--gold); font-style: normal; white-space: nowrap; }
+
+/* Meldung „Erfolg freigeschaltet“ */
+.ach-toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top, 0px)); z-index: 60; transform: translate(-50%, -24px); opacity: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 20px; border-radius: 12px; pointer-events: none;
+  width: max-content; max-width: calc(100vw - 32px); text-align: center;
+  background: #1d1410f2; border: 1px solid var(--gold); box-shadow: 0 6px 24px #000a, 0 0 18px #f2ad4b44; transition: transform .3s cubic-bezier(.22, 1, .36, 1), opacity .3s; }
+.ach-toast.show { transform: translate(-50%, 0); opacity: 1; }
+.ach-toast .ach-tk { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ach-toast b { font-family: var(--head); font-weight: 400; font-size: 1.15rem; letter-spacing: .05em; color: var(--gold-hi); }
+@media (prefers-reduced-motion: reduce) { .ach-toast { transition: none; } }

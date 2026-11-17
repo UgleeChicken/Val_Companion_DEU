@@ -109,6 +109,7 @@ function rollAll() {
   st.roll = [];
   for (const k in DICE) for (let i = 0; i < st.pool[k]; i++) st.roll.push({ d: k, f: rnd(DICE[k].faces.length) });
   tumble = new Set(st.roll.map((_, i) => i));
+  achRoll(actorIdx());
   log({ k: "roll", w: actorName(), i: rollSummary(st.roll).map(s => ({ c: s.c, f: s.n, d: s.d })) }, "f", actorIdx());
   st.log[0].dice = true;
   render();
@@ -119,6 +120,7 @@ function reroll(i) {
   const before = DICE[r.d].faces[r.f].n;
   r.f = rnd(DICE[r.d].faces.length);
   tumble = new Set([i]);
+  achRoll(actorIdx());
   log({ k: "reroll", w: actorName(), d: r.d, a: before, b: DICE[r.d].faces[r.f].n }, "f", actorIdx());
   st.log[0].dice = true;
   render();

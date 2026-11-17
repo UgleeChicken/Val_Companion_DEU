@@ -15,7 +15,7 @@ const FB = Object.assign({
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
-const LOCAL_ONLY = ["bigText", "tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen", "seg", "logOpen"];           // bleibt auf jedem Handy für sich
+const LOCAL_ONLY = ["bigText", "tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen", "seg", "logOpen", "achOff"];           // bleibt auf jedem Handy für sich
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
 const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
 
@@ -140,6 +140,7 @@ async function joinRoom(raw) {
   try {
     const room = await dbReq("GET", code);
     if (!room || typeof room.state !== "string") throw new Error(tf("Keine Partie mit dem Code {c} gefunden.", { c: fmtCode(code) }));
+    achNewGame();
     applyRemote(room.state);
     startSync(code);
   } catch (e) { setNet("aus", e.message); }

@@ -80,11 +80,12 @@ function log(text, cls = "", p = st.current) {
 function doAction(i) {
   const a = ACTIONS[i];
   if (!a.free && locked()) return;
-  if (a.free && isOther()) { log({ k: "act", w: actorName(), x: a.n, f: 1 }, "f", actorIdx()); render(); return feedback(i, true); }
+  if (a.free && isOther()) { log({ k: "act", w: actorName(), x: a.n, f: 1 }, "f", actorIdx()); achAction(a.n, true, actorIdx()); render(); return feedback(i, true); }
   if (!a.free && counted() >= st.per) return;
   if (a.once && st.used.some(u => u.n === a.n)) return;
   if (a.req && !(st.built || []).includes(a.req)) return;
   st.used.push({ n: a.n, free: !!a.free });
+  achAction(a.n, !!a.free, st.current);
   log(a.free ? { k: "act", w: name(), x: a.n, f: 1 } : { k: "act", w: name(), x: a.n, c: counted(), m: st.per }, a.free ? "f" : "");
   render();
   feedback(i, !!a.free);
@@ -103,6 +104,7 @@ function undo() {
 function endTurn() {
   if (locked()) return;
   log({ k: "end", w: name(), c: counted(), m: st.per }, "e");
+  achEndTurn(st.current);
   st.used = [];
   st.current = (st.current + 1) % st.players.length;
   if (st.current === 0) { st.round++; log({ k: "round", r: st.round }, "e"); }
@@ -111,7 +113,9 @@ function endTurn() {
 
 function render() {
   document.documentElement.classList.toggle("big-text", !!st.bigText);
+  if (typeof achTick === "function") { achTick(); renderAch(); }
   if ($("bigText")) $("bigText").checked = !!st.bigText;
+  if ($("achShow")) $("achShow").checked = !st.achOff;
   if (!Array.isArray(st.built)) st.built = [];
   if (st.current >= st.players.length) st.current = 0;
   $("round").textContent = st.round;
@@ -234,8 +238,9 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per, mine = { bigText: st.bigText, me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, seg: st.seg, logOpen: st.logOpen };
+      const keep = st.players, cols = st.colors, per = st.per, mine = { bigText: st.bigText, me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, achOff: st.achOff, seg: st.seg, logOpen: st.logOpen };
       const ext = st.ext, dx = st.diceExtra | 0;
+      achNewGame();
       st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; st.diceExtra = dx; Object.assign(st, mine);
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
       return render();
