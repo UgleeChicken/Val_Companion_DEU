@@ -330,8 +330,9 @@ function renderOnline() {
   $("onDot").className = `dot ${dotCls}`;
   $("onStatusText").textContent = label;
   $("onCode").textContent = fmtCode(net.code);
-  $("onCreate").disabled = net.status === "verbinde" && !on;
-  $("onJoin").disabled = net.status === "verbinde" && !on;
+  // In der Vorschau fehlen die Knöpfe (dort sind Online-Partien abgeschaltet)
+  if ($("onCreate")) $("onCreate").disabled = net.status === "verbinde" && !on;
+  if ($("onJoin")) $("onJoin").disabled = net.status === "verbinde" && !on;
   $("onErr").hidden = !net.err; $("onErr").textContent = net.err;
   const pill = $("onPill");
   if (pill) {
