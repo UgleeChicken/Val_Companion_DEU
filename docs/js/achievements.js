@@ -102,6 +102,6 @@ function renderAch() {
   $("achList").innerHTML = list.map(a => {
     const on = !!ach.u[a.id], i = ACH.indexOf(a);
     const prog = !on && a.n ? ` <span class="ach-prog">${Math.min(a.n, (a.c ? ach.c[a.c] : ach.g[a.g]) || 0)}/${a.n}</span>` : "";
-    return `<li class="ach${on ? " on" : ""}"><div class="ach-stone">${runeSvg(i)}</div><div class="ach-tx"><b>${tr(a.t)}</b><span>${tr(a.d)}${prog}</span></div></li>`;
+    return `<li class="ach${on ? " on" : ""}"><div class="ach-stone"><div class="ach-rim">${runeSvg(i)}</div></div><div class="ach-tx"><b>${tr(a.t)}</b><span>${tr(a.d)}${prog}</span></div></li>`;
   }).join("");
 }
