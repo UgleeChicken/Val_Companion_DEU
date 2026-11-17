@@ -6,6 +6,7 @@ const ACH_KEY = "valcompanion-erfolge";
 const ACH = [
   { id: "ersterZug", t: "Der erste Schritt", d: "Beende deinen ersten Zug." },
   { id: "runenkundig", t: "Runenkundig", d: "Verbrauche in einem Zug alle Runensteine." },
+  { id: "rast", t: "Kurze Rast", d: "Beende einen Zug, ohne alle Runensteine zu verbrauchen." },
   { id: "flink", t: "Flinke Hände", d: "Führe in einer Partie 4 freie Aktionen aus.", g: "free", n: 4 },
   { id: "odin", t: "Odins Gunst", d: "Würfle einen kritischen Treffer." },
   { id: "zorn", t: "Götterzorn", d: "Würfle mit 3 Schadenswürfeln drei kritische Treffer auf einmal." },
@@ -70,7 +71,11 @@ function achRoll(idx) {
   if (faces.some(f => f.n === "Kritisches Sammeln")) achUnlock("ernte");
   if (faces.some(f => f.n === "Lautes kritisches Sammeln")) achUnlock("laut");
 }
-function achEndTurn(idx) { if (achMine(idx)) achUnlock("ersterZug"); }
+function achEndTurn(idx) {
+  if (!achMine(idx)) return;
+  achUnlock("ersterZug");
+  if (counted() < st.per) achUnlock("rast");   // wird vor dem Zurücksetzen der Runensteine aufgerufen
+}
 // Bei jedem Neuzeichnen: Erfolge, die am Spielstand hängen
 function achTick() {
   if (st.round >= 20) achUnlock("nacht");

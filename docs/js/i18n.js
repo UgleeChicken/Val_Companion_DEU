@@ -256,6 +256,8 @@ const EN = {
 "Braue 5-mal Met.": "Brew mead 5 times.",
 "Der grüne Daumen": "Green Thumb",
 "Bestelle 3-mal ein Gartenbeet.": "Add a garden bed 3 times.",
+"Kurze Rast": "A Short Rest",
+"Beende einen Zug, ohne alle Runensteine zu verbrauchen.": "End a turn without using all rune stones.",
 "Küchenjarl": "Kitchen Jarl",
 "Koche 5-mal Nahrung.": "Cook food 5 times.",
 "Veteran": "Veteran",
