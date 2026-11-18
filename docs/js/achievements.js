@@ -28,7 +28,7 @@ const ACH = [
   { id: "nacht", i: "M14 2L7 5L4 12L7 19L14 22L10 16L9 12L10 8Z M19 4V10M16 7H22", t: "Lange Nacht", d: "Erreiche Runde 20 in einer Partie." },
   { id: "feuer", i: "M4 21L20 16M4 16L20 21 M12 15L8 10L12 2L16 10Z", t: "Gemeinsam am Feuer", d: "Spiele eine Online-Partie mit 4 Spielern." },
   { id: "veteran", i: "M12 2L19 5L22 12L19 19L12 22L5 19L2 12L5 5Z M12 9L15 12L12 15L9 12Z M12 2V9M12 15V22M2 12H9M15 12H22", t: "Veteran", d: "Starte 10 neue Partien.", c: "neuePartie", n: 10 },
-  { id: "legende", i: "M12 2L21 18H3Z M12 8L17 17H7Z M7 10H17L12 19", t: "Einherjer", d: "Starte 50 neue Partien. Die Skalden singen schon von dir, und in Walhall ist ein Platz für dich frei.", c: "neuePartie", n: 50 },
+  { id: "legende", i: "M2 10.5L14.5 1.5M22 10.5L9.5 1.5 M5 8.5V22 M19 8.5V22 M3 22H21 M7.5 11.5H16.5 M9 22V16L12 13.5L15 16V22", t: "Einherjer", d: "Starte 50 neue Partien. Die Skalden singen schon von dir, und in Walhall ist ein Platz für dich frei.", c: "neuePartie", n: 50 },
 ];
 
 let ach = { u: {}, c: {}, g: {} };   // u: freigeschaltet (Zeitpunkt), c: Zähler über alle Partien, g: Zähler dieser Partie
