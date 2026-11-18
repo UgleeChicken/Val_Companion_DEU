@@ -776,3 +776,5 @@ html, body { overflow-x: clip; }
 .seg-game .cnt { font-size: .62rem; padding: 1px 5px; min-width: 0; }
 /* Meldung: darunter klein, wofür es den Erfolg gab */
 .ach-toast .ach-td { margin-top: 2px; max-width: 30ch; font-size: .78rem; line-height: 1.35; color: var(--fg); opacity: .8; font-style: italic; }
+/* Erfolgssymbole: etwas feinere Striche als die einfachen Runen, damit Details erkennbar bleiben */
+.ach-rim .ach-ic { width: 22px; height: 22px; stroke-width: 1.9; }
