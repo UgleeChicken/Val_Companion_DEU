@@ -106,16 +106,17 @@ function renderAch() {
   const ext = st.ext || {};
   const list = ACH.filter(a => !a.ext || ext[a.ext] || ach.u[a.id]);
   const got = list.filter(a => ach.u[a.id]).length;
-  $("achCount").textContent = `${got}/${list.length}`;
+  $("achCount").textContent = tf("{n} von {m} Erfolgen", { n: got, m: list.length });
+  if ($("achBarFill")) $("achBarFill").style.width = (list.length ? got / list.length * 100 : 0) + "%";
   if ($("segAchCnt")) $("segAchCnt").textContent = `${got}/${list.length}`;
   if ($("achResetArea") && !$("achResetArea").firstChild) renderAchReset(false);
   $("achList").innerHTML = list.map(a => {
     const on = !!ach.u[a.id], i = ACH.indexOf(a);
     const val = !on && a.n ? Math.min(a.n, (a.c ? ach.c[a.c] : ach.g[a.g]) || 0) : 0;
-    const prog = !on && a.n ? ` <span class="ach-prog">${val}/${a.n}</span>` : "";
+    const prog = !on && a.n ? `<span class="ach-badge">${val}/${a.n}</span>` : "";
     // Angefangene Erfolge: goldener Rand wächst mit dem Fortschritt um den Stein
     const part = val > 0 ? ` part" style="--p:${(val / a.n).toFixed(3)}` : "";
-    return `<li class="ach${on ? " on" : ""}${part}"><div class="ach-stone"><div class="ach-rim"><svg class="rune ach-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${a.i}"/></svg></div></div><div class="ach-tx"><b>${tr(a.t)}</b><span>${tr(a.d)}${prog}</span>${a.f ? `<i class="ach-fl">${tr(a.f)}</i>` : ""}</div></li>`;
+    return `<li class="ach${on ? " on" : ""}${part}"><div class="ach-stone"><div class="ach-rim"><svg class="rune ach-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${a.i}"/></svg></div></div><div class="ach-tx"><div class="ach-head"><b>${tr(a.t)}</b>${prog}</div><span>${tr(a.d)}</span>${on && a.f ? `<i class="ach-fl">${tr(a.f)}</i>` : ""}</div></li>`;
   }).join("");
 }
 

@@ -792,3 +792,17 @@ html, body { overflow-x: clip; }
 .ach.on .ach-tx .ach-fl { color: #e8c88a; opacity: .9; }
 .ach-toast .ach-tf { margin-top: 2px; max-width: 30ch; font-size: .76rem; font-style: italic; color: #e8c88a; }
 .ach-toast .ach-td { font-style: normal; }
+
+/* Erfolge: Gesamtfortschritt oben, Zähler als Etikett neben dem Titel, Hinweis unten */
+.ach-sum { display: flex; align-items: center; gap: 12px; margin: -2px 0 16px; }
+.ach-bar { flex: 1; height: 8px; border-radius: 999px; background: #00000066; border: 1px solid #120a06; overflow: hidden; }
+.ach-bar i { display: block; height: 100%; width: 0; border-radius: inherit;
+  background: linear-gradient(90deg, #b8761f, #f2c46a, #fff0c2); box-shadow: 0 0 8px #f2ad4b88; transition: width .4s ease; }
+.ach-sum #achCount { flex: none; font-size: .8rem; color: var(--muted); }
+.ach-head { display: flex; align-items: baseline; gap: 8px; }
+.ach-head b { min-width: 0; }
+.ach-badge { flex: none; margin-left: auto; font-size: .7rem; color: var(--muted); background: #00000055; border-radius: 999px; padding: 1px 7px; }
+.ach.part .ach-badge { color: var(--gold); }
+.ach-reset .ach-hint { margin: 0 0 10px; }
+@media (prefers-reduced-motion: reduce) { .ach-bar i { transition: none; } }
+.ach-tx { flex: 1; }

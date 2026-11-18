@@ -301,6 +301,7 @@ const EN = {
 "Starte 10 neue Partien.": "Start 10 new games.",
 "Die Walküren holen dich nach Walhall.": "The Valkyries take you to Valhalla.",
 "Starte 25 neue Partien.": "Start 25 new games.",
+"{n} von {m} Erfolgen": "{n} of {m} achievements",
 "Küchenjarl": "Kitchen Jarl",
 "Koche 5-mal Nahrung.": "Cook food 5 times.",
 "Drengr": "Drengr",
