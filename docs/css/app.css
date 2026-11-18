@@ -806,3 +806,8 @@ html, body { overflow-x: clip; }
 .ach-reset .ach-hint { margin: 0 0 10px; }
 @media (prefers-reduced-motion: reduce) { .ach-bar i { transition: none; } }
 .ach-tx { flex: 1; }
+/* Zwischenüberschriften der Erfolge */
+.ach-grp { display: flex; align-items: baseline; justify-content: space-between; margin: 14px 0 -2px; padding-bottom: 4px; border-bottom: 1px solid #ffffff14;
+  font-family: var(--head); font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+.ach-grp:first-child { margin-top: 0; }
+.ach-grp .ach-grp-n { font-family: var(--font); font-size: .75rem; letter-spacing: 0; text-transform: none; color: var(--muted); }

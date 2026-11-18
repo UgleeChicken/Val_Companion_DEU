@@ -110,15 +110,28 @@ function renderAch() {
   if ($("achBarFill")) $("achBarFill").style.width = (list.length ? got / list.length * 100 : 0) + "%";
   if ($("segAchCnt")) $("segAchCnt").textContent = `${got}/${list.length}`;
   if ($("achResetArea") && !$("achResetArea").firstChild) renderAchReset(false);
-  $("achList").innerHTML = list.map(a => {
-    const on = !!ach.u[a.id], i = ACH.indexOf(a);
+  const item = a => {
+    const on = !!ach.u[a.id];
     const val = !on && a.n ? Math.min(a.n, (a.c ? ach.c[a.c] : ach.g[a.g]) || 0) : 0;
     const prog = !on && a.n ? `<span class="ach-badge">${val}/${a.n}</span>` : "";
     // Angefangene Erfolge: goldener Rand wächst mit dem Fortschritt um den Stein
     const part = val > 0 ? ` part" style="--p:${(val / a.n).toFixed(3)}` : "";
     return `<li class="ach${on ? " on" : ""}${part}"><div class="ach-stone"><div class="ach-rim"><svg class="rune ach-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${a.i}"/></svg></div></div><div class="ach-tx"><div class="ach-head"><b>${tr(a.t)}</b>${prog}</div><span>${tr(a.d)}</span>${on && a.f ? `<i class="ach-fl">${tr(a.f)}</i>` : ""}</div></li>`;
+  };
+  // Nach Themen gruppiert, jeweils mit kleiner Überschrift und eigenem Stand
+  $("achList").innerHTML = ACH_GROUPS.map(([name, ids]) => {
+    const g = list.filter(a => ids.includes(a.id)); if (!g.length) return "";
+    const n = g.filter(a => ach.u[a.id]).length;
+    return `<li class="ach-grp"><span>${tr(name)}</span><span class="ach-grp-n">${n}/${g.length}</span></li>` + g.map(item).join("");
   }).join("");
 }
+const ACH_GROUPS = [
+  ["Erste Schritte", ["ersterZug", "runenkundig", "rast", "flink"]],
+  ["Würfel", ["odin", "zorn", "loki", "ernte", "laut"]],
+  ["Bauen & Haus", ["valkea", "halle", "kiel", "met", "daumen", "koch", "gourmet"]],
+  ["Abenteuer", ["ufer", "haldor", "hinterhalt", "fundbuero", "runenleser", "nacht", "feuer"]],
+  ["Ränge", ["drengr", "veteran", "legende"]],
+];
 
 // Alle Erfolge auf diesem Handy zurücksetzen (mit Rückfrage). Spielstand und Einstellungen bleiben.
 function renderAchReset(confirm) {
