@@ -9,8 +9,8 @@ const ACH = [
   { id: "rast", i: "M6 3H18M6 21H18M8 3L16 21M16 3L8 21", t: "Kurze Rast", d: "Beende einen Zug, ohne alle Runensteine zu verbrauchen." },
   { id: "flink", i: "M14 2L6 13H12L10 22L18 10H12Z", t: "Flinke Hände", d: "Führe in einer Partie 4 freie Aktionen aus.", g: "free", n: 4 },
   { id: "odin", i: "M2 12L12 5L22 12L12 19Z M12 9L15 12L12 15L9 12Z", t: "Odins Gunst", d: "Würfle einen kritischen Treffer." },
-  { id: "zorn", i: "M5 3H19L17.5 7L19 11H5L6.5 7Z M12 11V20 M12 20V22 M10 22H14 M10.5 14H13.5", t: "Götterzorn", d: "Würfle mit 3 Schadenswürfeln drei kritische Treffer auf einmal." },
-  { id: "loki", i: "M18 3L13 4L16 7Z M15 6L7 9L16 13L7 17L13 21", t: "Lokis Scherz", d: "Würfle mit mindestens 4 Würfeln, und alle zeigen eine Leerseite." },
+  { id: "zorn", i: "M5 3H19L17.5 7L19 11H5L6.5 7Z M12 11V20 M12 20V22 M10 22H14 M10.5 14H13.5", t: "Götterzorn", d: "Würfle zwei kritische Treffer in einem Wurf." },
+  { id: "loki", i: "M18 3L13 4L16 7Z M15 6L7 9L16 13L7 17L13 21", t: "Lokis Scherz", d: "Würfle mit mindestens 3 Würfeln, und alle zeigen eine Leerseite." },
   { id: "ernte", i: "M12 22V4 M12 7L8 4M12 7L16 4M12 11L8 8M12 11L16 8M12 15L8 12M12 15L16 12", t: "Reiche Ernte", d: "Würfle „Kritisches Sammeln“." },
   { id: "laut", i: "M3 9V15H7L13 20V4L7 9Z M16 8L18 12L16 16 M19 5L22 12L19 19", t: "Zu laut!", d: "Würfle „Lautes kritisches Sammeln“." },
   { id: "valkea", i: "M7 2V22 M7 13H17V22 M7 7H11", t: "Valkea", d: "Baue dein erstes Möbelstück. Ganz ohne Aufbauanleitung." },
@@ -20,12 +20,12 @@ const ACH = [
   { id: "met", i: "M5 5H15V21H5Z M15 9H19V16H15 M5 9H15", t: "Metmeister", d: "Braue 5-mal Met.", c: "Met brauen", n: 5 },
   { id: "daumen", i: "M12 22V10 M12 15L5 11V6L12 10 M12 12L19 8V3L12 7", t: "Der grüne Daumen", d: "Bestelle 3-mal ein Gartenbeet.", c: "Gartenbeet", n: 3, ext: "gf" },
   { id: "koch", i: "M4 9H20L17 21H7Z M7 9V6 M17 9V6 M10 5L11 2M14 5L13 2", t: "Küchenjarl", d: "Koche 5-mal Nahrung.", c: "Nahrung kochen", n: 5 },
-  { id: "gourmet", i: "M7 2V22 M4 2V8H10V2 M17 2V22 M17 2L20 7V12H17", t: "Der Gourmet", d: "Iss 2-mal gekochte Nahrung.", c: "Gekochte Nahrung essen", n: 2 },
+  { id: "gourmet", i: "M7 2V22 M4 2V8H10V2 M17 2V22 M17 2L20 7V12H17", t: "Der Gourmet", d: "Iss 3-mal gekochte Nahrung.", c: "Gekochte Nahrung essen", n: 3 },
   { id: "haldor", i: "M12 2L20 7V17L12 22L4 17V7Z M9 8V16M15 8V16M9 12H15", t: "Haldors Stammkunde", d: "Handle 10-mal mit Haldor.", c: "Mit Haldor handeln", n: 10 },
   { id: "hinterhalt", i: "M7 2L14 12L7 22Z M2 12H21 M18 9L21 12L18 15", t: "Aus dem Hinterhalt", d: "Führe 5-mal einen Hinterhalt aus.", c: "Hinterhalt", n: 5 },
   { id: "fundbuero", i: "M6 22V9L12 3L18 9V22Z M12 9V17 M9 12H15", t: "Fundbüro Walhall", d: "Hol deine Sachen vom Grabstein zurück. Walhall war wohl noch nicht bereit für dich.", on: "Gegenstand vom Grabstein aufsammeln" },
   { id: "runenleser", i: "M5 2H19V22H5Z M9 6V12M9 7L12 9 M15 13V19M13 15L15 13L17 15", t: "Runenleser", d: "Studiere Inschriften.", ext: "rache" },
-  { id: "nacht", i: "M14 2L7 5L4 12L7 19L14 22L10 16L9 12L10 8Z M19 4V10M16 7H22", t: "Lange Nacht", d: "Erreiche Runde 20 in einer Partie." },
+  { id: "nacht", i: "M14 2L7 5L4 12L7 19L14 22L10 16L9 12L10 8Z M19 4V10M16 7H22", t: "Lange Nacht", d: "Spiele eine Partie mit mindestens 20 Zügen, fast bis der Ereignisstapel leer ist." },
   { id: "feuer", i: "M4 21L20 16M4 16L20 21 M12 15L8 10L12 2L16 10Z", t: "Gemeinsam am Feuer", d: "Spiele eine Online-Partie mit 4 Spielern." },
   { id: "veteran", i: "M12 2L19 5L22 12L19 19L12 22L5 19L2 12L5 5Z M12 9L15 12L12 15L9 12Z M12 2V9M12 15V22M2 12H9M15 12H22", t: "Veteran", d: "Starte 10 neue Partien.", c: "neuePartie", n: 10 },
   { id: "legende", i: "M7 18V12L9 8.5L12 7.5L15 8.5L17 12V18 M7 12.5H17 M12 12.5V20 M7 11L5 6L1.5 3L2.5 7L1 9.5L3 11.5L2.5 13.5L7 14.5 M17 11L19 6L22.5 3L21.5 7L23 9.5L21 11.5L21.5 13.5L17 14.5", t: "Einherjer", d: "Starte 50 neue Partien. Die Skalden singen schon von dir, und in Walhall ist ein Platz für dich frei.", c: "neuePartie", n: 50 },
@@ -69,8 +69,8 @@ function achRoll(idx) {
   if (!achMine(idx)) return;
   const faces = (st.roll || []).map(r => ({ d: r.d, n: DICE[r.d].faces[r.f].n }));
   if (faces.some(f => f.n === "Kritischer Treffer")) achUnlock("odin");
-  if (faces.filter(f => f.d === "black" && f.n === "Kritischer Treffer").length >= 3) achUnlock("zorn");
-  if (faces.length >= 4 && faces.every(f => f.n === "Leer")) achUnlock("loki");
+  if (faces.filter(f => f.n === "Kritischer Treffer").length >= 2) achUnlock("zorn");
+  if (faces.length >= 3 && faces.every(f => f.n === "Leer")) achUnlock("loki");
   if (faces.some(f => f.n === "Kritisches Sammeln")) achUnlock("ernte");
   if (faces.some(f => f.n === "Lautes kritisches Sammeln")) achUnlock("laut");
 }
@@ -81,7 +81,8 @@ function achEndTurn(idx) {
 }
 // Bei jedem Neuzeichnen: Erfolge, die am Spielstand hängen
 function achTick() {
-  if (st.round >= 20) achUnlock("nacht");
+  // Gespielte Züge dieser Partie (alle Spieler zusammen); eine Partie hat je nach Spielerzahl 21 bis 24 Züge
+  if ((st.round - 1) * st.players.length + st.current >= 20) achUnlock("nacht");
   if (net && net.code && net.status === "verbunden" && st.players.length === 4) achUnlock("feuer");
 }
 
