@@ -266,7 +266,7 @@ const EN = {
 "Partie": "Game",
 "App": "App",
 "Einherjer": "Einherjar",
-"Starte 50 neue Partien. Die Skalden singen schon von dir, und in Walhall ist ein Platz für dich frei.": "Start 50 new games. The skalds already sing of you, and a seat in Valhalla awaits.",
+"Starte 25 neue Partien. Die Skalden singen schon von dir, und in Walhall ist ein Platz für dich frei.": "Start 25 new games. The skalds already sing of you, and a seat in Valhalla awaits.",
 "Küchenjarl": "Kitchen Jarl",
 "Koche 5-mal Nahrung.": "Cook food 5 times.",
 "Veteran": "Veteran",
