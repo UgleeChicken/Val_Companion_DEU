@@ -4,32 +4,32 @@
 
 const ACH_KEY = "valcompanion-erfolge";
 const ACH = [
-  { id: "ersterZug", i: "M9 3V14L16 15L18 18V20H8L6 17V3Z M6 10H9", t: "Der erste Schritt", d: "Beende deinen ersten Zug." },
-  { id: "runenkundig", i: "M7 5V19M7 9L11 7M12 5V19M12 5L16 9L12 13M17 5V19", t: "Runenkundig", d: "Verbrauche in einem Zug alle Runensteine." },
-  { id: "rast", i: "M6 3H18M6 21H18M8 3L16 21M16 3L8 21", t: "Kurze Rast", d: "Beende einen Zug, ohne alle Runensteine zu verbrauchen." },
-  { id: "flink", i: "M14 2L6 13H12L10 22L18 10H12Z", t: "Flinke Hände", d: "Führe in einer Partie 4 freie Aktionen aus.", g: "free", n: 4 },
-  { id: "odin", i: "M5 3L9 21 M10.5 2L14.5 20 M16 3L19.5 16", t: "Zorn der Verlassenen", d: "Ein Monster trifft dich kritisch. Narben zieren jeden Krieger." },
-  { id: "zorn", i: "M5 3H19L17.5 7L19 11H5L6.5 7Z M12 11V20 M12 20V22 M10 22H14 M10.5 14H13.5", t: "Götterzorn", d: "Ein Monster trifft dich zweimal kritisch in einem Wurf. Die Götter sind dir heute nicht wohlgesonnen." },
-  { id: "loki", i: "M18 3L13 4L16 7Z M15 6L7 9L16 13L7 17L13 21", t: "Lokis Scherz", d: "Würfle mit mindestens 3 Würfeln, und alle zeigen eine Leerseite." },
-  { id: "ernte", i: "M12 22V4 M12 7L8 4M12 7L16 4M12 11L8 8M12 11L16 8M12 15L8 12M12 15L16 12", t: "Reiche Ernte", d: "Würfle „Kritisches Sammeln“." },
-  { id: "laut", i: "M3 9V15H7L13 20V4L7 9Z M16 8L18 12L16 16 M19 5L22 12L19 19", t: "Zu laut!", d: "Würfle „Lautes kritisches Sammeln“." },
-  { id: "valkea", i: "M7 2V22 M7 13H17V22 M7 7H11", t: "Valkea", d: "Baue dein erstes Möbelstück. Ganz ohne Aufbauanleitung." },
-  { id: "halle", i: "M2 12L12 3L22 12 M5 10V21H19V10 M10 21V15H14V21", t: "Herr der Halle", d: "Baue 3 Möbelstücke in einer Partie.", g: "built", n: 3 },
-  { id: "kiel", i: "M2 15H22L18 21H6Z M12 15V3 M12 4L18 11H12 M2 15L4 11", t: "Kiel ins Wasser", d: "Baue ein Schiff." },
-  { id: "ufer", i: "M2 18L5 15L8 18L11 15L14 18L17 15L20 18 M12 12V3 M8 7L12 3L16 7", t: "Auf zu neuen Ufern", d: "Segle 5-mal los.", c: "Lossegeln", n: 5 },
-  { id: "met", i: "M5 5H15V21H5Z M15 9H19V16H15 M5 9H15", t: "Metmeister", d: "Braue 5-mal Met.", c: "Met brauen", n: 5 },
-  { id: "daumen", i: "M12 22V10 M12 15L5 11V6L12 10 M12 12L19 8V3L12 7", t: "Der grüne Daumen", d: "Bestelle 3-mal ein Gartenbeet.", c: "Gartenbeet", n: 3, ext: "gf" },
-  { id: "koch", i: "M4 9H20L17 21H7Z M7 9V6 M17 9V6 M10 5L11 2M14 5L13 2", t: "Küchenjarl", d: "Koche 5-mal Nahrung.", c: "Nahrung kochen", n: 5 },
-  { id: "gourmet", i: "M7 2V22 M4 2V8H10V2 M17 2V22 M17 2L20 7V12H17", t: "Der Gourmet", d: "Iss 3-mal gekochte Nahrung.", c: "Gekochte Nahrung essen", n: 3 },
-  { id: "haldor", i: "M12 2L20 7V17L12 22L4 17V7Z M9 8V16M15 8V16M9 12H15", t: "Haldors Stammkunde", d: "Handle 10-mal mit Haldor.", c: "Mit Haldor handeln", n: 10 },
-  { id: "hinterhalt", i: "M7 2L14 12L7 22Z M2 12H21 M18 9L21 12L18 15", t: "Aus dem Hinterhalt", d: "Führe 5-mal einen Hinterhalt aus.", c: "Hinterhalt", n: 5 },
-  { id: "fundbuero", i: "M6 22V9L12 3L18 9V22Z M12 9V17 M9 12H15", t: "Fundbüro Walhall", d: "Hol deine Sachen vom Grabstein zurück. Walhall war wohl noch nicht bereit für dich.", on: "Gegenstand vom Grabstein aufsammeln" },
-  { id: "runenleser", i: "M5 2H19V22H5Z M9 6V12M9 7L12 9 M15 13V19M13 15L15 13L17 15", t: "Runenleser", d: "Studiere Inschriften.", ext: "rache" },
-  { id: "nacht", i: "M14 2L7 5L4 12L7 19L14 22L10 16L9 12L10 8Z M19 4V10M16 7H22", t: "Lange Nacht", d: "Spiele eine Partie mit mindestens 20 Zügen, fast bis der Ereignisstapel leer ist." },
-  { id: "feuer", i: "M4 21L20 16M4 16L20 21 M12 15L8 10L12 2L16 10Z", t: "Gemeinsam am Feuer", d: "Spiele eine Online-Partie mit 4 Spielern." },
-  { id: "drengr", i: "M12 2L19 5L22 12L19 19L12 22L5 19L2 12L5 5Z M12 9L15 12L12 15L9 12Z M12 2V9M12 15V22M2 12H9M15 12H22", t: "Drengr", d: "Starte 3 neue Partien. Du bist ein junger Krieger auf deinem Weg.", c: "neuePartie", n: 3 },
-  { id: "veteran", i: "M12 2L14.5 5V15H9.5V5Z M12 5V13 M6 15H18 M12 15V20 M9.5 22H14.5L12 20Z", t: "Huskarl", d: "Starte 10 neue Partien. Odin wird auf dich aufmerksam.", c: "neuePartie", n: 10 },
-  { id: "legende", i: "M7 18V12L9 8.5L12 7.5L15 8.5L17 12V18 M7 12.5H17 M12 12.5V20 M7 11L5 6L1.5 3L2.5 7L1 9.5L3 11.5L2.5 13.5L7 14.5 M17 11L19 6L22.5 3L21.5 7L23 9.5L21 11.5L21.5 13.5L17 14.5", t: "Einherjer", d: "Starte 25 neue Partien. Die Walküren holen dich nach Walhall.", c: "neuePartie", n: 25 },
+  { id: "ersterZug", i: "M9 3V14L16 15L18 18V20H8L6 17V3Z M6 10H9", t: "Der erste Schritt", d: "Beende deinen ersten Zug.", f: "Jede Saga beginnt mit einem Zug." },
+  { id: "runenkundig", i: "M7 5V19M7 9L11 7M12 5V19M12 5L16 9L12 13M17 5V19", t: "Runenkundig", d: "Verbrauche in einem Zug alle Runensteine.", f: "Keine Rune bleibt ungenutzt." },
+  { id: "rast", i: "M6 3H18M6 21H18M8 3L16 21M16 3L8 21", t: "Kurze Rast", d: "Beende einen Zug, ohne alle Runensteine zu verbrauchen.", f: "Auch Wikinger brauchen mal eine Pause." },
+  { id: "flink", i: "M14 2L6 13H12L10 22L18 10H12Z", t: "Flinke Hände", d: "Führe in einer Partie 4 freie Aktionen aus.", f: "Schneller als Lokis Finger.", g: "free", n: 4 },
+  { id: "odin", i: "M5 3L9 21 M10.5 2L14.5 20 M16 3L19.5 16", t: "Zorn der Verlassenen", d: "Ein Monster trifft dich kritisch.", f: "Narben zieren jeden Krieger." },
+  { id: "zorn", i: "M5 3H19L17.5 7L19 11H5L6.5 7Z M12 11V20 M12 20V22 M10 22H14 M10.5 14H13.5", t: "Götterzorn", d: "Ein Monster trifft dich zweimal kritisch in einem Wurf.", f: "Die Götter sind dir heute nicht wohlgesonnen." },
+  { id: "loki", i: "M18 3L13 4L16 7Z M15 6L7 9L16 13L7 17L13 21", t: "Lokis Scherz", d: "Würfle mit mindestens 3 Würfeln, und alle zeigen eine Leerseite.", f: "Irgendwo lacht Loki sich ins Fäustchen." },
+  { id: "ernte", i: "M12 22V4 M12 7L8 4M12 7L16 4M12 11L8 8M12 11L16 8M12 15L8 12M12 15L16 12", t: "Reiche Ernte", d: "Würfle „Kritisches Sammeln“.", f: "Die Vorratskammer füllt sich." },
+  { id: "laut", i: "M3 9V15H7L13 20V4L7 9Z M16 8L18 12L16 16 M19 5L22 12L19 19", t: "Zu laut!", d: "Würfle „Lautes kritisches Sammeln“.", f: "Das hat der ganze Wald gehört." },
+  { id: "valkea", i: "M7 2V22 M7 13H17V22 M7 7H11", t: "Valkea", d: "Baue dein erstes Möbelstück.", f: "Ganz ohne Aufbauanleitung." },
+  { id: "halle", i: "M2 12L12 3L22 12 M5 10V21H19V10 M10 21V15H14V21", t: "Herr der Halle", d: "Baue 3 Möbelstücke in einer Partie.", f: "Langsam wird es gemütlich.", g: "built", n: 3 },
+  { id: "kiel", i: "M2 15H22L18 21H6Z M12 15V3 M12 4L18 11H12 M2 15L4 11", t: "Kiel ins Wasser", d: "Baue ein Schiff.", f: "Das Meer ruft." },
+  { id: "ufer", i: "M2 18L5 15L8 18L11 15L14 18L17 15L20 18 M12 12V3 M8 7L12 3L16 7", t: "Auf zu neuen Ufern", d: "Segle 5-mal los.", f: "Hinter dem Horizont wartet das Abenteuer.", c: "Lossegeln", n: 5 },
+  { id: "met", i: "M5 5H15V21H5Z M15 9H19V16H15 M5 9H15", t: "Metmeister", d: "Braue 5-mal Met.", f: "Skål!", c: "Met brauen", n: 5 },
+  { id: "daumen", i: "M12 22V10 M12 15L5 11V6L12 10 M12 12L19 8V3L12 7", t: "Der grüne Daumen", d: "Bestelle 3-mal ein Gartenbeet.", f: "Auch Wikinger brauchen Gemüse.", c: "Gartenbeet", n: 3, ext: "gf" },
+  { id: "koch", i: "M4 9H20L17 21H7Z M7 9V6 M17 9V6 M10 5L11 2M14 5L13 2", t: "Küchenjarl", d: "Koche 5-mal Nahrung.", f: "Der Kessel brodelt.", c: "Nahrung kochen", n: 5 },
+  { id: "gourmet", i: "M7 2V22 M4 2V8H10V2 M17 2V22 M17 2L20 7V12H17", t: "Der Gourmet", d: "Iss 3-mal gekochte Nahrung.", f: "Mit vollem Bauch kämpft es sich besser.", c: "Gekochte Nahrung essen", n: 3 },
+  { id: "haldor", i: "M12 2L20 7V17L12 22L4 17V7Z M9 8V16M15 8V16M9 12H15", t: "Haldors Stammkunde", d: "Handle 10-mal mit Haldor.", f: "Haldor kennt schon deinen Namen.", c: "Mit Haldor handeln", n: 10 },
+  { id: "hinterhalt", i: "M7 2L14 12L7 22Z M2 12H21 M18 9L21 12L18 15", t: "Aus dem Hinterhalt", d: "Führe 5-mal einen Hinterhalt aus.", f: "Sie haben dich nie kommen sehen.", c: "Hinterhalt", n: 5 },
+  { id: "fundbuero", i: "M6 22V9L12 3L18 9V22Z M12 9V17 M9 12H15", t: "Fundbüro Walhall", d: "Hol deine Sachen vom Grabstein zurück.", f: "Walhall war wohl noch nicht bereit für dich.", on: "Gegenstand vom Grabstein aufsammeln" },
+  { id: "runenleser", i: "M5 2H19V22H5Z M9 6V12M9 7L12 9 M15 13V19M13 15L15 13L17 15", t: "Runenleser", d: "Studiere Inschriften.", f: "Die alten Steine sprechen zu dir.", ext: "rache" },
+  { id: "nacht", i: "M14 2L7 5L4 12L7 19L14 22L10 16L9 12L10 8Z M19 4V10M16 7H22", t: "Lange Nacht", d: "Spiele eine Partie mit mindestens 20 Zügen.", f: "Die Fackeln brennen bis zum Morgen." },
+  { id: "feuer", i: "M4 21L20 16M4 16L20 21 M12 15L8 10L12 2L16 10Z", t: "Gemeinsam am Feuer", d: "Spiele eine Online-Partie mit 4 Spielern.", f: "Vier Krieger, ein Feuer." },
+  { id: "drengr", i: "M12 2L19 5L22 12L19 19L12 22L5 19L2 12L5 5Z M12 9L15 12L12 15L9 12Z M12 2V9M12 15V22M2 12H9M15 12H22", t: "Drengr", d: "Starte 3 neue Partien.", f: "Du bist ein junger Krieger auf deinem Weg.", c: "neuePartie", n: 3 },
+  { id: "veteran", i: "M12 2L14.5 5V15H9.5V5Z M12 5V13 M6 15H18 M12 15V20 M9.5 22H14.5L12 20Z", t: "Huskarl", d: "Starte 10 neue Partien.", f: "Odin wird auf dich aufmerksam.", c: "neuePartie", n: 10 },
+  { id: "legende", i: "M7 18V12L9 8.5L12 7.5L15 8.5L17 12V18 M7 12.5H17 M12 12.5V20 M7 11L5 6L1.5 3L2.5 7L1 9.5L3 11.5L2.5 13.5L7 14.5 M17 11L19 6L22.5 3L21.5 7L23 9.5L21 11.5L21.5 13.5L17 14.5", t: "Einherjer", d: "Starte 25 neue Partien.", f: "Die Walküren holen dich nach Walhall.", c: "neuePartie", n: 25 },
 ];
 
 let ach = { u: {}, c: {}, g: {} };   // u: freigeschaltet (Zeitpunkt), c: Zähler über alle Partien, g: Zähler dieser Partie
@@ -96,10 +96,10 @@ function achNext() {
   const el = $("achToast"), a = achQueue.shift();
   if (!el || !a) { achShowing = false; return; }
   achShowing = true;
-  el.innerHTML = `<span class="ach-tk">${tr("Erfolg freigeschaltet")}</span><b>${tr(a.t)}</b><span class="ach-td">${tr(a.d)}</span>`;
+  el.innerHTML = `<span class="ach-tk">${tr("Erfolg freigeschaltet")}</span><b>${tr(a.t)}</b><span class="ach-td">${tr(a.d)}</span>${a.f ? `<span class="ach-tf">${tr(a.f)}</span>` : ""}`;
   el.hidden = false; void el.offsetWidth; el.classList.add("show");
   try { navigator.vibrate && navigator.vibrate(30); } catch {}
-  setTimeout(() => { el.classList.remove("show"); setTimeout(() => { el.hidden = true; achNext(); }, 350); }, 4200);
+  setTimeout(() => { el.classList.remove("show"); setTimeout(() => { el.hidden = true; achNext(); }, 350); }, 5200);
 }
 function renderAch() {
   const box = $("achBox"); if (!box) return;
@@ -115,7 +115,7 @@ function renderAch() {
     const prog = !on && a.n ? ` <span class="ach-prog">${val}/${a.n}</span>` : "";
     // Angefangene Erfolge: goldener Rand wächst mit dem Fortschritt um den Stein
     const part = val > 0 ? ` part" style="--p:${(val / a.n).toFixed(3)}` : "";
-    return `<li class="ach${on ? " on" : ""}${part}"><div class="ach-stone"><div class="ach-rim"><svg class="rune ach-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${a.i}"/></svg></div></div><div class="ach-tx"><b>${tr(a.t)}</b><span>${tr(a.d)}${prog}</span></div></li>`;
+    return `<li class="ach${on ? " on" : ""}${part}"><div class="ach-stone"><div class="ach-rim"><svg class="rune ach-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${a.i}"/></svg></div></div><div class="ach-tx"><b>${tr(a.t)}</b><span>${tr(a.d)}${prog}</span>${a.f ? `<i class="ach-fl">${tr(a.f)}</i>` : ""}</div></li>`;
   }).join("");
 }
 

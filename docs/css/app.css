@@ -787,3 +787,8 @@ html, body { overflow-x: clip; }
 .ach.part .ach-rim::before { content: ""; position: absolute; inset: 2.5px; clip-path: inherit;
   background: linear-gradient(160deg, #4a4f4c, var(--stone) 45%, var(--stone-2)); filter: brightness(.8); }
 .ach.part .ach-tx b { color: color-mix(in srgb, var(--gold-hi) calc(var(--p) * 50%), var(--muted)); }
+/* Kleiner Spruch zu jedem Erfolg */
+.ach-tx .ach-fl { font-size: .76rem; font-style: italic; color: var(--muted); opacity: .85; }
+.ach.on .ach-tx .ach-fl { color: #e8c88a; opacity: .9; }
+.ach-toast .ach-tf { margin-top: 2px; max-width: 30ch; font-size: .76rem; font-style: italic; color: #e8c88a; }
+.ach-toast .ach-td { font-style: normal; }
