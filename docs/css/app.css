@@ -778,3 +778,12 @@ html, body { overflow-x: clip; }
 .ach-toast .ach-td { margin-top: 2px; max-width: 30ch; font-size: .78rem; line-height: 1.35; color: var(--fg); opacity: .8; font-style: italic; }
 /* Erfolgssymbole: etwas feinere Striche als die einfachen Runen, damit Details erkennbar bleiben */
 .ach-rim .ach-ic { width: 22px; height: 22px; stroke-width: 1.9; }
+
+/* Angefangene Erfolge: der goldene Rand füllt sich im Uhrzeigersinn je nach Fortschritt (--p von 0 bis 1),
+   die Rune gewinnt mit an Farbe */
+.ach.part .ach-rim { filter: none;
+  background: conic-gradient(from 0deg, #f2c46a 0deg, #b8761f calc(var(--p) * 360deg), #2b2f2e calc(var(--p) * 360deg), #2b2f2e 360deg);
+  color: color-mix(in srgb, var(--gold) calc(var(--p) * 55%), #1a1c1b); }
+.ach.part .ach-rim::before { content: ""; position: absolute; inset: 2.5px; clip-path: inherit;
+  background: linear-gradient(160deg, #4a4f4c, var(--stone) 45%, var(--stone-2)); filter: brightness(.8); }
+.ach.part .ach-tx b { color: color-mix(in srgb, var(--gold-hi) calc(var(--p) * 50%), var(--muted)); }
