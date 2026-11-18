@@ -272,7 +272,7 @@ const EN = {
 "Drengr": "Drengr",
 "Starte 3 neue Partien. Ein junger Krieger auf seinem Weg.": "Start 3 new games. A young warrior on his way.",
 "Huskarl": "Housecarl",
-"Starte 10 neue Partien. Der Jarl vertraut dir sein Leben an.": "Start 10 new games. The jarl trusts you with his life.",
+"Starte 10 neue Partien. Odin hat ein Auge auf dich geworfen. Sein einziges.": "Start 10 new games. Odin has his eye on you. His only one.",
 "Der Gourmet": "The Gourmet",
 "Iss 3-mal gekochte Nahrung.": "Eat cooked food 3 times.",
 "Haldors Stammkunde": "Haldor's Regular",
