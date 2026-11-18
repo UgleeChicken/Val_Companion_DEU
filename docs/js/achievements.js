@@ -27,9 +27,9 @@ const ACH = [
   { id: "runenleser", i: "M5 2H19V22H5Z M9 6V12M9 7L12 9 M15 13V19M13 15L15 13L17 15", t: "Runenleser", d: "Studiere Inschriften.", ext: "rache" },
   { id: "nacht", i: "M14 2L7 5L4 12L7 19L14 22L10 16L9 12L10 8Z M19 4V10M16 7H22", t: "Lange Nacht", d: "Spiele eine Partie mit mindestens 20 Zügen, fast bis der Ereignisstapel leer ist." },
   { id: "feuer", i: "M4 21L20 16M4 16L20 21 M12 15L8 10L12 2L16 10Z", t: "Gemeinsam am Feuer", d: "Spiele eine Online-Partie mit 4 Spielern." },
-  { id: "drengr", i: "M12 2L19 5L22 12L19 19L12 22L5 19L2 12L5 5Z M12 9L15 12L12 15L9 12Z M12 2V9M12 15V22M2 12H9M15 12H22", t: "Drengr", d: "Starte 3 neue Partien. Ein junger Krieger auf seinem Weg.", c: "neuePartie", n: 3 },
-  { id: "veteran", i: "M12 2L14.5 5V15H9.5V5Z M12 5V13 M6 15H18 M12 15V20 M9.5 22H14.5L12 20Z", t: "Huskarl", d: "Starte 10 neue Partien. Odin hat ein Auge auf dich geworfen. Sein einziges.", c: "neuePartie", n: 10 },
-  { id: "legende", i: "M7 18V12L9 8.5L12 7.5L15 8.5L17 12V18 M7 12.5H17 M12 12.5V20 M7 11L5 6L1.5 3L2.5 7L1 9.5L3 11.5L2.5 13.5L7 14.5 M17 11L19 6L22.5 3L21.5 7L23 9.5L21 11.5L21.5 13.5L17 14.5", t: "Einherjer", d: "Starte 25 neue Partien. Die Skalden singen schon von dir, und in Walhall ist ein Platz für dich frei.", c: "neuePartie", n: 25 },
+  { id: "drengr", i: "M12 2L19 5L22 12L19 19L12 22L5 19L2 12L5 5Z M12 9L15 12L12 15L9 12Z M12 2V9M12 15V22M2 12H9M15 12H22", t: "Drengr", d: "Starte 3 neue Partien. Du bist ein junger Krieger auf deinem Weg.", c: "neuePartie", n: 3 },
+  { id: "veteran", i: "M12 2L14.5 5V15H9.5V5Z M12 5V13 M6 15H18 M12 15V20 M9.5 22H14.5L12 20Z", t: "Huskarl", d: "Starte 10 neue Partien. Odin wird auf dich aufmerksam.", c: "neuePartie", n: 10 },
+  { id: "legende", i: "M7 18V12L9 8.5L12 7.5L15 8.5L17 12V18 M7 12.5H17 M12 12.5V20 M7 11L5 6L1.5 3L2.5 7L1 9.5L3 11.5L2.5 13.5L7 14.5 M17 11L19 6L22.5 3L21.5 7L23 9.5L21 11.5L21.5 13.5L17 14.5", t: "Einherjer", d: "Starte 25 neue Partien. Die Walküren holen dich nach Walhall.", c: "neuePartie", n: 25 },
 ];
 
 let ach = { u: {}, c: {}, g: {} };   // u: freigeschaltet (Zeitpunkt), c: Zähler über alle Partien, g: Zähler dieser Partie
