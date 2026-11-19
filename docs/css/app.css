@@ -883,3 +883,6 @@ html.big-text .seg-b { font-size: .8rem; padding-left: 3px; padding-right: 3px; 
 .guide .seg-b { min-width: 0; padding-left: 4px; padding-right: 4px; }
 .guide .seg-b:nth-child(-n+3) { grid-column: span 2; }
 .guide .seg-b:nth-child(n+4) { grid-column: span 3; }
+/* Unterreiter im Reiter Spiel liegen direkt auf dem Holz: gleicher dunkler Untergrund wie die Leisten in den Tafeln */
+.seg-game { background: linear-gradient(#00000066, #00000066), url("../img/panel.png") var(--panel); border: 2px solid #120a06;
+  box-shadow: 0 3px 0 #1a0b04aa, 0 10px 22px #00000066; }
