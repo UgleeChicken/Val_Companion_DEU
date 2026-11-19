@@ -1,6 +1,6 @@
 // Offline-Speicher: legt alle Dateien beim ersten Besuch ab.
 // Bei Änderungen an der App die Versionsnummer erhöhen.
-const CACHE = "valcompanion-v86";
+const CACHE = "valcompanion-v87";
 const FILES = [
   "./",
   "index.html",
@@ -12,6 +12,7 @@ const FILES = [
   "js/build.js",
   "js/online.js",
   "js/achievements.js",
+  "js/stats.js",
   "js/ui.js",
   "js/main.js",
   "icons/icon-192.png",

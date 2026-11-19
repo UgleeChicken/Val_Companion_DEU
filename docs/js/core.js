@@ -80,7 +80,7 @@ function log(text, cls = "", p = st.current) {
 function doAction(i) {
   const a = ACTIONS[i];
   if (!a.free && locked()) return;
-  if (a.free && isOther()) { log({ k: "act", w: actorName(), x: a.n, f: 1 }, "f", actorIdx()); achAction(a.n, true, actorIdx()); render(); return feedback(i, true); }
+  if (a.free && isOther()) { log({ k: "act", w: actorName(), x: a.n, f: 1 }, "f", actorIdx()); achAction(a.n, true, actorIdx()); statFree(actorIdx()); render(); return feedback(i, true); }
   if (!a.free && counted() >= st.per) return;
   if (a.once && st.used.some(u => u.n === a.n)) return;
   if (a.req && !(st.built || []).includes(a.req)) return;
@@ -105,6 +105,7 @@ function endTurn() {
   if (locked()) return;
   log({ k: "end", w: name(), c: counted(), m: st.per }, "e");
   achEndTurn(st.current);
+  statTurn(st.current, st.used);
   st.used = [];
   st.current = (st.current + 1) % st.players.length;
   if (st.current === 0) { st.round++; log({ k: "round", r: st.round }, "e"); }
@@ -186,6 +187,7 @@ function render() {
     ? st.log.map(l => `<li><span class="t">${esc(l.t)}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${["f", "e"].includes(l.cls) ? l.cls : ""}">${esc(logText(l))}</span></li>`).join("")
     : `<li class="empty">${tr("Noch keine Aktionen. Wähle oben eine Aktion aus.")}</li>`;
   renderDice();
+  if (typeof renderStats === "function") renderStats();
   renderFurniture();
   renderTabs();
   renderSegs();
@@ -240,10 +242,11 @@ document.addEventListener("click", e => {
     case "resetYes": {
       const keep = st.players, cols = st.colors, per = st.per, mine = { bigText: st.bigText, me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, achOff: st.achOff, seg: st.seg, logOpen: st.logOpen };
       const ext = st.ext, dx = st.diceExtra | 0;
+      const recap = recapHtml();
       achNewGame(); achCount("neuePartie");
-      st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; st.diceExtra = dx; Object.assign(st, mine);
+      st = fresh(); st.players = keep; st.colors = cols; st.per = per; st.ext = ext; st.diceExtra = dx; Object.assign(st, mine); st.stat = newStat();
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`;
-      return render();
+      render(); return showRecap(recap);
     }
     case "resetNo":
       $("resetArea").innerHTML = `<button class="btn" id="reset">${tr("Neues Spiel")}</button>`; return;

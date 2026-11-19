@@ -227,6 +227,11 @@
     </section>
   </section>
 
+  <details class="panel legend dstats" id="diceStats" data-tab="wuerfeln">
+    <summary class="label"><span data-tr>Würfel-Statistik dieser Partie</span> <span class="chev" aria-hidden="true">▶</span></summary>
+    <div id="diceStatsBody"></div>
+  </details>
+
   <details class="panel legend" id="legend" open data-tab="wuerfeln">
     <summary class="label"><span data-tr>Würfel-Legende</span> <span class="chev" aria-hidden="true">▶</span></summary>
     <div class="dice">
@@ -368,6 +373,7 @@
   </section>
   <p class="disclaimer" data-tab="spiel" data-game="app" data-tr>Inoffizielles Fan-Projekt, nicht verbunden mit Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing.</p>
   <div class="intro" id="intro" hidden></div>
+  <div class="intro" id="recap" hidden></div>
   <div class="ach-toast" id="achToast" role="status" aria-live="polite" hidden></div>
   <nav class="tabbar" id="tabbar" aria-label="Reiter" data-tr-aria="Reiter">
     <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg><span data-tr>Zug</span></button>
@@ -384,6 +390,7 @@
 <script src="js/build.js"></script>
 <script src="js/online.js"></script>
 <script src="js/achievements.js"></script>
+<script src="js/stats.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
 </body>
