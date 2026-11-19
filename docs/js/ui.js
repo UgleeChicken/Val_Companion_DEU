@@ -127,7 +127,7 @@ document.addEventListener("change", e => {
 // ---------- Unterreiter (Hilfe, Aktionen) ----------
 function renderSegs() {
   if (!st.seg || typeof st.seg !== "object") st.seg = {};
-  if (!["eff", "eq", "res", "hal", "kampf"].includes(st.seg.help)) st.seg.help = "eff";
+  if (!["kampf", "eq", "eff", "res", "hal"].includes(st.seg.help)) st.seg.help = "kampf";
   document.querySelectorAll('[data-seg="help"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.val === st.seg.help)));
   document.querySelectorAll("[data-sub]").forEach(el => { const [k, v] = el.dataset.sub.split(":"); el.hidden = st.seg[k] !== v; });
   // Reiter Spiel: Partie / Erfolge / App (Erfolge entfallen, wenn sie ausgeschaltet sind)
