@@ -170,6 +170,7 @@
       <button class="seg-b" data-seg="help" data-val="eq" role="tab"><span data-tr>Ausrüstung</span></button>
       <button class="seg-b" data-seg="help" data-val="res" role="tab"><span data-tr>Ressourcen</span></button>
       <button class="seg-b" data-seg="help" data-val="hal" role="tab"><span data-tr>Haldor</span></button>
+      <button class="seg-b" data-seg="help" data-val="kampf" role="tab"><span data-tr>Kampf</span></button>
     </div>
     <section data-sub="help:eff">
       <h3 data-tr>Effekte</h3>
@@ -224,6 +225,30 @@
         <li><span class="coins"><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-muenze"/></svg></span><span class="arrow">→</span><span class="or"><span><svg class="res" viewBox="0 0 24 24" aria-hidden="true"><use href="#r-karte"/></svg><span data-tr>1 Haldorkarte</span></span></span></li>
       </ul>
       <p class="note-h" style="margin-top:8px" data-tr>Führst du „Mit Haldor handeln“ aus, decke die 3 obersten Haldorkarten auf.</p>
+    </section>
+    <section data-sub="help:kampf" class="fight">
+      <h3 data-tr>Kampf</h3>
+      <p class="fight-lead" data-tr>Ein Kampf ist keine Aktion und kostet keinen Runenstein. Er beginnt von selbst, sobald du und eine Kreatur auf demselben Feld steht. Eine Bewegung endet dann sofort.</p>
+      <div class="fight-h" data-tr>Eine Kampfrunde</div>
+      <ol class="fight-steps">
+        <li data-tr>Nimm die Schadenswürfel der Kreatur laut ihrer Kreaturenkarte.</li>
+        <li data-tr>Nimm deine Angriffswürfel (von einer Waffe oder einem Werkzeug) und deine Verteidigungswürfel (von deiner Rüstung, höchstens 2).</li>
+        <li data-tr>Wirf alle Würfel zusammen. Zuerst zählt dein Schaden an der Kreatur, dann ihr Schaden an dir. Beides gilt immer, auch wenn eine Seite schon besiegt ist.</li>
+        <li data-tr>Jeder Schild hebt 1 Schaden auf. Kritische Ergebnisse zählen doppelt.</li>
+        <li data-tr>Stehen beide noch, folgt die nächste Runde. Besiegst du die Kreatur, kommt ihre Beute in den gemeinsamen Vorrat und dein Zug geht weiter. Fallen deine Lebenspunkte auf 0, bist du bewusstlos und dein Zug endet.</li>
+      </ol>
+      <button class="btn fight-go" data-jump="wuerfeln" data-tr>Zum Würfeln</button>
+      <div class="fight-h" data-tr>Gut zu wissen</div>
+      <ul class="fight-notes">
+        <li><b data-tr>Boni</b> <span data-tr>auf Angriff oder Verteidigung zählen nur, wenn mindestens 1 Treffer bzw. 1 Schild gefallen ist.</span></li>
+        <li><b data-tr>Spezialeffekt (!)</b> <span data-tr>auf dem Schadenswürfel: Effekt auf der Kreaturenkarte nachsehen, z. B. Frost, Gift oder Rüstungsdurchdringung.</span></li>
+        <li><b data-tr>Unbewaffnet</b> <span data-tr>wirfst du 1 gelben Angriffswürfel; ein kritischer Treffer zählt nur einfach.</span></li>
+        <li><b data-tr>Mehrere Spieler</b> <span data-tr>auf dem Feld kämpfen alle mit. Der Spieler am Zug beginnt, danach würfelt reihum im Uhrzeigersinn je einer eine Runde.</span></li>
+        <li><b data-tr>Mehrere Kreaturen:</b> <span data-tr>Schadenswürfel nur für die stärkste (höchste aufgedruckte Lebenspunkte). Angreifen darfst du jede; einen kritischen Treffer kannst du nicht aufteilen.</span></li>
+        <li><b data-tr>In Unterzahl</b> <span data-tr>(mehr Kreaturen als Spieler) bekommt der Würfelnde 1 Extraschaden, wenn die Kreatur mindestens 1 Treffer würfelt. Schilde können ihn abwehren.</span></li>
+        <li><b data-tr>Gefroren / Vergiftet:</b> <span data-tr>am Ende jeder deiner Kampfrunden 1 Ausdauer bzw. 1 Lebenspunkt verlieren. Nach dem Kampf den Marker entfernen.</span></li>
+        <li><b data-tr>Freie Aktionen:</b> <span data-tr>im Kampf eine Bombe werfen; Mitspieler können mit „Unterstützung im Kampf“ für 1 Ausdauer dazukommen. „Hinterhalt“ ist dagegen eine Aktion: Fernkampf gegen eine Kreatur auf einem angrenzenden Feld.</span></li>
+      </ul>
     </section>
   </section>
 

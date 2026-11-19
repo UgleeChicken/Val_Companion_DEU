@@ -882,3 +882,18 @@ html.big-text .seg-b { font-size: .8rem; padding-left: 3px; padding-right: 3px; 
 .rc-tile span { font-size: .75rem; color: var(--hint); }
 .rc-h { margin: 4px 0 8px; font-size: .95rem; color: var(--gold); font-weight: 700; letter-spacing: .03em; }
 .rc-ach { margin: 0 0 16px; color: var(--fg); line-height: 1.45; }
+
+/* Spielhilfe: Kampf */
+.fight-lead { margin: 0 0 12px; line-height: 1.45; color: var(--fg); }
+.fight-h { margin: 14px 0 8px; font-family: var(--head); color: var(--gold); font-size: 1rem; letter-spacing: .04em; }
+.fight-steps { margin: 0 0 12px; padding: 0; list-style: none; counter-reset: fs; display: grid; gap: 8px; }
+.fight-steps li { counter-increment: fs; position: relative; padding-left: 34px; line-height: 1.45; color: var(--hint); }
+.fight-steps li::before { content: counter(fs); position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+  background: #00000055; box-shadow: inset 0 0 0 1px var(--gold); color: var(--gold); font-weight: 700; font-size: .85rem; }
+.fight-go { min-height: 44px; width: 100%; }
+.fight-notes { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.fight-notes li { line-height: 1.45; color: var(--hint); padding-left: 12px; border-left: 2px solid #5c432988; }
+.fight-notes b { color: var(--gold); }
+/* Fünf Unterreiter der Spielhilfe: bei wenig Platz in zwei Zeilen statt gequetscht */
+.guide .seg { flex-wrap: wrap; row-gap: 2px; }
+.guide .seg-b { flex: 1 1 auto; min-width: max-content; padding-left: 10px; padding-right: 10px; }
