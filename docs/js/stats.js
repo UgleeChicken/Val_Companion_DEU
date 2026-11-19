@@ -47,7 +47,7 @@ function renderStats() {
   }).join("");
   const ppl = st.players.map((name, i) => [name, i, s.p[i]]).filter(x => x[2] && x[2].x).map(([name, i, p]) =>
     `<li style="--pc:${pc(i)}"><span class="st-dot"></span><b>${esc(name)}</b><span>${tf("{x} Würfel · {e}× leer · {k}× kritisch getroffen", { x: p.x, e: p.e, k: p.k })}</span></li>`).join("");
-  box.innerHTML = `<p class="st-sum">${tf("{n} Würfe mit {x} Würfeln", { n: s.n, x: s.x })}</p>${dice}${ppl ? `<ul class="st-ppl">${ppl}</ul>` : ""}<p class="hint">${tr("Der Strich zeigt, wie oft eine Seite im Schnitt fallen sollte.")}</p>`;
+  box.innerHTML = `<p class="st-sum">${(s.x === 1 ? tr("1 Wurf mit 1 Würfel") : tf(s.n === 1 ? "1 Wurf mit {x} Würfeln" : "{n} Würfe mit {x} Würfeln", { n: s.n, x: s.x }))}</p>${dice}${ppl ? `<ul class="st-ppl">${ppl}</ul>` : ""}<p class="hint">${tr("Der Strich zeigt, wie oft eine Seite im Schnitt fallen sollte.")}</p>`;
 }
 
 // ---------- Rückblick ----------
