@@ -836,5 +836,21 @@ html.big-text .seg-b { font-size: .8rem; padding-left: 3px; padding-right: 3px; 
 .online a { color: var(--gold); }
 /* Reiter Zug: Name und Runde bleiben in einer Zeile, langer Name wird gekürzt */
 .board .b-top { flex-wrap: nowrap; align-items: center; }
-.board .who { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.board .who { flex: 1; font-size: clamp(1rem, 4.9vw, 1.25rem); letter-spacing: .02em; overflow-wrap: anywhere; }
+/* Rundenanzeige im Reiter Zug kompakter, damit „… ist am Zug“ in einer Zeile bleibt */
+.board .b-meta .round { padding: 2px 8px; font-size: .78rem; letter-spacing: .04em; }
+.board .b-meta .round b { font-size: 1.05rem; }
 .board .b-meta { flex: none; }
+
+/* ---------- Feinschliff 2: einheitliche Knopfhöhen, lesbare Zähler, gleichmäßige Abstände ---------- */
+/* Zug: Rückgängig und Zug beenden gleich hoch und daumenfreundlich */
+.board .row .btn { min-height: 44px; }
+/* Bauen- und Zurücksetzen-Knopf auf die Mindesthöhe der übrigen kleinen Knöpfe */
+.fr .act-btn, .ach-reset .ach-reset-btn { min-height: 40px; }
+/* Schmale Leiste oben: Knöpfe bleiben flach, reagieren aber auf die volle Leistenhöhe */
+.mini-bar .btn { position: relative; }
+.mini-bar .btn::after { content: ""; position: absolute; top: -10px; bottom: -10px; left: -3px; right: -3px; }
+/* Zähler auf dem Unterreiter „Erfolge“ lesbar (vorher knapp 10 px) */
+.seg-game .cnt { font-size: .7rem; }
+/* Abstand zwischen Unterreiter-Leiste und erstem Bereich wie zwischen allen anderen Bereichen */
+.seg-game { margin-bottom: 0; }
