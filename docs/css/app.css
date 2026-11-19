@@ -855,25 +855,6 @@ html.big-text .seg-b { font-size: .8rem; padding-left: 3px; padding-right: 3px; 
 /* Abstand zwischen Unterreiter-Leiste und erstem Bereich wie zwischen allen anderen Bereichen */
 .seg-game { margin-bottom: 0; }
 
-/* Würfel-Statistik dieser Partie */
-.dstats .hint { margin: 10px 0 0; font-size: .82rem; color: var(--muted); font-style: italic; }
-.dstats .st-sum { margin: 0 0 10px; color: var(--fg); }
-.st-die { margin: 0 0 12px; }
-.st-die h3 { margin: 0 0 6px; font-size: .95rem; color: var(--gold); font-weight: 700; }
-.st-die h3 small { color: var(--muted); font-weight: 400; font-size: .8rem; margin-left: 4px; }
-.st-die ul, .st-ppl { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.st-die li { display: grid; grid-template-columns: 30px minmax(0, 7.5em) 1fr 2.2em; align-items: center; gap: 8px; }
-.st-die .face { width: 30px; height: 30px; }
-.st-n { font-size: .85rem; color: var(--hint); overflow-wrap: anywhere; line-height: 1.2; }
-.st-bar { position: relative; height: 10px; border-radius: 5px; background: #00000055; box-shadow: inset 0 0 0 1px #5c432966; }
-.st-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; background: linear-gradient(90deg, #b26a2e, var(--gold)); }
-.st-bar em { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--fg); opacity: .7; }
-.st-die li > b { text-align: right; font-variant-numeric: tabular-nums; }
-.st-ppl { border-top: 1px solid #5c432955; padding-top: 10px; }
-.st-ppl li { display: grid; grid-template-columns: 12px auto 1fr; gap: 8px; align-items: baseline; font-size: .88rem; color: var(--hint); }
-.st-ppl b { color: var(--fg); }
-.st-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--pc); align-self: center; }
-
 /* Rückblick beim Start einer neuen Partie */
 .recap { max-height: calc(100dvh - 40px); overflow-y: auto; }
 .rc-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 0 14px; }

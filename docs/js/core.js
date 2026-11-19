@@ -187,7 +187,6 @@ function render() {
     ? st.log.map(l => `<li><span class="t">${esc(l.t)}</span><span class="pd" style="--pc:${pc(l.p ?? 0)}"></span><span class="${["f", "e"].includes(l.cls) ? l.cls : ""}">${esc(logText(l))}</span></li>`).join("")
     : `<li class="empty">${tr("Noch keine Aktionen. Wähle oben eine Aktion aus.")}</li>`;
   renderDice();
-  if (typeof renderStats === "function") renderStats();
   renderFurniture();
   renderTabs();
   renderSegs();

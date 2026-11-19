@@ -1,4 +1,4 @@
-// Val Companion – Statistik der laufenden Partie (Würfel, Aktionen) und Rückblick beim Start einer neuen Partie.
+// Val Companion – Zahlen der laufenden Partie (Würfel, Aktionen) für den Rückblick beim Start einer neuen Partie.
 // Die Dateien werden in fester Reihenfolge geladen (siehe index.html) und teilen sich einen gemeinsamen Gültigkeitsbereich.
 // Die Zahlen liegen in st.stat und werden bei einer Online-Partie wie der übrige Spielstand geteilt.
 
@@ -29,26 +29,6 @@ function statTurn(idx, used) {
 }
 // Freie Aktion eines anderen Spielers während des Zuges
 function statFree(idx) { const s = stat(); s.a++; s.fr++; statP(idx).a++; }
-
-// ---------- Würfel-Statistik im Reiter Würfeln ----------
-function renderStats() {
-  const box = $("diceStatsBody"); if (!box) return;
-  const s = statView();
-  if (!s.x) { box.innerHTML = `<p class="hint">${tr("Noch keine Würfe in dieser Partie.")}</p>`; return; }
-  const dice = Object.entries(DICE).filter(([k]) => s.d[k]).map(([k, d]) => {
-    const total = Object.values(s.d[k]).reduce((a, b) => a + b, 0);
-    const seen = [];
-    d.faces.forEach(f => { if (!seen.some(x => x.n === f.n)) seen.push({ n: f.n, svg: f.svg, sides: d.faces.filter(g => g.n === f.n).length }); });
-    const rows = seen.map(f => {
-      const c = s.d[k][f.n] || 0, pct = Math.round(c / total * 100), exp = Math.round(f.sides / d.faces.length * 100);
-      return `<li title="${tf("{f}: {c}× ({p} %, erwartet {e} %)", { f: tr(f.n), c, p: pct, e: exp })}">${faceHtml(k, f.svg)}<span class="st-n">${tr(f.n)}</span><span class="st-bar"><i style="width:${pct}%"></i><em style="left:${exp}%"></em></span><b>${c}</b></li>`;
-    }).join("");
-    return `<div class="st-die"><h3>${tr(d.name)} <small>${tf(total === 1 ? "1 Würfel" : "{n} Würfel", { n: total })}</small></h3><ul>${rows}</ul></div>`;
-  }).join("");
-  const ppl = st.players.map((name, i) => [name, i, s.p[i]]).filter(x => x[2] && x[2].x).map(([name, i, p]) =>
-    `<li style="--pc:${pc(i)}"><span class="st-dot"></span><b>${esc(name)}</b><span>${tf("{x} Würfel · {e}× leer · {k}× kritisch getroffen", { x: p.x, e: p.e, k: p.k })}</span></li>`).join("");
-  box.innerHTML = `<p class="st-sum">${(s.x === 1 ? tr("1 Wurf mit 1 Würfel") : tf(s.n === 1 ? "1 Wurf mit {x} Würfeln" : "{n} Würfe mit {x} Würfeln", { n: s.n, x: s.x }))}</p>${dice}${ppl ? `<ul class="st-ppl">${ppl}</ul>` : ""}<p class="hint">${tr("Der Strich zeigt, wie oft eine Seite im Schnitt fallen sollte.")}</p>`;
-}
 
 // ---------- Rückblick ----------
 function recapHtml() {
