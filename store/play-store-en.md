@@ -14,7 +14,7 @@ Val Companion
 Unofficial companion: count actions, roll dice and build for your board game
 ```
 
-## Full description (1724/4000 characters)
+## Full description (1999/4000 characters)
 
 ```
 Val Companion is an unofficial companion app for Valheim: The Board Game. It does the counting for your group and keeps actions, dice, building costs and effects at hand as a quick reference.
@@ -24,12 +24,14 @@ FEATURES
 • All actions with short descriptions, sorted into “anywhere”, “house” and “free”
 • Digital dice: all five dice with the correct faces, totals for attack, defense and damage, reroll single dice
 • Build furniture: costs at a glance, built furniture unlocks its actions
-• Game aid: effects, equipment icons, resources, trading with Haldor and a dice legend
+• Game aid: how combat works, equipment icons, effects, resources, trading with Haldor and a dice legend
+• Achievements: collect rune stones for special moments at the table, from your first turn to Einherjer
+• Recap: when you start a new game, see the rounds, actions, rolls, furniture built and honours like “Unlucky one” of your last game
 • Optional: the “Forsaken's Revenge” expansion and Gamefound exclusives
 • 1 to 4 players with their own colors and a log of every turn
 • Online games: join with a code and play on several phones, everyone sees the same game live
 • Without an online game it works fully offline, and the screen stays on while you play
-• Short introduction on first start, large text if you like
+• Swipe between tabs, short introduction on first start, large text if you like
 • Available in English and German
 
 PRIVACY
