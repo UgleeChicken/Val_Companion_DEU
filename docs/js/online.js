@@ -264,7 +264,23 @@ function cleanState(o) {
       .filter(r => r && DICE[r.d] && DICE[r.d].faces && Number.isInteger(r.f) && r.f >= 0 && r.f < DICE[r.d].faces.length)
       .map(r => ({ d: r.d, f: r.f })),
   };
+  const sv = cleanStat(o.stat, n); if (sv) out.stat = sv;
   return out;
+}
+
+// Statistik der Partie (siehe stats.js): nur bekannte Würfelseiten und Zahlen übernehmen
+function cleanStat(s, n) {
+  if (!s || typeof s !== "object") return null;
+  const num = v => { const x = Math.floor(Number(v)); return Number.isFinite(x) && x >= 0 && x < 1e7 ? x : 0; };
+  const d = {}, p = {};
+  for (const k in DICE) {
+    const src = s.d && s.d[k]; if (!src || typeof src !== "object" || !DICE[k].faces) continue;
+    const o = {}; for (const f in src) if (DICE[k].faces.some(x => x.n === f)) o[f] = num(src[f]);
+    d[k] = o;
+  }
+  for (let i = 0; i < n; i++) { const q = s.p && s.p[i]; if (q && typeof q === "object") p[i] = { r: num(q.r), x: num(q.x), e: num(q.e), k: num(q.k), a: num(q.a) }; }
+  const t0 = Number(s.t0);
+  return { t0: Number.isFinite(t0) && t0 > 0 ? t0 : 0, n: num(s.n), x: num(s.x), d, p, a: num(s.a), fr: num(s.fr), sh: num(s.sh) };
 }
 
 function applyRemote(s) {

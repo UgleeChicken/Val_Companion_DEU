@@ -4,6 +4,8 @@
 
 const newStat = () => ({ t0: Date.now(), n: 0, x: 0, d: {}, p: {}, a: 0, fr: 0, sh: 0 });
 function stat() { if (!st.stat || typeof st.stat !== "object" || !st.stat.p) st.stat = newStat(); return st.stat; }
+// Nur lesen, für Anzeige und Rückblick: legt nichts im Spielstand an
+const statView = () => (st.stat && typeof st.stat === "object" && st.stat.p) ? st.stat : newStat();
 const statP = i => { const s = stat(); return (s.p[i] = s.p[i] || { r: 0, x: 0, e: 0, k: 0, a: 0 }); };
 
 // Wurf (alle Würfel) oder Neuwurf eines einzelnen Würfels
@@ -31,7 +33,7 @@ function statFree(idx) { const s = stat(); s.a++; s.fr++; statP(idx).a++; }
 // ---------- Würfel-Statistik im Reiter Würfeln ----------
 function renderStats() {
   const box = $("diceStatsBody"); if (!box) return;
-  const s = stat();
+  const s = statView();
   if (!s.x) { box.innerHTML = `<p class="hint">${tr("Noch keine Würfe in dieser Partie.")}</p>`; return; }
   const dice = Object.entries(DICE).filter(([k]) => s.d[k]).map(([k, d]) => {
     const total = Object.values(s.d[k]).reduce((a, b) => a + b, 0);
@@ -50,7 +52,7 @@ function renderStats() {
 
 // ---------- Rückblick ----------
 function recapHtml() {
-  const s = stat();
+  const s = statView();
   const turns = (st.round - 1) * st.players.length + st.current;
   const acts = s.a + st.used.length;
   const ships = s.sh + st.used.filter(u => u.n === "Schiff bauen").length;
@@ -80,7 +82,7 @@ function recapHtml() {
   if (ships) lines.push(tf(ships === 1 ? "<b>1</b> Schiff gebaut" : "<b>{n}</b> Schiffe gebaut", { n: ships }));
   if (s.fr) lines.push(tf("<b>{n}</b> freie Aktionen", { n: s.fr }));
   if (s.x) lines.push(tf("<b>{x}</b> Würfel geworfen, davon {e} leer", { x: s.x, e: blank }));
-  const achNew = (typeof ACH !== "undefined" && !st.achOff) ? ACH.filter(a => ach.u[a.id] >= s.t0).map(a => tr(a.t)) : [];
+  const achNew = (typeof ACH !== "undefined" && !st.achOff) ? ACH.filter(a => s.t0 && ach.u[a.id] >= s.t0).map(a => tr(a.t)) : [];
   return `<div class="intro-card recap" role="dialog" aria-modal="true" aria-labelledby="recapT">
     <h2 id="recapT">${tr("Rückblick")}</h2>
     <p class="intro-lead">${tr("So lief eure letzte Partie.")}</p>
