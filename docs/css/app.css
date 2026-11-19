@@ -811,3 +811,30 @@ html, body { overflow-x: clip; }
   font-family: var(--head); font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
 .ach-grp:first-child { margin-top: 0; }
 .ach-grp .ach-grp-n { font-family: var(--font); font-size: .75rem; letter-spacing: 0; text-transform: none; color: var(--muted); }
+
+/* ---------- Feinschliff: größere Tippflächen, keine abgeschnittenen Texte ---------- */
+/* Kleine Knöpfe behalten ihr Aussehen, reagieren aber auf eine größere, unsichtbare Fläche */
+.player .dot, .player .rm, .built-tag button { position: relative; }
+.player .dot::after { content: ""; position: absolute; top: -13px; bottom: -13px; left: -11px; right: -5px; }
+.player .rm::after { content: ""; position: absolute; top: -12px; bottom: -12px; left: -6px; right: -11px; }
+.built-tag button::after { content: ""; position: absolute; inset: -12px; }
+.player .rm { padding: 0 4px; }
+/* Plus/Minus: Mindestgröße zum sicheren Treffen */
+.stepper button { min-width: 40px; min-height: 40px; }
+/* Häkchen-Zeilen: ganze Zeile gut antippbar */
+.desc-t { min-height: 36px; }
+.desc-t input { width: 18px; height: 18px; }
+/* Lange Würfelnamen sauber trennen statt abschneiden */
+.dp .nm { hyphens: manual; -webkit-hyphens: manual; overflow-wrap: break-word; }
+.dp .stepper button { min-width: 36px; }
+.dp .stepper span { padding: 0 9px; }
+/* Unterreiter: Text und Zähler passen auch bei schmalen Handys und großer Schrift */
+.seg-b { white-space: nowrap; }
+.seg-act .seg-b { flex: 1 1 auto; padding: 8px 6px; gap: 4px; }
+html.big-text .seg-b { font-size: .8rem; padding-left: 3px; padding-right: 3px; letter-spacing: 0; }
+/* Links bei der Online-Partie im Goldton der App */
+.online a { color: var(--gold); }
+/* Reiter Zug: Name und Runde bleiben in einer Zeile, langer Name wird gekürzt */
+.board .b-top { flex-wrap: nowrap; align-items: center; }
+.board .who { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.board .b-meta { flex: none; }

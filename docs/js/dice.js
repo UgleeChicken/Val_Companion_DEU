@@ -79,7 +79,7 @@ function renderDice() {
   $("pool").innerHTML = Object.entries(DICE).map(([k, d]) => `
     <div class="dp ${d.faces ? "" : "off"}">
       ${faceHtml(k, d.icon)}
-      <span class="nm">${tr(d.name)}</span>
+      <span class="nm">${tr(d.name).replace(/(\S)(würfel)/, "$1&shy;$2")}</span>
       <span class="stepper">
         <button data-dm="${k}" aria-label="${tf("{d} weniger", { d: tr(d.name) })}" ${!d.faces || !st.pool[k] ? "disabled" : ""}>−</button>
         <span>${st.pool[k]}<small class="dmax">/${maxDice(k)}</small></span>
