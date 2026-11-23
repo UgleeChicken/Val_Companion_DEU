@@ -15,7 +15,7 @@ const FB = Object.assign({
 }, window.VAL_FB || {});
 const ONLINE_KEY = "valcompanion-online";
 const AUTH_KEY = "valcompanion-auth";
-const LOCAL_ONLY = ["bigText", "tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen", "seg", "logOpen", "achOff"];           // bleibt auf jedem Handy für sich
+const LOCAL_ONLY = ["bigText", "tab", "pool", "me", "allowAll", "desc", "closed", "autoDice", "autoBuild", "optsOpen", "seg", "logOpen", "achOff", "eventHint"];           // bleibt auf jedem Handy für sich
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ohne I, O, 0, 1
 const net = { code: null, status: "aus", err: "", token: null, tokenExp: 0, es: null, lastShared: null, pushTimer: null, retry: null, renew: null, reconnect: null };
 
@@ -341,6 +341,7 @@ function renderOnline() {
   const box = $("online"); if (!box) return;
   const on = !!net.code;
   $("onOff").hidden = on; $("onOn").hidden = !on;
+  if ($("onShare")) $("onShare").hidden = !canShare();
   const dotCls = net.status === "verbunden" ? "ok" : net.status === "fehler" ? "bad" : "wait";
   const label = tr(net.status === "verbunden" ? "Verbunden – alle sehen denselben Spielstand" : net.status === "fehler" ? "Getrennt" : "Verbinde …");
   $("onDot").className = `dot ${dotCls}`;
@@ -360,7 +361,7 @@ function renderOnline() {
 }
 
 document.addEventListener("click", e => {
-  const t = e.target.closest("#onCreate,#onJoin,#onLeave,#onCopy,#onPill,#onDelete,#onDelYes,#onDelNo");
+  const t = e.target.closest("#onCreate,#onJoin,#onLeave,#onCopy,#onShare,#onPill,#onDelete,#onDelYes,#onDelNo");
   if (!t) return;
   if (t.id === "onCreate") return createRoom();
   if (t.id === "onJoin") return joinRoom($("joinCode").value);
@@ -372,12 +373,24 @@ document.addEventListener("click", e => {
   if (t.id === "onDelNo") return resetDelArea();
   if (t.id === "onDelYes") return deleteRoom();
   if (t.id === "onPill") return goTab("spiel");
+  if (t.id === "onShare") return shareCode();
   if (t.id === "onCopy") {
     const txt = fmtCode(net.code);
     const done = () => { t.textContent = tr("Kopiert"); setTimeout(() => { t.textContent = tr("Code kopieren"); }, 1500); };
     try { navigator.clipboard.writeText(txt).then(done, () => selectCode()); } catch { selectCode(); }
   }
 });
+// Teilen über das Teilen-Menü des Handys (WhatsApp, Signal …). In der Android-App über die App selbst, sobald sie das kann.
+const APP_SHARE = /ValCompanionApp\/share/.test(navigator.userAgent);
+const canShare = () => APP_SHARE || !!navigator.share;
+function shareText() {
+  return tf("Komm in meine Partie bei Val Companion! Partie-Code: {c}", { c: fmtCode(net.code) }) + "\nhttps://ugleechicken.github.io/Val_Companion_DEU/";
+}
+function shareCode() {
+  const text = shareText();
+  if (APP_SHARE) { openExternal("valcompanion-share://code?text=" + encodeURIComponent(text)); return; }
+  try { navigator.share({ text }).catch(() => {}); } catch {}
+}
 function selectCode() { const r = document.createRange(); r.selectNodeContents($("onCode")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
 document.addEventListener("keydown", e => { if (e.target && e.target.id === "joinCode" && e.key === "Enter") joinRoom(e.target.value); });
 window.addEventListener("online", () => { if (net.code) { reconnectSoon(0); if (net.lastShared === null) pushNow(); } });

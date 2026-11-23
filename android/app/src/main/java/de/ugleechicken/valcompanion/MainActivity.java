@@ -62,7 +62,8 @@ public class MainActivity extends Activity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true); // Spielstand speichern (localStorage)
         settings.setAllowFileAccess(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " ValCompanionApp");
+        // "/share": Diese App-Version kann den Partie-Code über das Teilen-Menü von Android verschicken.
+        settings.setUserAgentString(settings.getUserAgentString() + " ValCompanionApp/share");
 
         web.setWebViewClient(new WebViewClient() {
             @Override
@@ -75,6 +76,19 @@ public class MainActivity extends Activity {
                 Uri uri = request.getUrl();
                 if (APP_HOST.equals(uri.getHost())) {
                     return false;
+                }
+                // Partie-Code teilen: valcompanion-share://code?text=… öffnet das Teilen-Menü (WhatsApp, Signal …)
+                if ("valcompanion-share".equals(uri.getScheme())) {
+                    String text = uri.getQueryParameter("text");
+                    Intent send = new Intent(Intent.ACTION_SEND);
+                    send.setType("text/plain");
+                    send.putExtra(Intent.EXTRA_TEXT, text == null ? "" : text);
+                    try {
+                        startActivity(Intent.createChooser(send, null));
+                    } catch (ActivityNotFoundException ignored) {
+                        // Kein Teilen-Ziel vorhanden.
+                    }
+                    return true;
                 }
                 // Externe Links im Browser bzw. in der passenden App öffnen.
                 try {

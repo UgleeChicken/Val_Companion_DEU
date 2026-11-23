@@ -329,7 +329,7 @@
       <div class="seat-box"><span class="code-l" data-tr>Ich spiele als</span><div class="seat-row" id="seatPick"></div></div>
       <label class="allow"><input type="checkbox" id="allowAll"> <span data-trh="allowAll">Alle dürfen alles <small>(z. B. wenn jemand kein Handy dabei hat und ein anderer für ihn spielt)</small></span></label>
       <div class="code-box"><span class="code-l" data-tr>Partie-Code</span><span class="code" id="onCode"></span></div>
-      <div class="on-row"><button class="btn" id="onCopy" data-tr>Code kopieren</button><button class="btn" id="onLeave" data-tr>Partie verlassen</button></div>
+      <div class="on-row"><button class="btn primary" id="onShare" data-tr hidden>Code teilen</button><button class="btn" id="onCopy" data-tr>Code kopieren</button><button class="btn" id="onLeave" data-tr>Partie verlassen</button></div>
       <div class="on-row" id="delArea"><button class="btn danger" id="onDelete" data-tr>Partie für alle löschen</button></div>
       <p class="on-small" data-tr>Gib den Code deinen Mitspielern. Sie öffnen Val Companion, gehen auf „Spiel“ und geben ihn unter „Online-Partie“ ein.</p>
     </div>
@@ -372,6 +372,7 @@
     <div class="set-sec lang"><div class="set-l">Sprache · Language</div><div class="on-row"><button class="btn" data-lang="de">Deutsch</button><button class="btn" data-lang="en">English</button></div></div>
     <label class="desc-t set-ext"><input type="checkbox" id="bigText"> <span data-tr>Große Schrift</span></label>
     <label class="desc-t set-ext"><input type="checkbox" id="achShow"> <span data-tr>Erfolge anzeigen</span></label>
+    <label class="desc-t set-ext"><input type="checkbox" id="eventHintT"> <span data-tr>Beim Zugende an die Ereigniskarte erinnern</span></label>
     <label class="desc-t set-ext"><input type="checkbox" id="autoDiceT"> <span data-tr>Nach „Ressourcen sammeln“ zum Würfeln</span></label>
     <label class="desc-t set-ext"><input type="checkbox" id="autoBuildT"> <span data-tr>Nach „Möbelstück herstellen“ zum Bauen</span></label>
     <h3 class="set-h" data-tr>Hilfe</h3>
@@ -386,6 +387,7 @@
     </div>
     <p data-trh="about1"><b>Val Companion</b> – inoffizielle Begleit-App für Valheim – Das Brettspiel: Aktionen zählen, würfeln, Möbel bauen und Regeln nachschlagen.</p>
     <p class="disc" role="note" data-trh="disc"><b>Hinweis:</b> Diese App ist ein inoffizielles Fan-Projekt. Sie steht in keiner Verbindung zu Iron Gate Studio, Coffee Stain Publishing oder MOOD Publishing, dem Verlag von Valheim – Das Brettspiel, und wird von diesen weder unterstützt noch geprüft. Valheim ist eine eingetragene Marke von Iron Gate Studio. Alle Marken gehören ihren jeweiligen Inhabern.</p>
+    <div class="fb-row"><button class="btn" data-mail="bug" data-tr>Fehler melden</button><button class="btn" data-mail="idea" data-tr>Idee vorschlagen</button></div>
     <p class="contact"><span class="k" data-tr>Entwickelt von</span> <span>UgleeChicken</span><span class="k" data-tr>Kontakt</span> <a href="mailto:valcompanion@ugleechicken.de">valcompanion@ugleechicken.de</a><span class="k" data-tr>Mehr von mir</span> <a href="https://wonderl.ink/@ugleechicken" target="_blank" rel="noopener">wonderl.ink/@ugleechicken</a><span class="k" data-tr>Impressum</span> <a id="impLink" href="https://ugleechicken.de/de/impressum/" target="_blank" rel="noopener">ugleechicken.de/de/impressum</a></p>
     <p class="small" data-tr>Ohne Online-Partie wird der Spielstand nur auf diesem Gerät gespeichert. Bei einer Online-Partie werden Spielstand und Spielernamen über Google Firebase (Server in Belgien) gespeichert und sind nur mit dem Partie-Code abrufbar. Dafür erzeugt die App eine anonyme Kennung, ohne Konto und ohne persönliche Daten.</p>
     <p class="small"><a href="datenschutz.html" data-tr>Datenschutzerklärung</a> · <a href="daten-loeschen.html" data-tr>Daten löschen</a></p>
@@ -395,6 +397,7 @@
   <div class="intro" id="intro" hidden></div>
   <div class="intro" id="recap" hidden></div>
   <div class="intro" id="thanks" hidden></div>
+  <div class="event-toast" id="eventToast" role="status" aria-live="polite" hidden></div>
   <div class="ach-toast" id="achToast" role="status" aria-live="polite" hidden></div>
   <nav class="tabbar" id="tabbar" aria-label="Reiter" data-tr-aria="Reiter">
     <button data-go="zug" role="tab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#t-zug"/></svg><span data-tr>Zug</span></button>

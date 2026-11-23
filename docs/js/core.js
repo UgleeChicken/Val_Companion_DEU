@@ -103,6 +103,7 @@ function undo() {
 
 function endTurn() {
   if (locked()) return;
+  const ender = name();
   log({ k: "end", w: name(), c: counted(), m: st.per }, "e");
   achEndTurn(st.current);
   statTurn(st.current, st.used);
@@ -110,6 +111,7 @@ function endTurn() {
   st.current = (st.current + 1) % st.players.length;
   if (st.current === 0) { st.round++; log({ k: "round", r: st.round }, "e"); }
   render();
+  if (st.eventHint !== false && typeof showEventHint === "function") showEventHint(ender);
 }
 
 function render() {
@@ -170,6 +172,7 @@ function render() {
   $("actions").classList.toggle("nodesc", !st.desc);
   $("descT").checked = !!st.desc;
   $("autoDiceT").checked = st.autoDice !== false;
+  if ($("eventHintT")) $("eventHintT").checked = st.eventHint !== false;
   $("autoBuildT").checked = st.autoBuild !== false;
   $("extRache").checked = !!(st.ext && st.ext.rache);
   document.querySelectorAll(".ext-rache").forEach(el => { el.hidden = !(st.ext && st.ext.rache); });
@@ -239,7 +242,7 @@ document.addEventListener("click", e => {
       $("resetArea").innerHTML = `<span class="confirm">${tr("Alles zurücksetzen?")} <button class="btn" id="resetYes">${tr("Ja, neues Spiel")}</button><button class="btn" id="resetNo">${tr("Abbrechen")}</button></span>`;
       return;
     case "resetYes": {
-      const keep = st.players, cols = st.colors, per = st.per, mine = { bigText: st.bigText, me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, achOff: st.achOff, seg: st.seg, logOpen: st.logOpen };
+      const keep = st.players, cols = st.colors, per = st.per, mine = { bigText: st.bigText, me: st.me, allowAll: st.allowAll, pool: st.pool, tab: st.tab, desc: st.desc, closed: st.closed, autoDice: st.autoDice, autoBuild: st.autoBuild, optsOpen: st.optsOpen, achOff: st.achOff, seg: st.seg, logOpen: st.logOpen, eventHint: st.eventHint };
       const ext = st.ext, dx = st.diceExtra | 0;
       const recap = recapHtml();
       achNewGame(); achCount("neuePartie");

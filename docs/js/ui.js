@@ -111,6 +111,7 @@ document.addEventListener("click", e => {
 document.addEventListener("change", e => {
   if (e.target && e.target.id === "descT") { st.desc = e.target.checked; render(); }
   if (e.target && e.target.id === "autoDiceT") { st.autoDice = e.target.checked; render(); }
+  if (e.target && e.target.id === "eventHintT") { st.eventHint = e.target.checked; render(); }
   if (e.target && e.target.id === "autoBuildT") { st.autoBuild = e.target.checked; render(); }
 });
 
@@ -347,3 +348,29 @@ document.addEventListener("click", e => {
   }
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && $("thanks") && !$("thanks").hidden) hideThanks(); });
+
+// ---------- Erinnerung beim Zugende: laut Regelheft zieht man am Ende jedes Zuges eine Ereigniskarte ----------
+let eventTimer = null;
+function showEventHint(who) {
+  const el = $("eventToast"); if (!el) return;
+  el.innerHTML = `<svg class="ev-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M12 7v6M12 16.5v.5"/></svg>
+    <span class="ev-tx"><b>${tr("Ereigniskarte ziehen")}</b><span>${tf("{p} zieht die nächste Ereigniskarte und handelt sie ab.", { p: esc(who) })}</span></span>`;
+  el.hidden = false; void el.offsetWidth; el.classList.add("show");
+  try { navigator.vibrate && navigator.vibrate([15, 40, 15]); } catch {}
+  clearTimeout(eventTimer); eventTimer = setTimeout(hideEventHint, 4000);
+}
+function hideEventHint() { const el = $("eventToast"); if (!el || el.hidden) return; el.classList.remove("show"); setTimeout(() => { el.hidden = true; }, 300); }
+document.addEventListener("click", e => { if (e.target.closest("#eventToast")) { clearTimeout(eventTimer); hideEventHint(); } });
+
+// ---------- Fehler melden / Idee vorschlagen: öffnet eine Mail mit Betreff und App-Version ----------
+function openExternal(url) { location.href = url; }   // eigene Funktion, damit Tests sie abfangen können
+async function feedbackMail(kind) {
+  let ver = "";
+  try { ver = ((await (await fetch("sw.js", { cache: "no-store" })).text()).match(/valcompanion-v\d+/) || [""])[0]; } catch {}   // Version steht im Service Worker
+  const where = /ValCompanionApp/.test(navigator.userAgent) ? "Android-App" : "Browser";
+  const subj = kind === "bug" ? tr("Val Companion: Fehler gefunden") : tr("Val Companion: Idee");
+  const body = (kind === "bug" ? tr("Was ist passiert, und was hast du davor gemacht?") : tr("Deine Idee:")) +
+    "\n\n\n\n---\n" + [ver.replace("valcompanion-", "Version "), where, LANG.toUpperCase()].filter(Boolean).join(" · ");
+  openExternal(`mailto:valcompanion@ugleechicken.de?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`);
+}
+document.addEventListener("click", e => { const t = e.target.closest("[data-mail]"); if (t) { e.preventDefault(); feedbackMail(t.dataset.mail); } });
