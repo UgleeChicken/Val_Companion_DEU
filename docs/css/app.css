@@ -990,3 +990,6 @@ html.big-text .seg-b { font-size: .8rem; padding-left: 3px; padding-right: 3px; 
 .about .fb-row { flex-wrap: nowrap; }
 .about .fb-row .btn { flex: 1 1 0; min-width: 0; min-height: 44px; padding: 8px 6px; font-size: .92rem; white-space: nowrap; }
 html.big-text .about .fb-row .btn { font-size: .85rem; }
+/* Einheitlich: Knöpfe unter „Über die App“ so hoch wie die übrigen (48 px), Fußzeile im gleichen 20-px-Abstand */
+.about .fb-row .btn { min-height: 48px; }
+.disclaimer { margin-top: 0; }
