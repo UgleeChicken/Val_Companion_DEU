@@ -319,11 +319,31 @@ function showThanks() {
   try { navigator.vibrate && navigator.vibrate([20, 60, 20, 60, 40]); } catch {}
 }
 function hideThanks() { const box = $("thanks"); if (box) { box.hidden = true; box.innerHTML = ""; } }
+// Jedes Antippen facht das Symbol wie ein Lagerfeuer weiter an; beim 3. Mal lodert es auf und die Danksagung öffnet sich.
+function iconSparks(ic, n) {
+  const host = ic.parentElement, hb = host.getBoundingClientRect(), r = ic.getBoundingClientRect();
+  const cx = r.left - hb.left + r.width / 2, cy = r.top - hb.top + r.height / 2;
+  for (let k = 0; k < n; k++) {
+    const s = document.createElement("i"); s.className = "icon-spark";
+    const ang = (Math.random() * 1.4 - 0.7) * Math.PI - Math.PI / 2, dist = 40 + Math.random() * 50 + n * 3;
+    s.style.cssText = `left:${cx}px;top:${cy - r.height * .15}px;--dx:${Math.cos(ang) * dist}px;--dy:${Math.sin(ang) * dist}px;--dur:${.5 + Math.random() * .5}s;--sz:${2 + Math.random() * 3}px`;
+    host.appendChild(s); setTimeout(() => s.remove(), 1100);
+  }
+}
 document.addEventListener("click", e => {
   if (e.target.closest("#thanksOk") || e.target.id === "thanks") return hideThanks();
   const ic = e.target.closest(".about-brand .app-icon"); if (!ic) return;
-  ic.classList.remove("tap"); void ic.offsetWidth; ic.classList.add("tap");   // kleines Wackeln als Rückmeldung
-  clearTimeout(thanksTimer); thanksTimer = setTimeout(() => { thanksTaps = 0; }, 1500);
-  if (++thanksTaps >= 3) { thanksTaps = 0; showThanks(); }
+  thanksTaps = Math.min(3, thanksTaps + 1);
+  ic.dataset.heat = thanksTaps;
+  ic.classList.remove("tap"); void ic.offsetWidth; ic.classList.add("tap");
+  const calm = !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  if (calm) iconSparks(ic, [0, 5, 10, 26][thanksTaps]);
+  try { navigator.vibrate && navigator.vibrate(8 + thanksTaps * 8); } catch {}
+  clearTimeout(thanksTimer);
+  if (thanksTaps >= 3) {
+    thanksTimer = setTimeout(() => { thanksTaps = 0; delete ic.dataset.heat; showThanks(); }, calm ? 450 : 0);
+  } else {
+    thanksTimer = setTimeout(() => { thanksTaps = 0; delete ic.dataset.heat; }, 1500);   // Glut kühlt wieder ab
+  }
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && $("thanks") && !$("thanks").hidden) hideThanks(); });

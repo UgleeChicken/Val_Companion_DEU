@@ -957,3 +957,17 @@ html.big-text .seg-b { font-size: .8rem; padding-left: 3px; padding-right: 3px; 
 .thanks-card { padding-top: 14px; padding-bottom: 12px; }
 .thanks-text { font-size: .9rem; line-height: 1.4; }
 .thanks-sign { margin-bottom: 2px; }
+/* Symbol unter „Über die App“ fängt Feuer: jedes Antippen facht die Glut weiter an */
+.about-brand { position: relative; }
+.about-brand .app-icon { transition: filter .9s ease-out, transform .9s ease-out; border-radius: 22%; }
+.about-brand .app-icon[data-heat="1"] { filter: drop-shadow(0 0 6px #ff8c1a99) brightness(1.08); transition-duration: .2s; }
+.about-brand .app-icon[data-heat="2"] { filter: drop-shadow(0 0 12px #ff8c1acc) drop-shadow(0 0 24px #ff5a0066) brightness(1.18) saturate(1.2);
+  animation: icon-flicker .18s steps(2) infinite alternate; transition-duration: .2s; }
+.about-brand .app-icon[data-heat="3"] { filter: drop-shadow(0 0 16px #ffd27a) drop-shadow(0 0 40px #ff8c1a) drop-shadow(0 0 70px #ff5a00aa) brightness(1.45) saturate(1.4);
+  transform: scale(1.12); animation: icon-blaze .45s ease-out; transition-duration: .15s; }
+@keyframes icon-flicker { from { transform: scale(1) rotate(-.6deg); } to { transform: scale(1.025) rotate(.6deg); } }
+@keyframes icon-blaze { 0% { transform: scale(1); } 40% { transform: scale(1.2); } 100% { transform: scale(1.12); } }
+.icon-spark { position: absolute; width: var(--sz); height: var(--sz); margin: calc(var(--sz) / -2) 0 0 calc(var(--sz) / -2); border-radius: 50%; pointer-events: none;
+  background: #ffd27a; box-shadow: 0 0 6px 2px #ff8c1acc; animation: icon-spark var(--dur) ease-out forwards; z-index: 2; }
+@keyframes icon-spark { 0% { opacity: 1; transform: translate(0, 0) scale(1); } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.3); } }
+@media (prefers-reduced-motion: reduce) { .about-brand .app-icon[data-heat] { animation: none; transform: none; } }
