@@ -296,6 +296,8 @@ document.addEventListener("click", e => { const t = e.target.closest("[data-jump
 // Dank an die Tester, die die App mit Kritik, Rückmeldungen und Ideen mitgeformt haben.
 const TESTERS = ["Alex", "Alex „c0unter“", "„Aran“", "Björn", "Flo", "Jana", "Julse", "„Lav“", "Lisa", "Lukas", "Mama & Papa", "Mario", "Nadine", "„Neytiri487“", "„Skov“", "Tilas"];   // nach ABC, Anführungszeichen nicht mitgezählt
 let thanksTaps = 0, thanksTimer = null;
+// Namen in der jeweiligen Sprache (z. B. „Mama & Papa“ → „Mom & Dad“), nach ABC ohne Anführungszeichen
+const testerNames = () => TESTERS.map(n => LANG === "en" ? tr(n).replace(/„/g, "“").replace(/“(?=$|\s)/g, "”") : n).sort((a, b) => a.replace(/[„“"]/g, "").localeCompare(b.replace(/[„“"]/g, ""), LANG));
 const FUTHARK = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ";
 function showThanks() {
   const box = $("thanks"); if (!box) return;
@@ -309,7 +311,7 @@ function showThanks() {
     <h2 id="thanksT">${tr("Skål, ihr Tester!")}</h2>
     <div class="thanks-runes" title="${tr("Danke")}" aria-hidden="true">${LANG === "en" ? "ᚦᚨᚾᚲᛋ" : "ᛞᚨᚾᚲᛖ"}</div>
     <p class="thanks-text">${tr("Ohne euch wäre diese App nicht, was sie heute ist. Danke für eure ehrliche Kritik, eure Rückmeldungen und all die Ideen, mit denen ihr Val Companion Zug um Zug mitgeformt habt. Ihr habt euch einen Ehrenplatz an der Tafel in Walhall verdient.")}</p>
-    <ul class="thanks-list">${TESTERS.map((n, i) => `<li style="--i:${i}">${esc(n)}</li>`).join("")}</ul>
+    <ul class="thanks-list">${testerNames().map((n, i) => `<li style="--i:${i}">${esc(n)}</li>`).join("")}</ul>
     <p class="thanks-sign">– UgleeChicken</p>
     <div class="thanks-band" aria-hidden="true">${[...FUTHARK].reverse().join("")}</div>
     <button class="btn primary thanks-ok" id="thanksOk">${tr("Skål!")}</button></div>`;
