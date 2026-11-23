@@ -294,7 +294,7 @@ document.addEventListener("click", e => { const t = e.target.closest("[data-jump
 
 // ---------- Kleines Geheimnis: 3-mal auf das App-Symbol unter „Über die App“ tippen ----------
 // Dank an die Tester, die die App mit Kritik, Rückmeldungen und Ideen mitgeformt haben.
-const TESTERS = ["Alex", "Alex „c0unter“", "„Aran“", "Björn", "Flo", "Jana", "Julse", "„Lav“", "Lisa", "Lukas", "Mario", "Nadine", "„Neytiri487“", "„Skov“", "Tilas"];   // nach ABC, Anführungszeichen nicht mitgezählt
+const TESTERS = ["Alex", "Alex „c0unter“", "„Aran“", "Björn", "Flo", "Jana", "Julse", "„Lav“", "Lisa", "Lukas", "Mama & Papa", "Mario", "Nadine", "„Neytiri487“", "„Skov“", "Tilas"];   // nach ABC, Anführungszeichen nicht mitgezählt
 let thanksTaps = 0, thanksTimer = null;
 const FUTHARK = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ";
 function showThanks() {

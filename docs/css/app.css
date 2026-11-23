@@ -945,3 +945,15 @@ html.big-text .seg-b { font-size: .8rem; padding-left: 3px; padding-right: 3px; 
 .thanks-list li:last-child:nth-child(odd) { grid-column: auto; min-width: 0; }
 .thanks-card .thanks-band:last-of-type { margin: 4px 18px 10px; }
 .thanks-list li, .thanks-list li:last-child:nth-child(odd) { justify-self: stretch; display: grid; place-items: center; }
+/* Bleibt in der letzten Reihe ein einzelner Name übrig, steht er mittig */
+.thanks-list li:last-child:nth-child(3n+1) { grid-column: 2; }
+.thanks-ring { width: 92px; height: 92px; }
+.thanks-ring .ring span { font-size: .66rem; transform: rotate(calc(var(--i) * 15deg)) translateY(-38px); }
+.thanks-ring .core { inset: 21px; font-size: 1.8rem; }
+.thanks-list li { padding: 5px 3px; }
+.thanks-runes { margin-bottom: 6px; }
+.thanks-text { margin-bottom: 10px; }
+.thanks-card .thanks-band:last-of-type { margin: 2px 18px 8px; }
+.thanks-card { padding-top: 14px; padding-bottom: 12px; }
+.thanks-text { font-size: .9rem; line-height: 1.4; }
+.thanks-sign { margin-bottom: 2px; }
