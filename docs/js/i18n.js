@@ -470,7 +470,7 @@ const EN = {
 "Rückblick": "Recap",
 "Skål, ihr Tester!": "Skål, testers!",
 "Ohne euch wäre diese App nicht, was sie heute ist. Danke für eure ehrliche Kritik, eure Rückmeldungen und all die Ideen, mit denen ihr Val Companion Zug um Zug mitgeformt habt. Ihr habt euch einen Ehrenplatz an der Tafel in Walhall verdient.": "Without you, this app wouldn't be what it is today. Thank you for your honest criticism, your feedback and all the ideas that helped shape Val Companion turn by turn. You've earned a seat of honour at the table in Valhalla.",
-"Skål!": "Skål!",
+"Danke": "Thanks",
 "Fleißigste Hand: {w} mit 1 Aktion": "Busiest hands: {w} with 1 action",
 "Am härtesten getroffen: {w} mit 1 kritischen Treffer": "Hit the hardest: {w} with 1 critical hit",
 "So lief eure letzte Partie.": "This is how your last game went.",

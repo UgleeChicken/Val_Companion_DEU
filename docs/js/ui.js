@@ -296,17 +296,25 @@ document.addEventListener("click", e => { const t = e.target.closest("[data-jump
 // Dank an die Tester, die die App mit Kritik, Rückmeldungen und Ideen mitgeformt haben.
 const TESTERS = ["Alex", "Alex „c0unter“", "„Aran“", "Björn", "Flo", "Jana", "Julse", "„Lav“", "Lisa", "Lukas", "Mario", "Nadine", "„Neytiri487“", "„Skov“", "Tilas"];   // nach ABC, Anführungszeichen nicht mitgezählt
 let thanksTaps = 0, thanksTimer = null;
+const FUTHARK = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ";
 function showThanks() {
   const box = $("thanks"); if (!box) return;
-  box.innerHTML = `<div class="intro-card thanks-card" role="dialog" aria-modal="true" aria-labelledby="thanksT">
-    <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
+  const ring = [...FUTHARK].map((r, i) => `<span style="--i:${i}">${r}</span>`).join("");
+  const embers = Array.from({ length: 16 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--d:${(i * 0.7) % 6}s;--t:${5 + (i % 5)}s;--s:${2 + (i % 3)}px"></i>`).join("");
+  box.innerHTML = `<div class="thanks-embers" aria-hidden="true">${embers}</div>
+  <div class="intro-card thanks-card" role="dialog" aria-modal="true" aria-labelledby="thanksT">
+    <span class="tc tc1" aria-hidden="true">ᛟ</span><span class="tc tc2" aria-hidden="true">ᛟ</span><span class="tc tc3" aria-hidden="true">ᛟ</span><span class="tc tc4" aria-hidden="true">ᛟ</span>
+    <div class="thanks-band" aria-hidden="true">${FUTHARK}</div>
+    <div class="thanks-ring" aria-hidden="true"><div class="ring">${ring}</div><div class="core">ᚠ</div></div>
     <h2 id="thanksT">${tr("Skål, ihr Tester!")}</h2>
-    <p class="intro-lead">${tr("Ohne euch wäre diese App nicht, was sie heute ist. Danke für eure ehrliche Kritik, eure Rückmeldungen und all die Ideen, mit denen ihr Val Companion Zug um Zug mitgeformt habt. Ihr habt euch einen Ehrenplatz an der Tafel in Walhall verdient.")}</p>
-    <ul class="thanks-list">${TESTERS.map(n => `<li>${esc(n)}</li>`).join("")}</ul>
+    <div class="thanks-runes" title="${tr("Danke")}" aria-hidden="true">${LANG === "en" ? "ᚦᚨᚾᚲᛋ" : "ᛞᚨᚾᚲᛖ"}</div>
+    <p class="thanks-text">${tr("Ohne euch wäre diese App nicht, was sie heute ist. Danke für eure ehrliche Kritik, eure Rückmeldungen und all die Ideen, mit denen ihr Val Companion Zug um Zug mitgeformt habt. Ihr habt euch einen Ehrenplatz an der Tafel in Walhall verdient.")}</p>
+    <ul class="thanks-list">${TESTERS.map((n, i) => `<li style="--i:${i}">${esc(n)}</li>`).join("")}</ul>
     <p class="thanks-sign">– UgleeChicken</p>
-    <div class="intro-row"><span></span><button class="btn primary" id="thanksOk">${tr("Skål!")}</button></div></div>`;
-  box.hidden = false; $("thanksOk").focus();
-  try { navigator.vibrate && navigator.vibrate([20, 60, 20]); } catch {}
+    <div class="thanks-band" aria-hidden="true">${[...FUTHARK].reverse().join("")}</div>
+    <button class="btn primary thanks-ok" id="thanksOk">${tr("Skål!")}</button></div>`;
+  box.hidden = false; $("thanksOk").focus({ preventScroll: true });
+  try { navigator.vibrate && navigator.vibrate([20, 60, 20, 60, 40]); } catch {}
 }
 function hideThanks() { const box = $("thanks"); if (box) { box.hidden = true; box.innerHTML = ""; } }
 document.addEventListener("click", e => {
