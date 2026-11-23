@@ -291,3 +291,29 @@ document.addEventListener("change", e => {
 
 // Sprung aus der Spielhilfe in einen anderen Reiter (eigenes Attribut, damit die Wisch-Reihenfolge der Reiter unverändert bleibt)
 document.addEventListener("click", e => { const t = e.target.closest("[data-jump]"); if (t) { goTab(t.dataset.jump); window.scrollTo(0, 0); } });
+
+// ---------- Kleines Geheimnis: 3-mal auf das App-Symbol unter „Über die App“ tippen ----------
+// Dank an die Tester, die die App mit Kritik, Rückmeldungen und Ideen mitgeformt haben.
+const TESTERS = ["Björn", "Lisa", "„Neytiri487“", "Nadine", "Tilas", "Jana", "Alex „c0unter“", "Alex", "„Skov“", "Julse", "„Lav“", "„Aran“", "Mario", "Lukas", "Flo"];
+let thanksTaps = 0, thanksTimer = null;
+function showThanks() {
+  const box = $("thanks"); if (!box) return;
+  box.innerHTML = `<div class="intro-card thanks-card" role="dialog" aria-modal="true" aria-labelledby="thanksT">
+    <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
+    <h2 id="thanksT">${tr("Skål, ihr Tester!")}</h2>
+    <p class="intro-lead">${tr("Großen Dank an alle Tester, die die App mit viel konstruktiver Kritik, Feedback und Ideen mit mir zu dem geformt haben, was sie heute ist.")}</p>
+    <ul class="thanks-list">${TESTERS.map(n => `<li>${esc(n)}</li>`).join("")}</ul>
+    <p class="thanks-sign">– UgleeChicken</p>
+    <div class="intro-row"><span></span><button class="btn primary" id="thanksOk">${tr("Skål!")}</button></div></div>`;
+  box.hidden = false; $("thanksOk").focus();
+  try { navigator.vibrate && navigator.vibrate([20, 60, 20]); } catch {}
+}
+function hideThanks() { const box = $("thanks"); if (box) { box.hidden = true; box.innerHTML = ""; } }
+document.addEventListener("click", e => {
+  if (e.target.closest("#thanksOk") || e.target.id === "thanks") return hideThanks();
+  const ic = e.target.closest(".about-brand .app-icon"); if (!ic) return;
+  ic.classList.remove("tap"); void ic.offsetWidth; ic.classList.add("tap");   // kleines Wackeln als Rückmeldung
+  clearTimeout(thanksTimer); thanksTimer = setTimeout(() => { thanksTaps = 0; }, 1500);
+  if (++thanksTaps >= 3) { thanksTaps = 0; showThanks(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("thanks") && !$("thanks").hidden) hideThanks(); });
