@@ -294,14 +294,14 @@ document.addEventListener("click", e => { const t = e.target.closest("[data-jump
 
 // ---------- Kleines Geheimnis: 3-mal auf das App-Symbol unter „Über die App“ tippen ----------
 // Dank an die Tester, die die App mit Kritik, Rückmeldungen und Ideen mitgeformt haben.
-const TESTERS = ["Björn", "Lisa", "„Neytiri487“", "Nadine", "Tilas", "Jana", "Alex „c0unter“", "Alex", "„Skov“", "Julse", "„Lav“", "„Aran“", "Mario", "Lukas", "Flo"];
+const TESTERS = ["Alex", "Alex „c0unter“", "„Aran“", "Björn", "Flo", "Jana", "Julse", "„Lav“", "Lisa", "Lukas", "Mario", "Nadine", "„Neytiri487“", "„Skov“", "Tilas"];   // nach ABC, Anführungszeichen nicht mitgezählt
 let thanksTaps = 0, thanksTimer = null;
 function showThanks() {
   const box = $("thanks"); if (!box) return;
   box.innerHTML = `<div class="intro-card thanks-card" role="dialog" aria-modal="true" aria-labelledby="thanksT">
     <div class="runeline" aria-hidden="true">ᚠᚢᚦᚨᚱᚲᚷᚹ</div>
     <h2 id="thanksT">${tr("Skål, ihr Tester!")}</h2>
-    <p class="intro-lead">${tr("Großen Dank an alle Tester, die die App mit viel konstruktiver Kritik, Feedback und Ideen mit mir zu dem geformt haben, was sie heute ist.")}</p>
+    <p class="intro-lead">${tr("Ohne euch wäre diese App nicht, was sie heute ist. Danke für eure ehrliche Kritik, eure Rückmeldungen und all die Ideen, mit denen ihr Val Companion Zug um Zug mitgeformt habt. Ihr habt euch einen Ehrenplatz an der Tafel in Walhall verdient.")}</p>
     <ul class="thanks-list">${TESTERS.map(n => `<li>${esc(n)}</li>`).join("")}</ul>
     <p class="thanks-sign">– UgleeChicken</p>
     <div class="intro-row"><span></span><button class="btn primary" id="thanksOk">${tr("Skål!")}</button></div></div>`;
